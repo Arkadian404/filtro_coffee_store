@@ -25,7 +25,10 @@ header {
     letter-spacing: 2px;
 }
 
-
+.row{
+    margin-left: 0;
+    margin-right: 0;
+}
 
 nav ul {
     display: flex;
@@ -34,9 +37,6 @@ nav ul {
     padding: 0;
 }
 
-nav ul li {
-    margin-left: 20px;
-}
 
 nav ul li a {
     color: #88553c;
@@ -50,20 +50,74 @@ nav ul li a:hover {
     color: #2e2d2b;
 }
 
-
-.jumbotron{
-    background:url("../image/coffee_theme.jpg") center center  no-repeat;
-    color: #f8f9fa;
-    height: 100vh;
+.nav-link .small{
+    font-size: 0.8rem;
+    margin-bottom: 0;
 }
 
-.jumbotron h1 span{
+.carousel{
+    height:832px;
+
+}
+
+.carousel-item{
+    height: 832px;
+}
+
+.carousel-item img {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+}
+
+.jumbotron{
+    background: url("../image/coffee_theme.jpg") center no-repeat ;
+    background-size: cover;
+    height: 832px;
+    overflow: hidden;
+    margin-bottom: 0;
+}
+
+.jumbotron-content{
+    color: #f8f9fa;
+}
+
+.jumbotron h1 span, h3 span{
     display: block;
     font-size: 40px;
     margin-top: 10px;
     color:#96ca2d;
 }
 
+.jumbotron p{
+    color: #f8f9fa;
+}
+
+.img-resize{
+    max-height: 300px;
+    min-height: 300px;
+    object-fit: cover;
+}
+
+.card-body{
+    background: #D5CEA3;
+}
+
+.card-body p {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    font-size: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.btn-hover {
+    transition: transform 0.3s;
+}
+.btn-hover:hover {
+    transform: scale(1.1);
+}
 
 /* Main content */
 main {
