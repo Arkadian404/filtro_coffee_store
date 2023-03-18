@@ -1,17 +1,21 @@
-*{
+* {
     padding: 0;
     margin: 0;
     border: none;
 }
 
-body{
+.text-white {
+    color: #ffffff;
+}
+
+body {
     font-family: 'Lora', serif;
 }
 
 /* Header */
 header {
     background-color: #fff;
-    box-shadow: 0 1px 3px rgba(0,0,0,.1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .1);
     display: flex;
     justify-content: space-between;
     padding: 10px;
@@ -25,7 +29,7 @@ header {
     letter-spacing: 2px;
 }
 
-.row{
+.row {
     margin-left: 0;
     margin-right: 0;
 }
@@ -50,17 +54,17 @@ nav ul li a:hover {
     color: #2e2d2b;
 }
 
-.nav-link .small{
+.nav-link .small {
     font-size: 0.8rem;
     margin-bottom: 0;
 }
 
-.carousel{
-    height:832px;
+.carousel {
+    height: 832px;
 
 }
 
-.carousel-item{
+.carousel-item {
     height: 832px;
 }
 
@@ -70,36 +74,36 @@ nav ul li a:hover {
     width: 100%;
 }
 
-.jumbotron{
-    background: url("../image/coffee_theme.jpg") center no-repeat ;
+.jumbotron {
+    background: url("../image/coffee_theme.jpg") center no-repeat;
     background-size: cover;
     height: 832px;
     overflow: hidden;
     margin-bottom: 0;
 }
 
-.jumbotron-content{
+.jumbotron-content {
     color: #f8f9fa;
 }
 
-.jumbotron h1 span, h3 span{
+.jumbotron h1 span, h3 span {
     display: block;
     font-size: 40px;
     margin-top: 10px;
-    color:#96ca2d;
+    color: #96ca2d;
 }
 
-.jumbotron p{
+.jumbotron p {
     color: #f8f9fa;
 }
 
-.img-resize{
+.img-resize {
     max-height: 300px;
     min-height: 300px;
     object-fit: cover;
 }
 
-.card-body{
+.card-body {
     background: #D5CEA3;
 }
 
@@ -110,11 +114,13 @@ nav ul li a:hover {
     font-size: 12px;
     overflow: hidden;
     text-overflow: ellipsis;
+
 }
 
 .btn-hover {
     transition: transform 0.3s;
 }
+
 .btn-hover:hover {
     transform: scale(1.1);
 }
@@ -129,7 +135,7 @@ main {
 
 .product {
     background-color: #fff;
-    box-shadow: 0 1px 3px rgba(0,0,0,.1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .1);
     margin: 20px;
     max-width: 300px;
     padding: 20px;
@@ -138,7 +144,7 @@ main {
 }
 
 .product:hover {
-    box-shadow: 0 5px 10px rgba(0,0,0,.2);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
 }
 
 .product img {
@@ -219,6 +225,11 @@ footer {
     transition: all 0.3s ease-in-out;
 }
 
+.list-unstyled a {
+    color: #00FFC8;
+}
+
 footer a:hover {
     color: #ffffff;
+    text-decoration: none;
 }

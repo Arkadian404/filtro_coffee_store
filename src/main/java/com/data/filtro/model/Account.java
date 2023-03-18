@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 
 @Entity
-@Table(name="taikhoan")
+@Table(name = "taikhoan")
 @Data
 @Component
 @AllArgsConstructor
@@ -20,28 +20,28 @@ public class Account {
     @Column(name = "matk")
     private Integer id;
 
-    @Column(name="taikhoan")
+    @Column(name = "taikhoan")
     private String username;
 
-    @Column(name="matkhau")
+    @Column(name = "matkhau")
     private String password;
 
-    @Column(name="email")
+    @Column(name = "email")
     private String email;
 
-    @Column(name="ngaytao")
+    @Column(name = "ngaytao")
     private Date createdDate;
 
-    @Column(name="mavaitro")
+    @Column(name = "mavaitro")
     private int roleNumber;
 
-    @Column(name="tinhtrang")
+    @Column(name = "tinhtrang")
     private Integer status;
 
     @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
     private User user;
 
     @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
-    private Staff staff ;
+    private Staff staff;
 
 }

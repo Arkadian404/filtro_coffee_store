@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.List;
 
 @Component
 @Entity
@@ -20,19 +21,28 @@ public class User {
     @Column(name = "makh")
     private Integer id;
 
-    @Column(name="hoten")
+    @Column(name = "hoten")
     private String name;
 
-    @Column(name="ngaysinh")
+    @Column(name = "ngaysinh")
     private Date dob;
 
-    @Column(name="gioitinh")
+    @Column(name = "gioitinh")
     private String sex;
 
-    @Column(name="sdt")
+    @Column(name = "sdt")
     private String phoneNumber;
 
     @OneToOne
-    @JoinColumn(name="matk", referencedColumnName = "matk")
+    @JoinColumn(name = "matk", referencedColumnName = "matk")
     private Account account;
+
+    @OneToOne(mappedBy = "user")
+    private Cart cart;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Invoice> invoices;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Order> orders;
 }
