@@ -17,12 +17,10 @@ public class InvoiceDetail {
     private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn()
-    @Column(name = "mahoadon")
+    @JoinColumn(name = "mahoadon", referencedColumnName = "mahoadon")
     private Invoice invoice;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn()
     @JoinColumn(name = "masp")
     private Product product;
 

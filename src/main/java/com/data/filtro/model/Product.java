@@ -28,7 +28,7 @@ public class Product {
     private int quantity;
 
     @Column(name = "daban")
-    private int sold;
+    private Integer sold;
 
     @Column(name = "giatien")
     private int price;

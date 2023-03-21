@@ -37,8 +37,8 @@ public class User {
     @JoinColumn(name = "matk", referencedColumnName = "matk")
     private Account account;
 
-    @OneToOne(mappedBy = "user")
-    private Cart cart;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Cart> carts;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Invoice> invoices;

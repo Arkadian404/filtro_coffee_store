@@ -23,7 +23,6 @@ public class Invoice {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "makh", referencedColumnName = "makh")
-    @Column(name = "makh")
     private User user;
 
     @Column(name = "ngaymua")

@@ -17,10 +17,10 @@ public class Cart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "magiohang")
     private int id;
 
-    @Column(name = "makh")
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "makh", referencedColumnName = "makh")
     private User user;
 

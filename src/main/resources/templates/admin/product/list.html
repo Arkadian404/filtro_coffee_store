@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/user_layout :: layout (~{::content})}">
+<head>
+    <title>Product List</title>
+</head>
+<body>
+<div th:fragment="content">
+    <h1>Product List</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>Product Name</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Image text</th>
+            <th>Image</th>
+            <th>source image</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:object="${product}">
+            <td th:text="*{productName}"></td>
+            <td th:text="*{quantity}"></td>
+            <td th:text="*{price}"></td>
+            <td th:text="${product.image}"></td>
+            <td><img th:src="@{'/upload/product/' + ${product.image}}" alt=""></td>
+            <td><img src="/upload/product/219633ad-e79d-4936-b597-0b8e889fe08a-Guatemala.jpg"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

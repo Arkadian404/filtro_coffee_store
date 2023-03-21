@@ -19,7 +19,7 @@ public class Order {
     @Column(name = "madathang")
     private int id;
 
-    @Column(name = "makh")
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "makh", referencedColumnName = "makh")
     private User user;
