@@ -1,19 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
-<head th:fragment="head_html">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
-          integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:fragment="head_html">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+              integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
+              crossorigin="anonymous">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="/css/coffee.css" th:href="@{css/coffee.css}">
-    <script src="https://kit.fontawesome.com/bbe981fbfc.js" crossorigin="anonymous"></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&display=swap" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="/css/coffee.css" th:href="@{/css/coffee.css}">
+        <link rel="stylesheet" type="text/css" href="/css/product.css" th:href="@{/css/product.css}">
+        <script src="https://kit.fontawesome.com/bbe981fbfc.js" crossorigin="anonymous"></script>
+    </th:block>
 </head>
 <body>
-
+<!--<a href=""></a>-->
 <div th:fragment="navigation">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
@@ -31,16 +35,17 @@
                         <a class="nav-link dropdown-toggle" th:href="@{/category}" role="button" data-toggle="dropdown"
                            aria-expanded="false">CÀ PHÊ</a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" th:href="@{/category}">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
+                            <li th:each="category, item : ${categories}">
+                                <a class="dropdown-item" th:href="@{/category/{id}(id=${category.id})}"
+                                   th:text="${category.categoryName}">Action</a>
+                                <th:block th:if="${item.count == item.size}">
+                                    <a class="dropdown-item" th:href="@{/category/all}">Xem thêm...</a>
+                                </th:block>
                             </li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/product}">SẢN PHẨM</a>
+                        <a class="nav-link" th:href="@{/category/all}">SẢN PHẨM</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="contact.html">LIÊN HỆ</a>
@@ -49,11 +54,12 @@
                 <div class="col-md-5 text-center">
                     <div class="row justify-content-end align-items-center">
                         <div class="col-8 col-md-6">
-                            <form class="form-inline">
+                            <form th:action="@{/search}" method="get" class="form-inline">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Search for coffee products...">
+                                    <input name="name" type="text" class="form-control"
+                                           placeholder="Search for coffee products...">
                                     <div class="input-group-append">
-                                        <button class="btn btn-outline-secondary" type="button">
+                                        <button class="btn btn-outline-secondary" type="submit">
                                             <i class="fa-solid fa-magnifying-glass"></i>
                                         </button>
                                     </div>

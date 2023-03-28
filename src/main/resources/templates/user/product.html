@@ -6,7 +6,7 @@
 </head>
 <body>
 <div th:fragment="content">
-    <h1>DANG THI CONG</h1>
+    <h1 th:object="${product}" th:text="${product.productName}">DANG THI CONG</h1>
 </div>
 </body>
 </html>

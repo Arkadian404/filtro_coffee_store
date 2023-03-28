@@ -1,21 +1,19 @@
 package com.data.filtro.service;
 
+import com.data.filtro.model.Category;
 import com.data.filtro.model.Product;
 import com.data.filtro.repository.ProductRepository;
-import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletContext;
 import jakarta.transaction.Transactional;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.apache.commons.io.FilenameUtils;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.InputStream;
-import java.nio.Buffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -28,7 +26,7 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
     @Autowired
-    ServletContext context;
+    private CategoryService categoryService;
 
     public void addProduct(Product product, MultipartFile file) throws Exception {
 
@@ -81,10 +79,30 @@ public class ProductService {
 
     @Transactional
     public List<Product> getTopSellingProducts() {
-        List<Product> productList = productRepository.findTopSellingProducts();
+        List<Product> productList = productRepository.findTop6SellingProducts();
         for (Product product : productList) {
             Hibernate.initialize(product.getCategory());
         }
         return productList;
     }
+
+
+    public Page<Product> getAll(Pageable pageable) {
+        return productRepository.findAll(pageable);
+    }
+
+
+    public Page<Product> getProductByCategory(int id, Pageable pageable) {
+        return productRepository.findProductsByCategory(id, pageable);
+    }
+
+    public Page<Product> getProductsByFlavor(int id, Pageable pageable) {
+        return productRepository.findProductsByFlavor(id, pageable);
+    }
+
+
+    public Page<Product> getProductsByName(String name, Pageable pageable) {
+        return productRepository.findProducsByName(name, pageable);
+    }
+
 }

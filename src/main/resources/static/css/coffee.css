@@ -103,6 +103,12 @@ nav ul li a:hover {
     object-fit: cover;
 }
 
+.white-hov:hover,
+.card-title:hover {
+    text-decoration: none;
+    color: white;
+}
+
 .card-body {
     background: #D5CEA3;
 }

@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.List;
 
 @Component
@@ -33,11 +34,19 @@ public class Product {
     @Column(name = "giatien")
     private int price;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "mahuongvi", referencedColumnName = "mahuongvi")
+    private Flavor flavor;
+
     @Column(name = "mota")
     private String description;
 
+
     @Column(name = "anh")
     private String image;
+
+    @Column(name = "ngaytao")
+    private Date createdDate;
 
     @Column(name = "tinhtrang")
     private Integer status;

@@ -32,8 +32,8 @@ public class FiltroApplication {
 //
 //        productList.stream().forEach(p -> System.out.println(p.getProductName() + "\n" + p.getCategory().getCategoryName()));
 
-        String dir = System.getProperty("user.dir");
-        System.out.println(dir);
+//        String dir = System.getProperty("user.dir");
+//        System.out.println(dir);
     }
 
 }
