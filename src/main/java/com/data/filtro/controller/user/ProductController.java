@@ -16,6 +16,12 @@ public class ProductController {
     @Autowired
     ProductService productService;
 
+
+    @GetMapping
+    public String product() {
+        return "user/product";
+    }
+
     @GetMapping("/{id}")
     public String product(@PathVariable Integer id, Model model) {
 

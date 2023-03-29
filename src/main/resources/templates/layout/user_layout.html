@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:fragment="layout (content)">
+<html xmlns:th="http://www.thymeleaf.org" th:fragment="layout (content, head_additional)">
 <head>
     <div th:replace="~{fragment/user_fragment :: head_html}"></div>
+    <div th:replace="${head_additional}"></div>
 </head>
 <body>
 <div th:replace="~{fragment/user_fragment :: navigation}"></div>

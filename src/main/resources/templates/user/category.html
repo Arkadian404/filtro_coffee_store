@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{layout/user_layout :: layout(~{::content})}">
+      th:replace="~{layout/user_layout :: layout(~{::content}, ~{::head_additional})}">
 <head>
-
+    <th:block th:fragment="head_additional">
+        <link rel="stylesheet" type="text/css" href="/css/category.css" th:href="@{/css/category.css}">
+    </th:block>
 </head>
 <body>
 <div th:fragment="content">

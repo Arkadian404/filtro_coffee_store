@@ -1,7 +1,9 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/user_layout :: layout(~{::content})}">
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/user_layout :: layout(~{::content}, ~{::head_additional})}">
 <head>
-
+    <th:block th:fragment="head_additional">
+        <link rel="stylesheet" type="text/css" href="/css/coffee.css" th:href="@{/css/coffee.css}">
+    </th:block>
 </head>
 <body>
 <div th:fragment="content">

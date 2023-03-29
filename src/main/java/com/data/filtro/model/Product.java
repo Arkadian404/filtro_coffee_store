@@ -51,6 +51,9 @@ public class Product {
     @Column(name = "tinhtrang")
     private Integer status;
 
+    @Column(name = "giamgia")
+    private Integer discount;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "madanhmuc", referencedColumnName = "madanhmuc")
     private Category category;
