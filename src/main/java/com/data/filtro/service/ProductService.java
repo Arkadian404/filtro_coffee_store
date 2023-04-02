@@ -1,9 +1,7 @@
 package com.data.filtro.service;
 
-import com.data.filtro.model.Category;
 import com.data.filtro.model.Product;
 import com.data.filtro.repository.ProductRepository;
-import jakarta.servlet.ServletContext;
 import jakarta.transaction.Transactional;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,6 +84,11 @@ public class ProductService {
         return productList;
     }
 
+    public List<Product> getTopDiscountProducts() {
+        List<Product> productList = productRepository.findTop3MostDiscountProducts();
+        return productList;
+    }
+
 
     public Page<Product> getAll(Pageable pageable) {
         return productRepository.findAll(pageable);
@@ -96,7 +99,7 @@ public class ProductService {
         return productRepository.findProductsByCategory(id, pageable);
     }
 
-    public Page<Product> getProductsByFlavor(int id, Pageable pageable) {
+    public Page<Product> getProductsByFlavorId(int id, Pageable pageable) {
         return productRepository.findProductsByFlavor(id, pageable);
     }
 
@@ -104,5 +107,14 @@ public class ProductService {
     public Page<Product> getProductsByName(String name, Pageable pageable) {
         return productRepository.findProducsByName(name, pageable);
     }
+
+    public long countAll() {
+        return productRepository.findAll().stream().count();
+    }
+
+    public List<Product> getTop4ProductsByFlavor(int id) {
+        return productRepository.findTop4ProductsByFlavor(id);
+    }
+
 
 }

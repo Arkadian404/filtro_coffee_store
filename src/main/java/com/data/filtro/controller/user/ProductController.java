@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/product")
 public class ProductController {
@@ -24,10 +26,16 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public String product(@PathVariable Integer id, Model model) {
-
+        int currentProductId = id;
+        long maxProductId = productService.countAll();
+        int t1 = 13;
+        long t2 = 24;
         Product product = productService.getProductById(id);
+        List<Product> productList = productService.getTop4ProductsByFlavor(product.getFlavor().getId());
         model.addAttribute("product", product);
-
+        model.addAttribute("products", productList);
+        model.addAttribute("currentProductId", currentProductId);
+        model.addAttribute("maxProductId", maxProductId);
         return "user/product";
     }
 }

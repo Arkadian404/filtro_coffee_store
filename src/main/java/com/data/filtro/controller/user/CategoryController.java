@@ -6,10 +6,6 @@ import com.data.filtro.model.Product;
 import com.data.filtro.service.CategoryService;
 import com.data.filtro.service.FlavorService;
 import com.data.filtro.service.ProductService;
-import jakarta.persistence.Converter;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Controller;
@@ -18,8 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("/category")
@@ -34,6 +28,12 @@ public class CategoryController {
     @Autowired
     FlavorService flavorService;
 
+
+    @ModelAttribute(name = "discountProducts")
+    public List<Product> getDiscountProducts(Model model) {
+        List<Product> productList = productService.getTopDiscountProducts();
+        return productList;
+    }
 
     public Pageable sortPage(int currentPage, int pageSize, String sortType) {
         Pageable pageable;
@@ -113,7 +113,7 @@ public class CategoryController {
 
         pageable = sortPage(currentPage, pageSize, sortType);
 
-        productPage = productService.getProductsByFlavor(id, pageable);
+        productPage = productService.getProductsByFlavorId(id, pageable);
         flavor = flavorService.getFlavorById(id);
 
         model.addAttribute("products", productPage.getContent());

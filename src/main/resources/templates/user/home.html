@@ -74,7 +74,7 @@
                 <div class="col-lg-4 col-md-12 mb-4  d-flex align-items-stretch" th:each="product : ${products}">
                     <div class="card">
                         <img th:src="${product.image}" class="w-100 img-resize"/>
-                            <div class="card-body d-flex flex-column">
+                            <div class="brown-color card-body d-flex flex-column">
                                 <a th:href="@{/product/{id}(id=${product.id})}" class="text-reset white-hov">
                                     <h5 class="card-title mb-3" th:text="${product.productName}">House Blend Coffee</h5>
                                 </a>

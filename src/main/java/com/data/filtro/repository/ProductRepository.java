@@ -16,6 +16,9 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     @Query("select p from Product p order by p.sold desc limit 6")
     List<Product> findTop6SellingProducts();
 
+    @Query("select p from Product p order by p.discount desc limit 3")
+    List<Product> findTop3MostDiscountProducts();
+
     Page<Product> findAll(Pageable pageable);
 
     @Query("select p from Product p where p.category.id = :categoryId")
@@ -23,6 +26,9 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     @Query("select p from Product p where p.flavor.id = :flavorId")
     Page<Product> findProductsByFlavor(@Param("flavorId") Integer id, Pageable pageable);
+
+    @Query("select p from Product p where p.flavor.id = :flavorId order by p.productName limit 4")
+    List<Product> findTop4ProductsByFlavor(@Param("flavorId") Integer id);
 
     @Query("select  p from  Product  p where lower(p.productName) like %:name%")
     Page<Product> findProducsByName(@Param("name") String name, Pageable pageable);

@@ -48,19 +48,22 @@
                 </div>
 
                 <div class="product-sidebar mt-3">
-                    <h5 class="text-center">Khuyến mãi</h5>
-                    <!-- Featured Product Item -->
-                    <div class="product-item">
+                    <h2>Khuyến mãi</h2>
+                    <div class="product-item" th:each="product : ${discountProducts}">
                         <div class="image">
-                            <a href="#"><img
-                                    src="https://images.weserv.nl/?url=wp.sieuthicafe.vn/wp-content/uploads/2022/03/khung-canh-kich-thuoc-3.png&h=400&w=600&fit=outside&il=1"
-                                    alt="Product 4"></a>
+                            <a th:href="@{/product/{id}(id=${product.id})}">
+                                <img
+                                        th:src="@{'/upload/product/' + ${product.image}}"
+                                        alt="Product">
+                            </a>
                         </div>
                         <div class="name">
-                            <a href="#">Leather laptop bag</a>
+                            <a th:href="@{/product/{id}(id=${product.id})}" th:text="${product.productName}"></a>
                         </div>
                         <div class="price">
-                            <span>$722.00</span>
+                            <span><del
+                                    th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'COMMA')} + 'đ'"></del></span>
+                            <span th:text="${#numbers.formatDecimal(product.price - (product.price*product.discount/100), 0, 'COMMA', 0, 'COMMA')} + 'đ'"></span>
                         </div>
                     </div>
                 </div>
@@ -88,7 +91,7 @@
                         <div class="card">
                             <img th:src="@{'/upload/product/' + ${product.image}}" class="w-100 img-resize"
                                  alt="Card Image">
-                            <div class="card-body d-flex flex-column">
+                            <div class="brown-color card-body d-flex flex-column">
                                 <a class="white-hov text-center text-reset"
                                    th:href="@{/product/{id}(id=${product.id})}"><h5 class="card-title"
                                                                                     th:text="${product.productName}">
@@ -126,7 +129,7 @@
                         </div>
                     </div>
                     <!--/ Product Item -->
-                    <th:block th:if="${category == null}">
+                    <th:block th:if="${category == null and flavor ==null}">
                         <div class="col-12 mb-5 mt-3 d-flex justify-content-center">
                             <ul class="pagination">
                                 <li class="page-item" th:classappend="${currentPage == 1 ? 'disabled' : ''}">
@@ -148,7 +151,7 @@
                             </ul>
                         </div>
                     </th:block>
-                    <th:block th:if="${category != null}">
+                    <th:block th:if="${category != null and flavor == null}">
                         <div class="col-12 mb-5 mt-3 d-flex justify-content-center">
                             <ul class="pagination">
                                 <li class="page-item" th:classappend="${currentPage == 1 ? 'disabled' : ''}">
@@ -165,6 +168,28 @@
                                 <li class="page-item" th:classappend="${currentPage == totalPages ? 'disabled' : ''} ">
                                     <a class="page-link"
                                        th:href="@{/category/{id}(id=${category.id})(sortType=${sortType}, page=${currentPage + 1})}">Trang
+                                        sau</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </th:block>
+                    <th:block th:if="${flavor != null}">
+                        <div class="col-12 mb-5 mt-3 d-flex justify-content-center">
+                            <ul class="pagination">
+                                <li class="page-item" th:classappend="${currentPage == 1 ? 'disabled' : ''}">
+                                    <a class="page-link"
+                                       th:href="@{/category/flavors/{id}(id=${flavor.id})(sortType=${sortType}, page=${currentPage - 1})}"
+                                       tabindex="-1">Trang trước</a>
+                                </li>
+                                <li class="page-item" th:classappend="${page == currentPage ? 'active' : ''}"
+                                    th:each="page : ${#numbers.sequence(1, totalPages)}">
+                                    <a class="page-link"
+                                       th:href="@{/category/flavors/{id}(id=${flavor.id},sortType=${sortType},page=${page})}"
+                                       th:text="${page}"></a>
+                                </li>
+                                <li class="page-item" th:classappend="${currentPage == totalPages ? 'disabled' : ''} ">
+                                    <a class="page-link"
+                                       th:href="@{/category/flavors/{id}(id=${flavor.id})(sortType=${sortType}, page=${currentPage + 1})}">Trang
                                         sau</a>
                                 </li>
                             </ul>

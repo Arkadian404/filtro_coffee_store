@@ -8,6 +8,10 @@
     color: #ffffff;
 }
 
+.brown-color {
+    background: #D5CEA3;
+}
+
 body {
     font-family: 'Lora', serif;
 }
@@ -53,10 +57,6 @@ nav ul li a:hover {
 .card-title:hover {
     text-decoration: none;
     color: white;
-}
-
-.card-body {
-    background: #D5CEA3;
 }
 
 .card-body p {

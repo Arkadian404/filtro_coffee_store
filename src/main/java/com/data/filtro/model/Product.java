@@ -26,13 +26,13 @@ public class Product {
     private String productName;
 
     @Column(name = "soluong")
-    private int quantity;
+    private Integer quantity;
 
     @Column(name = "daban")
     private Integer sold;
 
     @Column(name = "giatien")
-    private int price;
+    private Integer price;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mahuongvi", referencedColumnName = "mahuongvi")
