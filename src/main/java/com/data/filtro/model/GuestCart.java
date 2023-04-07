@@ -9,30 +9,24 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "giohang")
+@Table(name = "giohang_temp")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Cart {
+public class GuestCart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "magiohang")
     private Integer id;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "makh", referencedColumnName = "makh")
-    private User user;
 
     @Column(name = "thoigiantao")
     private Date createdDate;
 
+
     @Column(name = "thoigiancapnhat")
     private Date updatedDate;
 
-    @Column(name = "trangthai")
-    private Integer status;
-
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "guestCart", cascade = CascadeType.ALL)
     private List<CartItem> cartItemList;
+
 }

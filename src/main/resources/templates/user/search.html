@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{layout/user_layout :: layout(~{::content})}">
+      th:replace="~{layout/user_layout :: layout(~{::content}, ~{::head_additional})}">
 <head>
-
+    <th:block th:fragment="head_additional">
+        <link rel="stylesheet" th:href="@{/css/category.css}" ref="/css/category.css">
+    </th:block>
 </head>
 <body>
 <div th:fragment="content">
@@ -46,19 +48,22 @@
                 </div>
 
                 <div class="product-sidebar mt-3">
-                    <h5 class="text-center">Khuyến mãi</h5>
-                    <!-- Featured Product Item -->
-                    <div class="product-item">
+                    <h2>Khuyến mãi</h2>
+                    <div class="product-item" th:each="product : ${discountProducts}">
                         <div class="image">
-                            <a href="#"><img
-                                    src="https://images.weserv.nl/?url=wp.sieuthicafe.vn/wp-content/uploads/2022/03/khung-canh-kich-thuoc-3.png&h=400&w=600&fit=outside&il=1"
-                                    alt="Product 4"></a>
+                            <a th:href="@{/product/{id}(id=${product.id})}">
+                                <img
+                                        th:src="@{'/upload/product/' + ${product.image}}"
+                                        alt="Product">
+                            </a>
                         </div>
                         <div class="name">
-                            <a href="#">Leather laptop bag</a>
+                            <a th:href="@{/product/{id}(id=${product.id})}" th:text="${product.productName}"></a>
                         </div>
                         <div class="price">
-                            <span>$722.00</span>
+                            <span><del
+                                    th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'COMMA')} + 'đ'"></del></span>
+                            <span th:text="${#numbers.formatDecimal(product.price - (product.price*product.discount/100), 0, 'COMMA', 0, 'COMMA')} + 'đ'"></span>
                         </div>
                     </div>
                 </div>

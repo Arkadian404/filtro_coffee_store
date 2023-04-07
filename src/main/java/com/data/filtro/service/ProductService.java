@@ -112,8 +112,8 @@ public class ProductService {
         return productRepository.findAll().stream().count();
     }
 
-    public List<Product> getTop4ProductsByFlavor(int id) {
-        return productRepository.findTop4ProductsByFlavor(id);
+    public List<Product> getTop4ProductsByFlavor(int id, int currentProductId) {
+        return productRepository.findTop4ProductsByFlavor(id, currentProductId);
     }
 
 

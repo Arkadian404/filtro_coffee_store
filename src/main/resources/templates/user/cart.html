@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/user_layout :: layout (~{::content}, ~{::head_additional})}">
+<head>
+    <th:block th:fragment="head_additional"></th:block>
+</head>
+<body>
+<th:block th:fragment="content">
+    <div class="container mb-5 mt-5">
+        <div class="row">
+            <div class="col-12">
+                <th:block
+                        th:if="${(#lists.isEmpty(cartItemList) or cartItemList == null) and (cart == null or guestCart ==null)}">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col">
+                                <h3 class="text-center mt-auto ml-auto">Không có sản phẩm nào trong giỏ hàng</h3>
+                            </div>
+
+                        </div>
+                    </div>
+                </th:block>
+                <th:block th:if="${(!#lists.isEmpty(cartItemList) or cartItemList.size() != null) and cart != null}">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th scope="col">STT</th>
+                                <th scope="col">Sản phẩm</th>
+                                <th scope="col">Tình trạng</th>
+                                <th scope="col" class="text-center">Số lượng</th>
+                                <th scope="col" class="text-right">Giá</th>
+                                <th scope="col" class="text-right">Tổng tiền</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="item : ${cartItemList}">
+                                <td><img src="https://dummyimage.com/50x50/55595c/fff"/></td>
+                                <td th:text="${item.product.productName}">Product Name Dada</td>
+                                <td th:if="${item.product.status == 1}">Còn hàng</td>
+                                <td><input class="form-control" type="text" th:value="${item.quantity}"/></td>
+                                <td class="text-right"
+                                    th:text="${#numbers.formatDecimal(item.product.price, 0, 'COMMA', 0, 'COMMA') + 'đ'}">
+                                    124,90 €
+                                </td>
+                                <td class="text-right"
+                                    th:text="${#numbers.formatDecimal(item.quantity * item.product.price, 0, 'COMMA', 0, 'COMMA') + 'đ'}"></td>
+                                <td class="text-right">
+                                    <form th:action="@{/cart/remove/{productId}(productId=${item.product.id})}"
+                                          method="post">
+
+                                        <button type="submit"
+                                                class="btn btn-sm btn-danger"><i
+                                                class="fa fa-trash"></i></button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>Tạm tính</td>
+                                <td class="text-right"
+                                    th:text="${#numbers.formatDecimal(sum, 0, 'COMMA', 0, 'COMMA') + 'đ'}"
+                                >255,90
+                                    €
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><strong>Total</strong></td>
+                                <td class="text-right"><strong
+                                        th:text="${#numbers.formatDecimal(sum, 0, 'COMMA', 0, 'COMMA') + 'đ'}">346,90
+                                    €</strong></td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </th:block>
+                <th:block
+                        th:if="${(!#lists.isEmpty(cartItemList) or cartItemList.size() != null) and guestCart != null}">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th scope="col">STT</th>
+                                <th scope="col">Sản phẩm</th>
+                                <th scope="col">Tình trạng</th>
+                                <th scope="col" class="text-center">Số lượng</th>
+                                <th scope="col" class="text-right">Giá</th>
+                                <th scope="col" class="text-right">Tổng tiền</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="item : ${cartItemList}">
+                                <td><img src="https://dummyimage.com/50x50/55595c/fff"/></td>
+                                <td th:text="${item.product.productName}">Product Name Dada</td>
+                                <td th:if="${item.product.status == 1}">Còn hàng</td>
+                                <td><input class="form-control" type="text" th:value="${item.quantity}"/></td>
+                                <td class="text-right"
+                                    th:text="${#numbers.formatDecimal(item.product.price, 0, 'COMMA', 0, 'COMMA') + 'đ'}">
+                                    124,90 €
+                                </td>
+                                <td class="text-right"
+                                    th:text="${#numbers.formatDecimal(item.quantity * item.product.price, 0, 'COMMA', 0, 'COMMA') + 'đ'}"></td>
+                                <td class="text-right">
+                                    <form th:action="@{/cart/remove/{productId}(productId=${item.product.id})}"
+                                          method="post">
+
+                                        <button type="submit"
+                                                class="btn btn-sm btn-danger"><i
+                                                class="fa fa-trash"></i></button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>Tạm tính</td>
+                                <td class="text-right"
+                                    th:text="${#numbers.formatDecimal(sum, 0, 'COMMA', 0, 'COMMA') + 'đ'}"
+                                >255,90
+                                    €
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><strong>Total</strong></td>
+                                <td class="text-right"><strong
+                                        th:text="${#numbers.formatDecimal(sum, 0, 'COMMA', 0, 'COMMA') + 'đ'}">346,90
+                                    €</strong></td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </th:block>
+            </div>
+            <div class="col mb-2">
+                <div class="row">
+                    <div class="col-sm-12  col-md-6">
+                        <a th:href="@{/}" class="btn btn-block btn-light">Tiếp tục mua hàng</a>
+                    </div>
+                    <th:block th:if="${session.user == null}">
+                        <div class="col-sm-12 col-md-6 text-right">
+                            <a th:href="@{/login}" class="btn btn-lg btn-block btn-success text-uppercase">Đăng nhập để
+                                thanh toán</a>
+                        </div>
+                    </th:block>
+                    <th:block th:if="${session.user != null}">
+                        <div class="col-sm-12 col-md-6 text-right">
+                            <a th:href="@{/checkout}" class="btn btn-lg btn-block btn-success text-uppercase">Thanh
+                                toán</a>
+                        </div>
+                    </th:block>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</th:block>
+</body>
+</html>

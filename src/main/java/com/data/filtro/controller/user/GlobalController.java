@@ -1,14 +1,11 @@
 package com.data.filtro.controller.user;
 
-import com.data.filtro.model.Category;
-import com.data.filtro.model.Flavor;
-import com.data.filtro.model.Product;
-import com.data.filtro.service.CategoryService;
-import com.data.filtro.service.FlavorService;
-import com.data.filtro.service.ProductService;
+import com.data.filtro.model.*;
+import com.data.filtro.service.*;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -29,6 +26,12 @@ public class GlobalController {
     @Autowired
     FlavorService flavorService;
 
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    CartService cartService;
+
     @ModelAttribute("categories")
     public List<Category> getCategories() {
         List<Category> categories = categoryService.get5Categories();
@@ -45,6 +48,21 @@ public class GlobalController {
     public List<Flavor> getFlavors() {
         List<Flavor> flavors = flavorService.getAll();
         return flavors;
+    }
+
+    @ModelAttribute("cartItemList")
+    public List<CartItem> cartItemList(HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        GuestCart guestCart = (GuestCart) session.getAttribute("guestCart");
+        if (user != null) {
+            Cart cart = cartService.getCartByUserId(user.getId());
+            List<CartItem> cartItemList = cart.getCartItemList();
+            return cartItemList;
+        } else if (guestCart != null) {
+            List<CartItem> cartItemList = guestCart.getCartItemList();
+            return cartItemList;
+        }
+        return null;
     }
 
 }

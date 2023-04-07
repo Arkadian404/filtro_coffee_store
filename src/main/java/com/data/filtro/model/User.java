@@ -30,15 +30,22 @@ public class User {
     @Column(name = "gioitinh")
     private String sex;
 
+    @Column(name = "email")
+    private String email;
+
     @Column(name = "sdt")
     private String phoneNumber;
+
+    @Column(name = "tinhtrang")
+    private Integer status;
+
 
     @OneToOne
     @JoinColumn(name = "matk", referencedColumnName = "matk")
     private Account account;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Cart> carts;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Cart cart;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Invoice> invoices;

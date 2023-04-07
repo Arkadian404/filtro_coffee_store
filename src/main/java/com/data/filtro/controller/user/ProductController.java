@@ -31,11 +31,12 @@ public class ProductController {
         int t1 = 13;
         long t2 = 24;
         Product product = productService.getProductById(id);
-        List<Product> productList = productService.getTop4ProductsByFlavor(product.getFlavor().getId());
+        List<Product> productList = productService.getTop4ProductsByFlavor(product.getFlavor().getId(), currentProductId);
         model.addAttribute("product", product);
         model.addAttribute("products", productList);
         model.addAttribute("currentProductId", currentProductId);
         model.addAttribute("maxProductId", maxProductId);
+        productList.forEach(product1 -> System.out.println(product1.getProductName()));
         return "user/product";
     }
 }

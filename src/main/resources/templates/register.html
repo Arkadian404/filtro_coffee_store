@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/user_layout :: layout (~{::content}, ~{::head_additional})}">
+<head>
+    <th:block th:fragment="head_additional"></th:block>
+</head>
+<body>
+<th:block th:fragment="content">
+    <div class="container">
+        <div class="row mt-5 justify-content-center">
+            <div class="col-6">
+                <form method="post" th:action="@{/register}">
+                    <div id="successMessage" th:if="${message}" class="alert alert-success" role="alert"
+                         th:text="${message}">
+                    </div>
+                    <div id="errorMessage" th:if="${errorMessage}" class="alert alert-danger" role="alert"
+                         th:text="${errorMessage}">
+                    </div>
+
+                    <div class="text-center mb-3">
+                        <h2>ĐĂNG KÝ</h2>
+                    </div>
+
+                    <!-- Name input -->
+                    <div class="form-outline mb-4">
+                        <label class="form-label" for="registerName">Họ và tên</label>
+                        <input name="accountName" type="text" id="registerName" class="form-control" required/>
+                    </div>
+
+                    <!-- Username input -->
+                    <div class="form-outline mb-4">
+                        <label class="form-label" for="registerUsername">Tên tài khoản</label>
+                        <input name="userName" type="text" id="registerUsername" class="form-control" required/>
+                    </div>
+
+                    <!-- Email input -->
+                    <div class="form-outline mb-4">
+                        <label class="form-label" for="registerEmail">Email</label>
+                        <input name="email" type="email" id="registerEmail" class="form-control" required/>
+                    </div>
+
+                    <!-- Password input -->
+                    <div class="form-outline mb-4">
+                        <label class="form-label" for="registerPassword">Mật khẩu</label>
+                        <input name="password" type="password" id="registerPassword" class="form-control" required/>
+                    </div>
+
+                    <!-- Repeat Password input -->
+                    <div class="form-outline mb-4">
+                        <label class="form-label" for="registerRepeatPassword">Nhập lại mật khẩu</label>
+                        <input name="repeatPassword" type="password" id="registerRepeatPassword" class="form-control"
+                               required/>
+                    </div>
+
+                    <!-- Submit button -->
+                    <button type="submit" class="btn btn-primary btn-block mb-3">Đăng ký</button>
+
+                    <hr>
+                    <div class="row">
+                        <div class="col">
+                            <div class="text-center">
+                                <p>Đã có tài khoản? <a th:href="@{/login}">Đăng nhập ngay!</a></p>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                </form>
+            </div>
+
+        </div>
+
+    </div>
+
+</th:block>
+</body>
+</html>

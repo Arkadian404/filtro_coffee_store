@@ -21,23 +21,22 @@ public class Account {
     private Integer id;
 
     @Column(name = "taikhoan")
-    private String username;
+    private String accountName;
 
     @Column(name = "matkhau")
     private String password;
-
-    @Column(name = "email")
-    private String email;
 
     @Column(name = "ngaytao")
     private Date createdDate;
 
     @Column(name = "mavaitro")
-    private int roleNumber;
+    private Integer roleNumber;
 
     @Column(name = "tinhtrang")
     private Integer status;
 
+    @Column(name = "password_reset_token")
+    private String passwordResetToken;
     @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
     private User user;
 

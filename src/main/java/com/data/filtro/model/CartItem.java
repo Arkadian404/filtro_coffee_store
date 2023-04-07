@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Entity
 @Table(name = "giohang_chitiet")
 @Data
@@ -14,7 +16,7 @@ public class CartItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "magiohang", referencedColumnName = "magiohang")
@@ -25,11 +27,18 @@ public class CartItem {
     private Product product;
 
     @Column(name = "soluong")
-    private int quantity;
+    private Integer quantity;
 
     @Column(name = "giatien")
-    private int price;
+    private Integer price;
 
     @Column(name = "tong")
-    private int total;
+    private Integer total;
+
+    @Column(name = "thoigianmua")
+    private Date purchasedDate;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "magiohangtam", referencedColumnName = "id")
+    private GuestCart guestCart;
 }

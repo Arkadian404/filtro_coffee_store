@@ -134,7 +134,7 @@
                             <ul class="pagination">
                                 <li class="page-item" th:classappend="${currentPage == 1 ? 'disabled' : ''}">
                                     <a class="page-link"
-                                       th:href="@{/category/{id}(id='all')(sortType=${sortType}, page=${currentPage - 1})}"
+                                       th:href="@{/category/{id}(id='all',sortType=${sortType}, page=${currentPage - 1})}"
                                        tabindex="-1">Trang trước</a>
                                 </li>
                                 <li class="page-item" th:classappend="${page == currentPage ? 'active' : ''}"
@@ -145,7 +145,7 @@
                                 </li>
                                 <li class="page-item" th:classappend="${currentPage == totalPages ? 'disabled' : ''} ">
                                     <a class="page-link"
-                                       th:href="@{/category/{id}(id='all')(sortType=${sortType}, page=${currentPage + 1})}">Trang
+                                       th:href="@{/category/{id}(id='all',sortType=${sortType}, page=${currentPage + 1})}">Trang
                                         sau</a>
                                 </li>
                             </ul>
@@ -156,7 +156,7 @@
                             <ul class="pagination">
                                 <li class="page-item" th:classappend="${currentPage == 1 ? 'disabled' : ''}">
                                     <a class="page-link"
-                                       th:href="@{/category/{id}(id=${category.id})(sortType=${sortType}, page=${currentPage - 1})}"
+                                       th:href="@{/category/{id}(id=${category.id},sortType=${sortType}, page=${currentPage - 1})}"
                                        tabindex="-1">Trang trước</a>
                                 </li>
                                 <li class="page-item" th:classappend="${page == currentPage ? 'active' : ''}"
@@ -167,7 +167,7 @@
                                 </li>
                                 <li class="page-item" th:classappend="${currentPage == totalPages ? 'disabled' : ''} ">
                                     <a class="page-link"
-                                       th:href="@{/category/{id}(id=${category.id})(sortType=${sortType}, page=${currentPage + 1})}">Trang
+                                       th:href="@{/category/{id}(id=${category.id},sortType=${sortType}, page=${currentPage + 1})}">Trang
                                         sau</a>
                                 </li>
                             </ul>
