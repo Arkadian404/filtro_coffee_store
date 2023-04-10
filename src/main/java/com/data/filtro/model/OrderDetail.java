@@ -14,23 +14,22 @@ public class OrderDetail {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "madathang", referencedColumnName = "madathang")
     private Order orderId;
-
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "masp", referencedColumnName = "masp")
     private Product product;
 
     @Column(name = "soluong")
-    private int quantity;
+    private Integer quantity;
 
     @Column(name = "giatien")
-    private int price;
+    private Integer price;
 
     @Column(name = "tong")
-    private int total;
+    private Integer total;
 }

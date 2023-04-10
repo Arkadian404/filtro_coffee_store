@@ -77,10 +77,13 @@ public class CartController {
 
         if (user != null) {
             Cart cart = cartService.getCartByUserId(user.getId());
-            List<CartItem> cartItemList = cart.getCartItemList();
-            model.addAttribute("cartItemList", cartItemList);
-            model.addAttribute("cart", cart);
-            cartItemList.stream().forEach(cartItem -> System.out.println(cartItem.getQuantity()));
+            int check = cartService.checkCartStatusByCartId(cart.getId());
+            if (cart != null && check == 1) {
+                List<CartItem> cartItemList = cart.getCartItemList();
+                model.addAttribute("cartItemList", cartItemList);
+                model.addAttribute("cart", cart);
+                cartItemList.stream().forEach(cartItem -> System.out.println(cartItem.getQuantity()));
+            }
         } else if (guestCart != null) {
             List<CartItem> cartItemList = guestCart.getCartItemList();
             model.addAttribute("cartItemList", cartItemList);
@@ -123,8 +126,18 @@ public class CartController {
     @PostMapping("/remove/{productId}")
     public String removeCartItem(@PathVariable("productId") int productId, HttpSession session, Model model) {
         User user = (User) session.getAttribute("user");
-        Cart cart = cartService.getCartByUserId(user.getId());
-        cartItemService.removeCartItemByProductId(cart.getId(), productId);
+        GuestCart guestCart = (GuestCart) session.getAttribute("guestCart");
+        if (user != null) {
+            Cart cart = cartService.getCartByUserId(user.getId());
+            cartItemService.removeCartItemByCartIdAndProductId(cart.getId(), productId);
+            //List<CartItem> cartItemList = cart.getCartItemList();
+            // cartItemList.forEach(ci -> System.out.println("USER: " + ci.getProduct().getProductName()));
+        } else if (guestCart != null) {
+            cartItemService.removeCartItemByGuestCartIdAndProductId(guestCart.getId(), productId);
+            guestCart.setCartItemList(cartItemService.getCartItemByGuestCartId(guestCart.getId()));
+            session.setAttribute("guestCart", guestCart);
+        }
+
         return "redirect:/cart";
     }
 
@@ -134,7 +147,10 @@ public class CartController {
         GuestCart guestCart = (GuestCart) session.getAttribute("guestCart");
         if (user != null) {
             Cart cart = cartService.getCartByUserId(user.getId());
-            return cartService.totalOfCartItem(user);
+            if (cart != null) {
+                return cartService.totalOfCartItem(user);
+            }
+
         } else if (guestCart != null) {
             return cartService.totalOfCartItemTemp(guestCart.getId());
         }

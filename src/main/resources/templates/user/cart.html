@@ -20,12 +20,12 @@
                         </div>
                     </div>
                 </th:block>
-                <th:block th:if="${(!#lists.isEmpty(cartItemList) or cartItemList.size() != null) and cart != null}">
+                <th:block th:if="${(!#lists.isEmpty(cartItemList) or cartItemList != null) and cart != null}">
                     <div class="table-responsive">
                         <table class="table table-striped">
                             <thead>
                             <tr>
-                                <th scope="col">STT</th>
+                                <th scope="col">STT1</th>
                                 <th scope="col">Sản phẩm</th>
                                 <th scope="col">Tình trạng</th>
                                 <th scope="col" class="text-center">Số lượng</th>
@@ -78,18 +78,16 @@
                                         th:text="${#numbers.formatDecimal(sum, 0, 'COMMA', 0, 'COMMA') + 'đ'}">346,90
                                     €</strong></td>
                             </tr>
-
                             </tbody>
                         </table>
                     </div>
                 </th:block>
-                <th:block
-                        th:if="${(!#lists.isEmpty(cartItemList) or cartItemList.size() != null) and guestCart != null}">
+                <th:block th:if="${(!#lists.isEmpty(cartItemList) or cartItemList != null) and guestCart != null}">
                     <div class="table-responsive">
                         <table class="table table-striped">
                             <thead>
                             <tr>
-                                <th scope="col">STT</th>
+                                <th scope="col">STT2</th>
                                 <th scope="col">Sản phẩm</th>
                                 <th scope="col">Tình trạng</th>
                                 <th scope="col" class="text-center">Số lượng</th>

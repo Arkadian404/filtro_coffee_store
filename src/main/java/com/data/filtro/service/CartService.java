@@ -4,6 +4,7 @@ import com.data.filtro.model.*;
 import com.data.filtro.repository.CartItemRepository;
 import com.data.filtro.repository.CartRepository;
 import com.data.filtro.repository.GuestCartRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -127,11 +128,11 @@ public class CartService {
     }
 
 
-    public void removeProductFromCart(int cartId, int productId) {
-        Cart cart = cartRepository.findCartByUserId(cartId);
-        Product product = productService.getProductById(productId);
-        cartItemRepository.removeCartItemByCartIdAndProductId(cartId, productId);
-    }
+//    public void removeProductFromCart(int cartId, int productId) {
+//        Cart cart = cartRepository.findCartByUserId(cartId);
+//        Product product = productService.getProductById(productId);
+//        cartItemRepository.removeCartItemByCartIdAndProductId(cartId, productId);
+//    }
 
     public int totalOfCartItem(User user) {
         Cart cart = cartRepository.findCartByUserId(user.getId());
@@ -147,5 +148,14 @@ public class CartService {
         return total;
     }
 
+
+    @Transactional
+    public void removeCartByCartId(int cartId) {
+        cartRepository.removeCartByCartId(cartId);
+    }
+
+    public int checkCartStatusByCartId(int cartId) {
+        return cartRepository.checkCartStatusByCartId(cartId);
+    }
 
 }

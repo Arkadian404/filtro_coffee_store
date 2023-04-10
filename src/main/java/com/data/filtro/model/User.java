@@ -30,6 +30,15 @@ public class User {
     @Column(name = "gioitinh")
     private String sex;
 
+    @Column(name = "diachi")
+    private String address;
+
+    @Column(name = "zip")
+    private Integer zip;
+
+    @Column(name = "thanhpho")
+    private String city;
+    
     @Column(name = "email")
     private String email;
 

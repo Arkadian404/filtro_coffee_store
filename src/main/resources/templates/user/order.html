@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/user_layout :: layout (~{::content}, ~{::head_additional})}">
+<head>
+    <th:block th:fragment="head_additional">
+        <link rel="stylesheet" th:href="@{/css/order.css}" ref="/css/checkout.css">
+        <script th:src="@{/javascript/order.js}" src="/javascript/order.js"></script>
+    </th:block>
+</head>
+<body>
+<th:block th:fragment="content">
+    <div class="container">
+        <div class="py-5 text-center">
+            <h2>Thanh toán đơn hàng</h2>
+        </div>
+        <div class="text-center" th:if="${session.user == null}">
+            <h1 th:text="${message}">
+            </h1>
+        </div>
+        <th:block th:if="${session.user != null}">
+            <div class="row" th:if="${!#lists.isEmpty(cartItemList)}">
+                <div class="col-md-4 order-md-2 mb-4">
+                    <h4 class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="text-muted">Giỏ hàng của bạn</span>
+                        <span class="badge badge-secondary badge-pill" th:text="${cartItemList.size()}"></span>
+                    </h4>
+                    <ul class="list-group mb-3 sticky-top" th:each="item : ${cartItemList}">
+                        <li class="list-group-item d-flex justify-content-between lh-condensed">
+                            <div>
+                                <h6 class="my-0" th:text="${item.product.productName}">Tên sản phẩm</h6>
+                                <small class="text-muted" th:text="${item.quantity}">Brief description</small>
+                            </div>
+                            <span class="text-muted" th:text="${item.price}">$12</span>
+                        </li>
+
+                        <li class="list-group-item d-flex justify-content-between bg-light">
+                            <div class="text-success">
+                                <h6 class="my-0">Promo code</h6>
+                                <small>EXAMPLECODE</small>
+                            </div>
+                            <span class="text-success">-$5</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Total (USD)</span>
+                            <strong th:text="${#numbers.formatDecimal(sum, 0, 'COMMA', 0, 'COMMA') + 'đ'}"></strong>
+                        </li>
+                    </ul>
+                    <form class="card p-2">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Promo code">
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-secondary">Redeem</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-8 order-md-1">
+                    <h4 class="mb-3">Địa chỉ thanh toán</h4>
+                    <form method="post" th:action="@{/order/placeOrder}" class="needs-validation" novalidate="">
+                        <div class="mb-3">
+                            <label for="username">Họ và tên</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">(❁´◡`❁)</span>
+                                </div>
+                                <input type="text" class="form-control" id="username" placeholder="Username" required=""
+                                       readonly th:value="${session.user.getName()}">
+                                <div class="invalid-feedback" style="width: 100%;"> Your username is required.</div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label>Email <span class="text-muted">(Không bắt buộc)</span></label>
+                            <th:block th:if="${session.user.getEmail()==null}">
+                                <input type="email" class="form-control" name="email"
+                                       placeholder="you@example.com">
+                            </th:block>
+                            <th:block th:if="${session.user.getEmail()!=null}">
+                                <input type="email" class="form-control" name="email"
+                                       placeholder="you@example.com" th:value="${session.user.getEmail()}">
+                            </th:block>
+                            <div class="invalid-feedback"> Please enter a valid email address for shipping updates.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label>Số điện thoại</label>
+                            <th:block th:if="${session.user.getPhoneNumber()!=null}">
+                                <input type="text" class="form-control" placeholder="SDT" name="phone"
+                                       th:value="${session.user.getPhoneNumber()}">
+                            </th:block>
+                            <th:block th:if="${session.user.getPhoneNumber()==null}">
+                                <input type="text" class="form-control" placeholder="SDT" name="phone">
+                            </th:block>
+                            <div class="invalid-feedback"> Please enter a valid phone numbers for shipping updates.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label>Địa chỉ</label>
+                            <th:block th:if="${session.user.getAddress()!=null}">
+                                <input type="text" class="form-control" name="address" placeholder="1234 Main St"
+                                       required="">
+                            </th:block>
+                            <th:block th:if="${session.user.getAddress()==null}">
+                                <input type="text" class="form-control" name="address" placeholder="1234 Main St"
+                                       required="">
+                            </th:block>
+                            <div class="invalid-feedback"> Please enter your shipping address.</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label>Thành phố</label>
+                                <th:block th:if="${session.user.getCity()!=null}">
+                                    <input type="text" name="city" class="form-control">
+                                </th:block>
+                                <th:block th:if="${session.user.getCity()==null}">
+                                    <input type="text" name="city" class="form-control">
+                                </th:block>
+                                <div class="invalid-feedback"> Please select a valid country.</div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>Mã zip</label>
+                                <th:block th:if="${session.user.getZip()!=null}">
+                                    <input type="text" name="zip" class="form-control" placeholder="" required="">
+                                </th:block>
+                                <th:block th:if="${session.user.getZip()==null}">
+                                    <input type="text" name="zip" class="form-control" placeholder="" required="">
+                                </th:block>
+                                <div class="invalid-feedback"> Zip code required.</div>
+                            </div>
+                        </div>
+                        <hr class="mb-4">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="same-address">
+                            <label class="custom-control-label" for="same-address">Shipping address is the same as my
+                                billing address</label>
+                        </div>
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="save-info">
+                            <label class="custom-control-label" for="save-info">Save this information for next
+                                time</label>
+                        </div>
+                        <hr class="mb-4">
+                        <h4 class="mb-3">Phương thức thanh toán</h4>
+                        <div class="d-block my-3">
+                            <div class="custom-control custom-radio">
+                                <input id="codRadio" th:value="${paymentMethods.get(0).getId()}" name="paymentMethod"
+                                       type="radio" class="custom-control-input"
+                                       checked=""
+                                       required="">
+                                <label class="custom-control-label" for="codRadio">Giao hàng tận nơi (COD)</label>
+                            </div>
+                            <div class="custom-control custom-radio">
+                                <input id="creditRadio" th:value="${paymentMethods.get(1).getId()}" name="paymentMethod"
+                                       type="radio" class="custom-control-input"
+                                       required="">
+                                <label class="custom-control-label" for="creditRadio">Qua thẻ ngân hàng</label>
+                            </div>
+                        </div>
+                        <div class="form-group" id="cc-fields">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="cc-name">Tên chủ sở hữu</label>
+                                    <input type="text" class="form-control" id="cc-name" placeholder="" required="">
+                                    <small class="text-muted">Full name as displayed on card</small>
+                                    <div class="invalid-feedback"> Name on card is required</div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="cc-number">Mã số thẻ</label>
+                                    <input type="text" class="form-control" id="cc-number" placeholder="" required="">
+                                    <div class="invalid-feedback"> Credit card number is required</div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 mb-3">
+                                    <label for="cc-expiration">Ngày hết hạn</label>
+                                    <input type="text" class="form-control" id="cc-expiration" placeholder=""
+                                           required="">
+                                    <div class="invalid-feedback"> Expiration date required</div>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label for="cc-cvv">Mã CVV</label>
+                                    <input type="text" class="form-control" id="cc-cvv" placeholder="" required="">
+                                    <div class="invalid-feedback"> Security code required</div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="mb-4">
+                        <button class="btn btn-primary btn-lg btn-block mb-5" type="submit">Continue to checkout
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div class="row justify-content-center" th:if="${#lists.isEmpty(cartItemList)}">
+                <div>
+                    <h1>CHƯA CÓ HÀNG MÀY ƠI!</h1>
+                </div>
+            </div>
+        </th:block>
+    </div>
+</th:block>
+</body>
+</html>

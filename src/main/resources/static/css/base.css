@@ -16,10 +16,10 @@ body {
     font-family: 'Lora', serif;
 }
 
-.row {
-    margin-left: 0;
-    margin-right: 0;
-}
+/*.row {*/
+/*    margin-left: 0;*/
+/*    margin-right: 0;*/
+/*}*/
 
 nav ul {
     display: flex;

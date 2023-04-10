@@ -20,12 +20,23 @@ public class CartItemService {
         return cartItemList;
     }
 
+    public List<CartItem> getCartItemByGuestCartId(int guestCartId) {
+        List<CartItem> cartItemList = cartItemRepository.findCartItemByGuestCartId(guestCartId);
+        return cartItemList;
+    }
+
     @Transactional
-    public void removeCartItemByProductId(int cartId, int productId) {
+    public void removeCartItemByCartIdAndProductId(int cartId, int productId) {
         cartItemRepository.removeCartItemByCartIdAndProductId(cartId, productId);
     }
 
+
     public List<CartItem> findAllByCartIdAndProduct(int cartId, int productId) {
         return cartItemRepository.getByCartAndProduct(cartId, productId);
+    }
+
+    @Transactional
+    public void removeCartItemByGuestCartIdAndProductId(int guestCartId, int productId) {
+        cartItemRepository.removeGuestCartItemByCartIdAndProductId(guestCartId, productId);
     }
 }
