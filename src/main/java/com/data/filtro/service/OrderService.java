@@ -73,4 +73,12 @@ public class OrderService {
         orderRepository.save(order);
     }
 
+    public List<Order> getOrderByUserId(int id) {
+        return orderRepository.findOrderByUserId(id);
+    }
+
+    public Order getOrderByCartId(int id) {
+        return orderRepository.findOrderByCartId(id);
+    }
+
 }

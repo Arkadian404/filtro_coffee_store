@@ -73,7 +73,7 @@ public class OrderController {
         List<CartItem> cartItemList = cart.getCartItemList();
         cartService.removeCartByCartId(cart.getId());
         orderService.placeOrder(user, phone, email, address, city, zip, paymentMethod, cartItemList);
-        return "redirect:/order";
+        return "redirect:/invoice";
     }
 
 

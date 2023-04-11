@@ -19,7 +19,7 @@ public class Invoice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "mahoadon")
-    private int id;
+    private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "makh", referencedColumnName = "makh")
@@ -29,7 +29,7 @@ public class Invoice {
     private Date purchasedDate;
 
     @Column(name = "tong")
-    private int total;
+    private Integer total;
 
     @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL)
     private List<InvoiceDetail> invoiceDetails;

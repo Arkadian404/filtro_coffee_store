@@ -35,9 +35,18 @@ public class CartService {
 
 
     public Cart getCartByUserId(int id) {
-        return cartRepository.findCartByUserId(id);
+        return cartRepository.findCurrentCartByUserId(id);
     }
 
+
+    public List<Cart> getAllOrderCartByUserId(int id) {
+        return cartRepository.findAllOrderCartByUserId(id);
+    }
+
+
+    public Cart getCurrentOrderCartByUserId(int id) {
+        return cartRepository.findCurrentOrderCartByUserId(id);
+    }
 
     public Cart createCart(User user) {
         Cart cart = new Cart();
@@ -107,7 +116,7 @@ public class CartService {
     }
 
     public Cart convertGuestCartToCart(GuestCart guestCart, User user) {
-        Cart cart = cartRepository.findCartByUserId(user.getId());
+        Cart cart = cartRepository.findCurrentCartByUserId(user.getId());
         cart.setUser(user);
         cart.setStatus(1);
         List<CartItem> cartItems = new ArrayList<>();
@@ -135,7 +144,7 @@ public class CartService {
 //    }
 
     public int totalOfCartItem(User user) {
-        Cart cart = cartRepository.findCartByUserId(user.getId());
+        Cart cart = cartRepository.findCurrentCartByUserId(user.getId());
         List<CartItem> cartItemList = cart.getCartItemList();
         int total = cartItemList.stream().mapToInt(cartItem -> cartItem.getQuantity() * cartItem.getPrice()).sum();
         return total;

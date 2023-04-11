@@ -7,11 +7,19 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface CartRepository extends JpaRepository<Cart, Integer> {
 
     @Query("select c from Cart c where c.user.id = :userId and c.status = 1")
-    Cart findCartByUserId(@Param("userId") int userId);
+    Cart findCurrentCartByUserId(@Param("userId") int userId);
+
+    @Query("select c from Cart c where c.user.id = :userId and c.status = 0")
+    List<Cart> findAllOrderCartByUserId(@Param("userId") int userId);
+
+    @Query("select c from Cart c where c.user.id = :userId and c.status = 0 order by c.createdDate desc limit 1")
+    Cart findCurrentOrderCartByUserId(@Param("userId") int userId);
 
     @Modifying
     @Query("update Cart c set c.status = 0 where c.id =:cartId")
