@@ -34,11 +34,6 @@ public class CartService {
     CartItemRepository cartItemRepository;
 
 
-    public Cart getCartByUserId(int id) {
-        return cartRepository.findCurrentCartByUserId(id);
-    }
-
-
     public List<Cart> getAllOrderCartByUserId(int id) {
         return cartRepository.findAllOrderCartByUserId(id);
     }
@@ -63,6 +58,10 @@ public class CartService {
         guestCart.setCartItemList(new ArrayList<>());
         guestCart = guestCartRepository.save(guestCart);
         return guestCart;
+    }
+
+    public Cart getCartByUserId(int userId) {
+        return cartRepository.findCartByUserId(userId);
     }
 
     public void addProductToCart(Cart cart, int productId, int quantity) {
@@ -116,7 +115,12 @@ public class CartService {
     }
 
     public Cart convertGuestCartToCart(GuestCart guestCart, User user) {
-        Cart cart = cartRepository.findCurrentCartByUserId(user.getId());
+        Cart cart = cartRepository.findCartByUserId(user.getId());
+        System.out.println("user la: " + user.getName() + ", id: " + user.getId());
+        System.out.println(cart == null ? "null" : "not null");
+        if (cart == null) {
+            cart = createCart(user);
+        }
         cart.setUser(user);
         cart.setStatus(1);
         List<CartItem> cartItems = new ArrayList<>();

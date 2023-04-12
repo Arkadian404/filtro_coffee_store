@@ -14,38 +14,45 @@
         </div>
     </th:block>
 
-    <th:block th:if="${(!#lists.isEmpty(orderDetailList) or orderDetailList!=null) and check ==1}">
+    <th:block th:if="${(!#lists.isEmpty(orderDetailList) or orderDetailList!=null) and check == 0}">
         <div class="container mb-5 mt-5">
-            <form th:action="" method="post">
+            <form method="post" th:action="@{/invoice/makeInvoice}">
                 <div class="card">
                     <div class="card-header">
-                        Hóa đơn
-                        <strong>01/01/01/2018</strong>
-                        <span class="float-right"> <strong>Status:</strong> Pending</span>
-
+                        <div class="row justify-content-between">
+                            <div class="col-auto">
+                                <p class="mb-0">Hóa đơn: #<strong th:text="${order.getId()}">01/01/01/2018</strong></p>
+                                <p>Ngày thực hiện thanh toán: <strong
+                                        th:text="${#dates.format(order.getOrderDate(), 'dd/MM/yyy')}"></strong>
+                                </p>
+                            </div>
+                            <div class="col-auto">
+                                <span th:if="${order.getStatus() == 1}">Tình trạng: <strong>Đang xử lý</strong> </span>
+                            </div>
+                        </div>
                     </div>
                     <div class="card-body">
-                        <div class="row mb-4">
-                            <div class="col-sm-6">
-                                <h6 class="mb-3">From:</h6>
+                        <div class="row mb-4 justify-content-between">
+                            <div class="col-auto">
+                                <h6 class="mb-3">Từ:</h6>
                                 <div>
-                                    <strong>Webz Poland</strong>
+                                    <strong>Filtro Coffee Shop</strong>
                                 </div>
-                                <div>Madalinskiego 8</div>
-                                <div>71-101 Szczecin, Poland</div>
-                                <div>Email: info@webz.com.pl</div>
-                                <div>Phone: +48 444 666 3333</div>
+                                <div>Nowhere</div>
+                                <div>Unknown</div>
+                                <div>Email: filtro@webz.com.pl</div>
+                                <div>Phone: +84 123 456 7890</div>
                             </div>
 
-                            <div class="col-sm-6">
-                                <h6 class="mb-3">To:</h6>
+                            <div class="col-auto">
+                                <h6 class="mb-3">Đến:</h6>
                                 <div>
-                                    <strong>Bob Mart</strong>
+                                    <strong th:text="${order.user.getName()}">Bob Mart</strong>
                                 </div>
-                                <div>Attn: Daniel Marek</div>
-                                <div>43-190 Mikolow, Poland</div>
-                                <div>Email: marek@daniel.com</div>
-                                <div>Phone: +48 123 456 789</div>
+                                <div th:text="${order.getAddress()}">Attn: Daniel Marek</div>
+                                <div th:text="${order.getCity()}">43-190 Mikolow, Poland</div>
+                                <div th:text="${order.getEmail()}">Email: marek@daniel.com</div>
+                                <div th:text="${order.getPhoneNumber()}">Phone: +48 123 456 789</div>
                             </div>
 
 
@@ -56,57 +63,34 @@
                                 <thead>
                                 <tr>
                                     <th class="center">#</th>
-                                    <th>Item</th>
-                                    <th>Description</th>
-
-                                    <th class="right">Unit Cost</th>
-                                    <th class="center">Qty</th>
-                                    <th class="right">Total</th>
+                                    <th>Tên sản phẩm</th>
+                                    <th class="right">Giá tiền</th>
+                                    <th class="center">Số lượng</th>
+                                    <th class="right">Tổng</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td class="center">1</td>
-                                    <td class="left strong">Origin License</td>
-                                    <td class="left">Extended License</td>
-
-                                    <td class="right">$999,00</td>
-                                    <td class="center">1</td>
-                                    <td class="right">$999,00</td>
-                                </tr>
-                                <tr>
-                                    <td class="center">2</td>
-                                    <td class="left">Custom Services</td>
-                                    <td class="left">Instalation and Customization (cost per hour)</td>
-
-                                    <td class="right">$150,00</td>
-                                    <td class="center">20</td>
-                                    <td class="right">$3.000,00</td>
-                                </tr>
-                                <tr>
-                                    <td class="center">3</td>
-                                    <td class="left">Hosting</td>
-                                    <td class="left">1 year subcription</td>
-
-                                    <td class="right">$499,00</td>
-                                    <td class="center">1</td>
-                                    <td class="right">$499,00</td>
-                                </tr>
-                                <tr>
-                                    <td class="center">4</td>
-                                    <td class="left">Platinum Support</td>
-                                    <td class="left">1 year subcription 24/7</td>
-
-                                    <td class="right">$3.999,00</td>
-                                    <td class="center">1</td>
-                                    <td class="right">$3.999,00</td>
+                                <tr th:each="item, index : ${orderDetailList}">
+                                    <td class="center" th:text="${index.index+1}">1</td>
+                                    <td class="left strong" th:text="${item.getProduct().productName}">Origin License
+                                    </td>
+                                    <td class="right"
+                                        th:text="${#numbers.formatDecimal(item.getPrice(), 0, 'COMMA', 0, 'COMMA')+ 'đ'}">
+                                        $999,00
+                                    </td>
+                                    <td class="center" th:text="${item.getQuantity()}">1</td>
+                                    <td class="right"
+                                        th:text="${#numbers.formatDecimal(item.getTotal(), 0, 'COMMA', 0, 'COMMA')+ 'đ'}">
+                                        $999,00
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
                         </div>
                         <div class="row">
                             <div class="col-lg-4 col-sm-5">
-
+                                Phương thức thanh toán: <strong
+                                    th:text="${order.getPaymentMethod().getName()}"></strong>
                             </div>
 
                             <div class="col-lg-4 col-sm-5 ml-auto">
@@ -114,28 +98,34 @@
                                     <tbody>
                                     <tr>
                                         <td class="left">
-                                            <strong>Subtotal</strong>
+                                            <strong>Tạm tính</strong>
                                         </td>
-                                        <td class="right">$8.497,00</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="left">
-                                            <strong>Discount (20%)</strong>
+                                        <td class="right"
+                                            th:text="${#numbers.formatDecimal(order.getTotal(), 0, 'COMMA', 0, 'COMMA')+ 'đ'}">
+                                            $8.497,00
                                         </td>
-                                        <td class="right">$1,699,40</td>
                                     </tr>
+                                    <!--                                    <tr>-->
+                                    <!--                                        <td class="left">-->
+                                    <!--                                            <strong>Discount (20%)</strong>-->
+                                    <!--                                        </td>-->
+                                    <!--                                        <td class="right">$1,699,40</td>-->
+                                    <!--                                    </tr>-->
                                     <tr>
                                         <td class="left">
                                             <strong>VAT (10%)</strong>
                                         </td>
-                                        <td class="right">$679,76</td>
+                                        <td class="right"
+                                            th:text="${#numbers.formatDecimal(order.getTotal()*0.1, 0, 'COMMA', 0, 'COMMA')+ 'đ'}">
+                                            $679,76
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td class="left">
-                                            <strong>Total</strong>
+                                            <strong>Tổng</strong>
                                         </td>
                                         <td class="right">
-                                            <strong>$7.477,36</strong>
+                                            <strong th:text="${#numbers.formatDecimal(order.getTotal()*1.1, 0, 'COMMA', 0, 'COMMA')+ 'đ'}">$7.477,36</strong>
                                         </td>
                                     </tr>
                                     </tbody>
@@ -146,13 +136,14 @@
                         </div>
 
                     </div>
+                    <button type="submit">LETGO</button>
                 </div>
-                <button type="submit"></button>
+
             </form>
         </div>
     </th:block>
     <th:block
-            th:if="${session.user !=null and check == 0}">
+            th:if="${(#lists.isEmpty(orderDetailList) or orderDetailList == null) and session.user !=null and check != 0}">
         <div class="container mb-5 mt-5">
             <div class="text-center">
                 <h2>THANH TOÁN TRƯỚC KHI VÀO ĐÂY NHA MÀY!</h2>

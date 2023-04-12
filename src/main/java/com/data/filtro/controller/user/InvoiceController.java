@@ -3,12 +3,14 @@ package com.data.filtro.controller.user;
 import com.data.filtro.exception.AuthenticationAccountException;
 import com.data.filtro.model.*;
 import com.data.filtro.service.CartService;
+import com.data.filtro.service.InvoiceService;
 import com.data.filtro.service.OrderService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
@@ -23,6 +25,9 @@ public class InvoiceController {
     @Autowired
     OrderService orderService;
 
+    @Autowired
+    InvoiceService invoiceService;
+
     @GetMapping
     public String show(HttpSession session, Model model) {
         try {
@@ -34,7 +39,9 @@ public class InvoiceController {
             int check = cartService.checkCartStatusByCartId(cart.getId());
             System.out.println(cart.getId());
             System.out.println(check);
-            Order order = orderService.getOrderByCartId(cart.getId());
+
+            Order order = orderService.getCurrentOrderByCartId(cart.getId());
+            System.out.println(order.getId());
             List<OrderDetail> orderDetailList = order.getOrderDetails();
             model.addAttribute("order", order);
             model.addAttribute("orderDetailList", orderDetailList);
@@ -43,6 +50,28 @@ public class InvoiceController {
             model.addAttribute("message", ex.getMessage());
         }
         return "user/invoice";
+    }
+
+    @PostMapping("/makeInvoice")
+    public String makeInvoice(HttpSession session, Model model) {
+        try {
+            User user = (User) session.getAttribute("user");
+            if (user == null) {
+                throw new AuthenticationAccountException("Đăng nhập để xem đơn hàng của bạn!");
+            }
+            Cart cart = cartService.getCurrentOrderCartByUserId(user.getId());
+            int check = cartService.checkCartStatusByCartId(cart.getId());
+            System.out.println(cart.getId());
+            System.out.println(check);
+
+            Order order = orderService.getCurrentOrderByCartId(cart.getId());
+            System.out.println(order.getId());
+            invoiceService.makeInvoice(order);
+        } catch (AuthenticationAccountException ex) {
+            model.addAttribute("message", ex.getMessage());
+        }
+
+        return "redirect:/";
     }
 
 }

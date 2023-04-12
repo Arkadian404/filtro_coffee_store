@@ -48,7 +48,7 @@
                                       th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'COMMA')} + 'đ'"></span>
                             </th:block>
                             <th:block
-                                    th:if="${product.discount == null and product.discount == 0 and product.quantity>=0}">
+                                    th:if="${product.discount == null and product.quantity>=0}">
                                  <span class="price"
                                        th:text="${#numbers.formatDecimal(product.price, 0,'COMMA', 0 , 'COMMA')} + 'đ'"></span>
                             </th:block>

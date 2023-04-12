@@ -77,8 +77,8 @@ public class OrderService {
         return orderRepository.findOrderByUserId(id);
     }
 
-    public Order getOrderByCartId(int id) {
-        return orderRepository.findOrderByCartId(id);
+    public Order getCurrentOrderByCartId(int id) {
+        return orderRepository.finCurrentdOrderByCartId(id);
     }
 
 }

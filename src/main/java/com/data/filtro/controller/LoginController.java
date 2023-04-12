@@ -46,6 +46,7 @@ public class LoginController {
         try {
             Account account = accountService.authenticateUser(accountName, password);
             User user = userService.getUserById(account.getUser().getId());
+            System.out.println(user.getName());
             session.setAttribute("account", account);
             session.setAttribute("user", user);
             Cart cart = (Cart) session.getAttribute("cart");
