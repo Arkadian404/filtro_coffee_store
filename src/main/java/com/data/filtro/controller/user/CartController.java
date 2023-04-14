@@ -76,9 +76,8 @@ public class CartController {
         GuestCart guestCart = (GuestCart) session.getAttribute("guestCart");
 
         if (user != null) {
-            Cart cart = cartService.getCartByUserId(user.getId());
-            int check = cartService.checkCartStatusByCartId(cart.getId());
-            if (cart != null && check == 1) {
+            Cart cart = cartService.getCurrentCartByUserId(user.getId());
+            if (cart != null) {
                 List<CartItem> cartItemList = cart.getCartItemList();
                 model.addAttribute("cartItemList", cartItemList);
                 model.addAttribute("cart", cart);
@@ -137,7 +136,6 @@ public class CartController {
             guestCart.setCartItemList(cartItemService.getCartItemByGuestCartId(guestCart.getId()));
             session.setAttribute("guestCart", guestCart);
         }
-
         return "redirect:/cart";
     }
 
@@ -149,8 +147,9 @@ public class CartController {
             Cart cart = cartService.getCartByUserId(user.getId());
             if (cart != null) {
                 return cartService.totalOfCartItem(user);
+            } else {
+                return 0;
             }
-
         } else if (guestCart != null) {
             return cartService.totalOfCartItemTemp(guestCart.getId());
         }

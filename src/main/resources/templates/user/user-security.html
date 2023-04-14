@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/user_layout :: layout (~{::content}, ~{::head_additional})}">
+<head>
+    <th:block th:fragment="head_additional">
+        <link rel="stylesheet" th:href="@{/css/user-security.css}" href="/css/user-security.css">
+    </th:block>
+</head>
+<body>
+<th:block th:fragment="content">
+    <div class="container-xl px-4 mt-4">
+        <!-- Account page navigation-->
+        <nav class="nav nav-borders">
+            <a class="nav-link  ms-0" th:href="@{/user/profile}" href="/user/user-profile"
+            >Profile</a>
+            <a class="nav-link" th:href="@{/user/billing}" href="/user/user-billing"
+            >Billing</a>
+            <a class="nav-link active" th:href="@{/user/security}" href="/user/user-security"
+            >Security</a>
+        </nav>
+        <hr class="mt-0 mb-4">
+        <div class="row">
+            <div class="col">
+                <!-- Change password card-->
+                <div class="card mb-4">
+                    <div class="card-header">Change Password</div>
+                    <div class="card-body">
+                        <form>
+                            <!-- Form Group (current password)-->
+                            <div class="mb-3">
+                                <label class="small mb-1" for="currentPassword">Current Password</label>
+                                <input class="form-control" id="currentPassword" type="password"
+                                       placeholder="Enter current password">
+                            </div>
+                            <!-- Form Group (new password)-->
+                            <div class="mb-3">
+                                <label class="small mb-1" for="newPassword">New Password</label>
+                                <input class="form-control" id="newPassword" type="password"
+                                       placeholder="Enter new password">
+                            </div>
+                            <!-- Form Group (confirm password)-->
+                            <div class="mb-3">
+                                <label class="small mb-1" for="confirmPassword">Confirm Password</label>
+                                <input class="form-control" id="confirmPassword" type="password"
+                                       placeholder="Confirm new password">
+                            </div>
+                            <button class="btn btn-primary" type="button">Save</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>
+</body>
+</html>

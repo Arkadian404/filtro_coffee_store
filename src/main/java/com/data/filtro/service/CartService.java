@@ -64,6 +64,10 @@ public class CartService {
         return cartRepository.findCartByUserId(userId);
     }
 
+    public Cart getCurrentCartByUserId(int userId) {
+        return cartRepository.findCurrentCartByUserId(userId);
+    }
+
     public void addProductToCart(Cart cart, int productId, int quantity) {
         Product product = productService.getProductById(productId);
         if (product == null) {
@@ -149,9 +153,12 @@ public class CartService {
 
     public int totalOfCartItem(User user) {
         Cart cart = cartRepository.findCurrentCartByUserId(user.getId());
-        List<CartItem> cartItemList = cart.getCartItemList();
-        int total = cartItemList.stream().mapToInt(cartItem -> cartItem.getQuantity() * cartItem.getPrice()).sum();
-        return total;
+        if (cart != null) {
+            List<CartItem> cartItemList = cart.getCartItemList();
+            int total = cartItemList.stream().mapToInt(cartItem -> cartItem.getQuantity() * cartItem.getPrice()).sum();
+            return total;
+        }
+        return 0;
     }
 
     public int totalOfCartItemTemp(int id) {

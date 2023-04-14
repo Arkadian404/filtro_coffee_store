@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/user_layout :: layout (~{::content}, ~{::head_additional})}">
+<head>
+    <th:block th:fragment="head_additional">
+        <link rel="stylesheet" th:href="@{/css/user-billing.css}" href="/css/user-billing.css">
+    </th:block>
+</head>
+<body>
+<th:block th:fragment="content">
+    <div class="container-xl px-4 mt-4">
+        <!-- Account page navigation-->
+        <nav class="nav nav-borders">
+            <nav class="nav nav-borders">
+                <a class="nav-link  ms-0" th:href="@{/user/profile}" href="/user/user-profile"
+                >Profile</a>
+                <a class="nav-link active" th:href="@{/user/billing}" href="/user/user-billing"
+                >Billing</a>
+                <a class="nav-link " th:href="@{/user/security}" href="/user/user-security"
+                >Security</a>
+            </nav>
+        </nav>
+        <hr class="mt-0 mb-4">
+        <!-- Payment methods card-->
+        <!-- Billing history card-->
+        <div class="card mb-4">
+            <div class="card-header">Billing History</div>
+            <div class="card-body p-0">
+                <!-- Billing history table-->
+                <div class="table-responsive table-billing-history">
+                    <table class="table mb-0">
+                        <thead>
+                        <tr>
+                            <th class="border-gray-200" scope="col">Transaction ID</th>
+                            <th class="border-gray-200" scope="col">Date</th>
+                            <th class="border-gray-200" scope="col">Amount</th>
+                            <th class="border-gray-200" scope="col">Status</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>#39201</td>
+                            <td>06/15/2021</td>
+                            <td>$29.99</td>
+                            <td><span class="badge bg-light text-dark">Pending</span></td>
+                        </tr>
+                        <tr>
+                            <td>#38594</td>
+                            <td>05/15/2021</td>
+                            <td>$29.99</td>
+                            <td><span class="badge bg-success">Paid</span></td>
+                        </tr>
+                        <tr>
+                            <td>#38223</td>
+                            <td>04/15/2021</td>
+                            <td>$29.99</td>
+                            <td><span class="badge bg-success">Paid</span></td>
+                        </tr>
+                        <tr>
+                            <td>#38125</td>
+                            <td>03/15/2021</td>
+                            <td>$29.99</td>
+                            <td><span class="badge bg-success">Paid</span></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>
+</body>
+</html>

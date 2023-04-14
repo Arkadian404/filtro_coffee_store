@@ -50,6 +50,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="contact.html">LIÊN HỆ</a>
                     </li>
+                    <li class="nav-item" th:if="${session.user!=null}">
+                        <a th:href="@{/user/detail}" class="nav-link">Tài khoản</a>
+                    </li>
                 </ul>
                 <div class="col-md-5 text-center">
                     <div class="row justify-content-end align-items-center">
@@ -71,15 +74,17 @@
                                 <li class="nav-item">
                                     <a class="nav-link" th:href="@{/cart}">
                                         <i class="small fa fa-shopping-cart"></i><span class="small">GIỎ HÀNG</span>
-                                        <th:block th:if="${#lists.isEmpty(cartItemList)}">
+                                        <th:block th:if="${(#lists.isEmpty(cartItemList) or cartItemList == null)}">
                                             <span class="small badge badge-light"
                                             >0 sản phẩm</span>
                                         </th:block>
-                                        <th:block th:if="${!#lists.isEmpty(cartItemList) && session.user!=null}">
+                                        <th:block
+                                                th:if="${(!#lists.isEmpty(cartItemList) or cartItemList !=null) and session.user!=null}">
                                             <span class="small badge badge-light"
                                                   th:text="${cartItemList.size()} + ' sản phẩm'">4 sản phẩm</span>
                                         </th:block>
-                                        <th:block th:if="${!#lists.isEmpty(cartItemList) && session.user==null}">
+                                        <th:block
+                                                th:if="${(!#lists.isEmpty(cartItemList) or cartItemList !=null) and session.user==null}">
                                             <span class="small badge badge-light"
                                                   th:text="${cartItemList.size()} + ' sản phẩm'">4 sản phẩm</span>
                                         </th:block>
