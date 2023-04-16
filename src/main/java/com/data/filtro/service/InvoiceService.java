@@ -3,6 +3,7 @@ package com.data.filtro.service;
 import com.data.filtro.model.*;
 import com.data.filtro.repository.InvoiceDetailRepository;
 import com.data.filtro.repository.InvoiceRepository;
+import com.data.filtro.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,9 @@ public class InvoiceService {
 
     @Autowired
     InvoiceDetailRepository invoiceDetailRepository;
+
+    @Autowired
+    OrderRepository orderRepository;
 
 
     public List<Invoice> getAllInvoiceByUserId(int userId) {
@@ -49,6 +53,9 @@ public class InvoiceService {
         invoice.setTotal(order.getTotal());
         invoice.setInvoiceDetails(invoiceDetails);
         invoiceRepository.save(invoice);
+
+        order.setStatus(2);
+        orderRepository.save(order);
     }
 
 }

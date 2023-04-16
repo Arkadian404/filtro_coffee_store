@@ -51,7 +51,7 @@
                         <a class="nav-link" href="contact.html">LIÊN HỆ</a>
                     </li>
                     <li class="nav-item" th:if="${session.user!=null}">
-                        <a th:href="@{/user/detail}" class="nav-link">Tài khoản</a>
+                        <a th:href="@{/user/profile}" class="nav-link">Tài khoản</a>
                     </li>
                 </ul>
                 <div class="col-md-5 text-center">
@@ -79,7 +79,7 @@
                                             >0 sản phẩm</span>
                                         </th:block>
                                         <th:block
-                                                th:if="${(!#lists.isEmpty(cartItemList) or cartItemList !=null) and session.user!=null}">
+                                                th:if="${(!#lists.isEmpty(cartItemList) and cartItemList !=null) and session.user!=null}">
                                             <span class="small badge badge-light"
                                                   th:text="${cartItemList.size()} + ' sản phẩm'">4 sản phẩm</span>
                                         </th:block>

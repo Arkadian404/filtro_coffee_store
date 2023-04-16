@@ -102,7 +102,8 @@ public class CartController {
         GuestCart guestCart = (GuestCart) session.getAttribute("guestCart");
         Cart cart = null;
         if (user != null) {
-            cart = cartService.getCartByUserId(user.getId());
+            //cart = cartService.getCartByUserId(user.getId());
+            cart = cartService.getCurrentCartByUserId(user.getId());
             if (cart == null) {
                 cart = cartService.createCart(user);
                 session.setAttribute("cart", cart);
@@ -127,7 +128,8 @@ public class CartController {
         User user = (User) session.getAttribute("user");
         GuestCart guestCart = (GuestCart) session.getAttribute("guestCart");
         if (user != null) {
-            Cart cart = cartService.getCartByUserId(user.getId());
+            //Cart cart = cartService.getCartByUserId(user.getId());
+            Cart cart = cartService.getCurrentCartByUserId(user.getId());
             cartItemService.removeCartItemByCartIdAndProductId(cart.getId(), productId);
             //List<CartItem> cartItemList = cart.getCartItemList();
             // cartItemList.forEach(ci -> System.out.println("USER: " + ci.getProduct().getProductName()));
@@ -144,7 +146,8 @@ public class CartController {
         User user = (User) session.getAttribute("user");
         GuestCart guestCart = (GuestCart) session.getAttribute("guestCart");
         if (user != null) {
-            Cart cart = cartService.getCartByUserId(user.getId());
+            //Cart cart = cartService.getCartByUserId(user.getId());
+            Cart cart = cartService.getCurrentCartByUserId(user.getId());
             if (cart != null) {
                 return cartService.totalOfCartItem(user);
             } else {

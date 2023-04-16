@@ -5,15 +5,21 @@ import com.data.filtro.repository.CartItemRepository;
 import com.data.filtro.repository.CartRepository;
 import com.data.filtro.repository.GuestCartRepository;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Service
+@Slf4j
 public class CartService {
+
 
     @Autowired
     ProductService productService;
@@ -44,11 +50,13 @@ public class CartService {
     }
 
     public Cart createCart(User user) {
+        System.out.println("create cart for: " + user.getName());
         Cart cart = new Cart();
         cart.setUser(user);
         cart.setCreatedDate(new Date());
         cart.setStatus(1);
         cart.setCartItemList(new ArrayList<>());
+        cartRepository.save(cart);
         return cart;
     }
 

@@ -13,59 +13,58 @@
         <nav class="nav nav-borders">
             <nav class="nav nav-borders">
                 <a class="nav-link  ms-0" th:href="@{/user/profile}" href="/user/user-profile"
-                >Profile</a>
+                >Hồ sơ</a>
                 <a class="nav-link active" th:href="@{/user/billing}" href="/user/user-billing"
-                >Billing</a>
+                >Đặt hàng</a>
                 <a class="nav-link " th:href="@{/user/security}" href="/user/user-security"
-                >Security</a>
+                >Mật khẩu</a>
             </nav>
         </nav>
         <hr class="mt-0 mb-4">
         <!-- Payment methods card-->
         <!-- Billing history card-->
         <div class="card mb-4">
-            <div class="card-header">Billing History</div>
-            <div class="card-body p-0">
+            <div class="card-header">Lịch sử đơn hàng</div>
+            <div class="card-body p-0" th:if="${!#lists.isEmpty(orderList) or orderList != null}">
                 <!-- Billing history table-->
                 <div class="table-responsive table-billing-history">
                     <table class="table mb-0">
                         <thead>
                         <tr>
-                            <th class="border-gray-200" scope="col">Transaction ID</th>
-                            <th class="border-gray-200" scope="col">Date</th>
-                            <th class="border-gray-200" scope="col">Amount</th>
-                            <th class="border-gray-200" scope="col">Status</th>
+                            <th class="border-gray-200" scope="col">ID</th>
+                            <th class="border-gray-200" scope="col">Ngày</th>
+                            <th class="border-gray-200" scope="col">Giá tiền</th>
+                            <th class="border-gray-200" scope="col">Tình trạng</th>
+                            <th class="border-gray-200" scope="col">Hành động</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>#39201</td>
-                            <td>06/15/2021</td>
-                            <td>$29.99</td>
-                            <td><span class="badge bg-light text-dark">Pending</span></td>
-                        </tr>
-                        <tr>
-                            <td>#38594</td>
-                            <td>05/15/2021</td>
-                            <td>$29.99</td>
-                            <td><span class="badge bg-success">Paid</span></td>
-                        </tr>
-                        <tr>
-                            <td>#38223</td>
-                            <td>04/15/2021</td>
-                            <td>$29.99</td>
-                            <td><span class="badge bg-success">Paid</span></td>
-                        </tr>
-                        <tr>
-                            <td>#38125</td>
-                            <td>03/15/2021</td>
-                            <td>$29.99</td>
-                            <td><span class="badge bg-success">Paid</span></td>
+                        <tr th:each="item, index: ${orderList}">
+                            <td th:text="'#'+ ${item.getId()}"></td>
+                            <td th:text="${#dates.format(item.getOrderDate(), 'yyyy-MM-dd')}">06/15/2021</td>
+                            <td th:text="${#numbers.formatDecimal(item.getTotal(), 0, 'COMMA', 0, 'COMMA') + 'đ'}">
+                                $29.99
+                            </td>
+                            <td>
+                                <span th:if="${item.getStatus() == 1}"
+                                      class="badge bg-light text-dark">Đang xử lý</span>
+                                <span th:if="${item.getStatus() == 2}"
+                                      class="badge bg-light text-dark">Đã xác nhận</span>
+                            </td>
+                            <td><a
+                                    th:href="@{/invoice/{orderId}(orderId=${item.getId()})}"
+                                    class="btn btn-outline-primary btn-sm">Xem hóa đơn</a>
+                            </td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
+            <th:block th:if="${#lists.isEmpty(orderList) or orderList == null}">
+                <div class="text-center mt-5 mb-5">
+                    <h2 class="font-bold">BẠN CHƯA CÓ ĐƠN HÀNG NÀO CẢ!</h2>
+                </div>
+            </th:block>
         </div>
     </div>
 </th:block>

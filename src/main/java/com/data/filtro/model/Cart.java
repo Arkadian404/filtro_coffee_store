@@ -3,6 +3,7 @@ package com.data.filtro.model;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
@@ -11,6 +12,7 @@ import java.util.List;
 @Entity
 @Table(name = "giohang")
 @Data
+@EqualsAndHashCode(exclude = "user")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Cart {

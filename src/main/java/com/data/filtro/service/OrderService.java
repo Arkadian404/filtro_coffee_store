@@ -20,7 +20,7 @@ public class OrderService {
     OrderDetailRepository orderDetailRepository;
 
 
-    public void placeOrder(User user, String phone, String email, String address, String city, int zip, PaymentMethod paymentMethod, List<CartItem> cartItemList) {
+    public Order placeOrder(User user, String phone, String email, String address, String city, int zip, PaymentMethod paymentMethod, List<CartItem> cartItemList) {
         Order order = new Order();
         order.setUser(user);
         if (user.getAddress() == null || !user.getAddress().equals(address)) {
@@ -71,6 +71,7 @@ public class OrderService {
         order.setTotal(total);
         order.setOrderDetails(orderDetails);
         orderRepository.save(order);
+        return order;
     }
 
     public List<Order> getOrderByUserId(int id) {
@@ -79,6 +80,15 @@ public class OrderService {
 
     public Order getCurrentOrderByCartId(int id) {
         return orderRepository.finCurrentdOrderByCartId(id);
+    }
+
+    public Order getOrderById(int id) {
+        return orderRepository.findOrderById(id);
+    }
+
+
+    public int checkOrderStatusById(int id) {
+        return orderRepository.checkOrderStatusById(id);
     }
 
 }

@@ -21,4 +21,5 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
     @Query("select a from Account  a where a.passwordResetToken = :token")
     Account findByPasswordResetToken(@Param("token") String token);
 
+
 }

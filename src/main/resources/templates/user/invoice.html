@@ -9,14 +9,15 @@
     <th:block th:if="${session.user == null}">
         <div class="container mb-5 mt-5">
             <div class="text-center">
+
                 <h2 th:text="${message}"></h2>
             </div>
         </div>
     </th:block>
 
-    <th:block th:if="${(!#lists.isEmpty(orderDetailList) or orderDetailList!=null) and check == 0}">
+    <th:block th:if="${(!#lists.isEmpty(orderDetailList) or orderDetailList!=null) and session.user!=null}">
         <div class="container mb-5 mt-5">
-            <form method="post" th:action="@{/invoice/makeInvoice}">
+            <form method="post" th:action="@{/invoice/makeInvoice/{orderId}(orderId=${order.getId()})}">
                 <div class="card">
                     <div class="card-header">
                         <div class="row justify-content-between">
@@ -28,6 +29,7 @@
                             </div>
                             <div class="col-auto">
                                 <span th:if="${order.getStatus() == 1}">Tình trạng: <strong>Đang xử lý</strong> </span>
+                                <span th:if="${order.getStatus() == 2}">Tình trạng: <strong>Đã xác thực</strong> </span>
                             </div>
                         </div>
                     </div>
@@ -136,14 +138,15 @@
                         </div>
 
                     </div>
-                    <button type="submit">LETGO</button>
+                    <button th:if="${check == 1}" type="submit">Xác nhận hóa đơn</button>
+                    <button th:if="${check == 2}" type="submit" disabled>Đã xác nhận hóa đơn</button>
                 </div>
 
             </form>
         </div>
     </th:block>
     <th:block
-            th:if="${(#lists.isEmpty(orderDetailList) or orderDetailList == null) and session.user !=null and check != 0}">
+            th:if="${(#lists.isEmpty(orderDetailList) or orderDetailList == null) and session.user !=null}">
         <div class="container mb-5 mt-5">
             <div class="text-center">
                 <h2>THANH TOÁN TRƯỚC KHI VÀO ĐÂY NHA MÀY!</h2>

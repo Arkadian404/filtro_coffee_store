@@ -34,7 +34,8 @@ public class OrderController {
     public String show(HttpSession session, Model model) {
         User user = (User) session.getAttribute("user");
         if (user != null) {
-            Cart cart = cartService.getCartByUserId(user.getId());
+            //Cart cart = cartService.getCartByUserId(user.getId());
+            Cart cart = cartService.getCurrentCartByUserId(user.getId());
             if (cart != null) {
                 List<CartItem> cartItemList = cart.getCartItemList();
                 if (user.getAddress() != null && user.getCity() != null && user.getZip() != null && user.getPhoneNumber() != null) {
@@ -69,11 +70,13 @@ public class OrderController {
         if (user == null) {
             throw new RuntimeException("Vui lòng đăng nhập trước khi thanh toán");
         }
-        Cart cart = cartService.getCartByUserId(user.getId());
+        //Cart cart = cartService.getCartByUserId(user.getId());
+        Cart cart = cartService.getCurrentCartByUserId(user.getId());
         List<CartItem> cartItemList = cart.getCartItemList();
         cartService.removeCartByCartId(cart.getId());
-        orderService.placeOrder(user, phone, email, address, city, zip, paymentMethod, cartItemList);
-        return "redirect:/invoice";
+        Order order = orderService.placeOrder(user, phone, email, address, city, zip, paymentMethod, cartItemList);
+        int orderId = order.getId();
+        return "redirect:/invoice/" + orderId;
     }
 
 
@@ -81,7 +84,8 @@ public class OrderController {
     public int sumOfProducts(HttpSession session) {
         User user = (User) session.getAttribute("user");
         if (user != null) {
-            Cart cart = cartService.getCartByUserId(user.getId());
+            //Cart cart = cartService.getCartByUserId(user.getId());
+            Cart cart = cartService.getCurrentCartByUserId(user.getId());
             if (cart != null) {
                 return cartService.totalOfCartItem(user);
             }

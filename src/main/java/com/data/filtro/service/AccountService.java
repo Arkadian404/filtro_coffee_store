@@ -1,10 +1,12 @@
 package com.data.filtro.service;
 
 import com.data.filtro.exception.AuthenticationAccountException;
+import com.data.filtro.exception.PasswordDoNotMatchException;
 import com.data.filtro.exception.UserNotFoundException;
 import com.data.filtro.model.Account;
 import com.data.filtro.model.User;
 import com.data.filtro.repository.AccountRepository;
+import javassist.NotFoundException;
 import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -74,6 +76,25 @@ public class AccountService {
         } else {
             throw new AuthenticationAccountException("Sai tên đăng nhập!");
         }
+    }
+
+    public void changePassword(Account account, String currentPassword, String newPassword, String repeatPassword) throws NotFoundException {
+        if (account == null) {
+            throw new NotFoundException("Không tìm thấy tài khoản thích hơp!");
+        }
+        if (!newPassword.equals(repeatPassword)) {
+            throw new PasswordDoNotMatchException("Không đúng mật khẩu !");
+        }
+        String userPassword = account.getPassword();
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        if (passwordEncoder.matches(currentPassword, userPassword)) {
+            String hashPassword = passwordEncoder.encode(newPassword);
+            account.setPassword(hashPassword);
+            accountRepository.save(account);
+        } else {
+            throw new AuthenticationAccountException("Sai mật khẩu!");
+        }
+
     }
 
 }

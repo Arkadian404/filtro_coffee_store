@@ -13,4 +13,11 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     @Query("select u from User u where u.name =:name")
     User findByUserName(@Param("name") String name);
+
+    @Query("select u from User u where u.account.id =:accountId")
+    User findByAccountId(@Param("accountId") int accountId);
+
+
+    @Query("SELECT u FROM User u JOIN FETCH u.account JOIN FETCH u.cart  WHERE u.id = :userId order by u.cart.createdDate desc limit 1")
+    User findByIdWithAccount(@Param("userId") Integer userId);
 }

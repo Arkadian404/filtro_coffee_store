@@ -3,6 +3,7 @@ package com.data.filtro.model;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -11,6 +12,7 @@ import java.util.Date;
 @Entity
 @Table(name = "taikhoan")
 @Data
+@EqualsAndHashCode(exclude = "user")
 @Component
 @AllArgsConstructor
 @NoArgsConstructor
@@ -37,6 +39,7 @@ public class Account {
 
     @Column(name = "password_reset_token")
     private String passwordResetToken;
+
     @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
     private User user;
 

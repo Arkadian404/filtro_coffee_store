@@ -6,6 +6,7 @@ import com.data.filtro.model.Account;
 import com.data.filtro.model.User;
 import com.data.filtro.repository.AccountRepository;
 import com.data.filtro.repository.UserRepository;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.mail.SimpleMailMessage;
@@ -14,6 +15,8 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -76,6 +79,59 @@ public class UserService {
 
     public User getUserByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+
+    public User getUserByAccountId(int accountId) {
+        return userRepository.findByAccountId(accountId);
+    }
+
+
+    public void updateUser(User newUser) throws NotFoundException, ParseException {
+        User user = userRepository.findById(newUser.getId()).get();
+        if (user == null) {
+            throw new NotFoundException("Không tìm thấy tài khoản thích hơp!");
+        }
+
+        user.setId(newUser.getId());
+
+        if (newUser.getName() != null) {
+            user.setName(newUser.getName());
+        }
+
+        if (newUser.getEmail() != null) {
+            user.setEmail(newUser.getEmail());
+        }
+        if (newUser.getAddress() != null) {
+            user.setAddress(newUser.getAddress());
+        }
+        if (newUser.getZip() != null) {
+            user.setZip(newUser.getZip());
+        }
+        if (newUser.getPhoneNumber() != null) {
+            user.setPhoneNumber(newUser.getPhoneNumber());
+        }
+        if (newUser.getDob() != null) {
+            user.setDob(newUser.getDob());
+        }
+        if (newUser.getCity() != null) {
+            user.setCity(newUser.getCity());
+        }
+        if (newUser.getSex() != null) {
+            user.setSex(newUser.getSex());
+        }
+
+        if (newUser.getAccount() != null) {
+            Account account = user.getAccount();
+            account.setAccountName(newUser.getAccount().getAccountName());
+            accountRepository.save(account);
+        }
+        userRepository.save(user);
+
+    }
+
+    public User getByIdWithAccount(int id) {
+        return userRepository.findByIdWithAccount(id);
     }
 
 
