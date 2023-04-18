@@ -28,8 +28,10 @@
                                 </p>
                             </div>
                             <div class="col-auto">
-                                <span th:if="${order.getStatus() == 1}">Tình trạng: <strong>Đang xử lý</strong> </span>
+                                <span th:if="${order.getStatus() == 1}">Tình trạng: <strong>Chờ xác thác</strong> </span>
                                 <span th:if="${order.getStatus() == 2}">Tình trạng: <strong>Đã xác thực</strong> </span>
+                                <span th:if="${order.getStatus() == 3}">Tình trạng: <strong>Hàng đang giao (dự kiến 5 ngày)</strong> </span>
+                                <span th:if="${order.getStatus() == 4}">Tình trạng: <strong>Hàng đã được giao</strong> </span>
                             </div>
                         </div>
                     </div>

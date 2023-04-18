@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="layout (content)">
+<head>
+    <div th:replace="~{fragment/admin_fragment :: head_html}"></div>
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+    <th:block th:replace="~{fragment/admin_fragment :: navigation}"></th:block>
+    <th:block th:replace="~{fragment/admin_fragment :: sidebar}"></th:block>
+
+    <div class="content-wrapper">
+        <th:block th:replace="${content}"></th:block>
+    </div>
+
+    <th:block th:replace="~{fragment/admin_fragment :: footer}"></th:block>
+</div>
+
+<th:block th:replace="~{fragment/admin_fragment :: script}"></th:block>
+
+</body>
+</html>

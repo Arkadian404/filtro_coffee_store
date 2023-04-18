@@ -1,6 +1,7 @@
 package com.data.filtro.repository;
 
 import com.data.filtro.model.Order;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -22,4 +23,7 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 
     @Query("select o.status from Order o where o.id =:orderId")
     int checkOrderStatusById(@Param("orderId") int orderId);
+
+    @Query("select o from Order o where o.status = 2")
+    List<Order> findAllVerfiedOrders();
 }

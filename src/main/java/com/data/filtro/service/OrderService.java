@@ -6,9 +6,9 @@ import com.data.filtro.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
 
 @Service
 public class OrderService {
@@ -89,6 +89,69 @@ public class OrderService {
 
     public int checkOrderStatusById(int id) {
         return orderRepository.checkOrderStatusById(id);
+    }
+
+    public List<Order> getAllVerifiedOrders() {
+        return orderRepository.findAllVerfiedOrders();
+    }
+
+    public void updateOrderStatus(int orderId) {
+        Order order = getOrderById(orderId);
+        if (order != null) {
+
+            int status = order.getStatus();
+            if (status == 2) {
+//                try {
+//                    Timer timer = new Timer();
+//                    timer.schedule(new TimerTask() {
+//                        @Override
+//                        public void run() {
+//                            order.setStatus(3);
+//                            orderRepository.save(order);
+//                            System.out.println("Order status updated to shipped");
+//                            System.out.println("Current time: " + System.currentTimeMillis());
+//                            timer.schedule(new TimerTask() {
+//                                @Override
+//                                public void run() {
+//                                    order.setStatus(4);
+//                                    orderRepository.save(order);
+//                                    System.out.println("Order status updated to delivered");
+//                                }
+//                            }, 300000L);
+//                        }
+//                    }, 60000L);
+//
+//                } catch (Exception ex) {
+//                    ex.printStackTrace();
+//                }
+                try {
+                    Timer timer = new Timer();
+                    TimerTask shippedTask = new TimerTask() {
+                        @Override
+                        public void run() {
+                            order.setStatus(3);
+                            orderRepository.save(order);
+                            System.out.println("Order status updated to shipped");
+                            System.out.println("Current time: " + System.currentTimeMillis());
+                            TimerTask deliveredTask = new TimerTask() {
+                                @Override
+                                public void run() {
+                                    order.setStatus(4);
+                                    orderRepository.save(order);
+                                    System.out.println("Order status updated to delivered");
+                                }
+                            };
+                            timer.schedule(deliveredTask, 300000L);
+                            this.cancel();
+                        }
+                    };
+                    timer.schedule(shippedTask, 60000L);
+
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
     }
 
 }

@@ -47,9 +47,13 @@
                             </td>
                             <td>
                                 <span th:if="${item.getStatus() == 1}"
-                                      class="badge bg-light text-dark">Đang xử lý</span>
+                                      class="badge bg-light text-dark">Chờ xác nhận</span>
                                 <span th:if="${item.getStatus() == 2}"
-                                      class="badge bg-light text-dark">Đã xác nhận</span>
+                                      class="badge bg-light text-dark">Đã xác nhận hóa đơn</span>
+                                <span th:if="${item.getStatus() == 3}"
+                                      class="badge bg-light text-dark">Hàng đang được giao</span>
+                                <span th:if="${item.getStatus() == 4}"
+                                      class="badge bg-success text-dark">Hàng đã được giao</span>
                             </td>
                             <td><a
                                     th:href="@{/invoice/{orderId}(orderId=${item.getId()})}"

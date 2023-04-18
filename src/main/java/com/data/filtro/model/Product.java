@@ -1,22 +1,22 @@
 package com.data.filtro.model;
 
 
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-@Component
 @Entity
 @Table(name = "sanpham")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Product {
+public class Product implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "masp")
@@ -34,13 +34,13 @@ public class Product {
     @Column(name = "giatien")
     private Integer price;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "mahuongvi", referencedColumnName = "mahuongvi")
+    @JsonManagedReference
     private Flavor flavor;
 
     @Column(name = "mota")
     private String description;
-
 
     @Column(name = "anh")
     private String image;
@@ -54,16 +54,20 @@ public class Product {
     @Column(name = "giamgia")
     private Integer discount;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "madanhmuc", referencedColumnName = "madanhmuc")
+    @JsonManagedReference
     private Category category;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<CartItem> cartItemList;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<OrderDetail> orderDetails;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<InvoiceDetail> invoiceDetails;
 }

@@ -1,10 +1,14 @@
 package com.data.filtro.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
@@ -12,7 +16,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Flavor {
+public class Flavor implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "mahuongvi")
@@ -22,6 +26,7 @@ public class Flavor {
     private String flavorName;
 
     @OneToMany(mappedBy = "flavor", cascade = CascadeType.ALL)
+    @JsonBackReference
     private List<Product> products;
 
 }
