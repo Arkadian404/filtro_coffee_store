@@ -40,7 +40,7 @@ public class UserController {
     @GetMapping("/profile")
     public String showProfile(HttpSession session, Model model) {
         User temp = (User) session.getAttribute("user");
-        User user = userService.getByIdWithAccount(temp.getId());
+        User user = userService.getByUserId(temp.getId());
         model.addAttribute("user", user);
         return "user/user-profile";
     }

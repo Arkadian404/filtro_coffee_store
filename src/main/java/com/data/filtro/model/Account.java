@@ -1,5 +1,7 @@
 package com.data.filtro.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -41,9 +43,11 @@ public class Account {
     private String passwordResetToken;
 
     @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
+    @JsonBackReference
     private User user;
 
     @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Staff staff;
 
 }

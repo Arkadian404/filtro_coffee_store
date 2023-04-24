@@ -23,12 +23,7 @@ public interface CartRepository extends JpaRepository<Cart, Integer> {
 
     @Query("select c from Cart c where c.user.id = :userId and c.status = 0 order by c.createdDate desc limit 1")
     Cart findCurrentOrderCartByUserId(@Param("userId") int userId);
-
-    @Modifying
-    @Query("update Cart c set c.status = 0 where c.id =:cartId")
-    void removeCartByCartId(@Param("cartId") int cartId);
-
-
+    
     @Query("select c.status from Cart c where c.id =:cartId")
     int checkCartStatusByCartId(@Param("cartId") int cartId);
 

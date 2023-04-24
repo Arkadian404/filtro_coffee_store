@@ -9,14 +9,12 @@ import com.data.filtro.repository.UserRepository;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -44,9 +42,20 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public void deleteById(int id) {
+        userRepository.deleteById(id);
+    }
+
+    public void createUser(User user) {
+        userRepository.save(user);
+    }
 
     public User getUserByName(String name) {
         return userRepository.findByUserName(name);
+    }
+
+    public Page<User> getAllPaging(Pageable pageable) {
+        return userRepository.findAll(pageable);
     }
 
 
@@ -86,6 +95,35 @@ public class UserService {
         return userRepository.findByAccountId(accountId);
     }
 
+
+    public void create(User user) {
+        User newUser = new User();
+        newUser.setName(user.getName());
+        newUser.setEmail(user.getEmail());
+        newUser.setDob(user.getDob());
+        newUser.setPhoneNumber(user.getPhoneNumber());
+        newUser.setCity(user.getCity());
+        newUser.setZip(user.getZip());
+        newUser.setSex(user.getSex());
+        newUser.setStatus(1);
+        newUser.setAddress(user.getAddress());
+        newUser.setAccount(user.getAccount());
+        userRepository.save(newUser);
+    }
+
+
+    public void update(User user) {
+        User newUser = getByUserId(user.getId());
+        newUser.setName(user.getName());
+        newUser.setEmail(user.getEmail());
+        newUser.setAddress(user.getAddress());
+        newUser.setPhoneNumber(user.getPhoneNumber());
+        newUser.setCity(user.getCity());
+        newUser.setZip(user.getZip());
+        newUser.setDob(user.getDob());
+        newUser.setSex(user.getSex());
+        userRepository.save(newUser);
+    }
 
     public void updateUser(User newUser) throws NotFoundException, ParseException {
         User user = userRepository.findById(newUser.getId()).get();
@@ -130,8 +168,8 @@ public class UserService {
 
     }
 
-    public User getByIdWithAccount(int id) {
-        return userRepository.findByIdWithAccount(id);
+    public User getByUserId(int id) {
+        return userRepository.findById(id).get();
     }
 
 

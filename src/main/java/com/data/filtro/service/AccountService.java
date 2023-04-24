@@ -7,10 +7,14 @@ import com.data.filtro.model.Account;
 import com.data.filtro.model.User;
 import com.data.filtro.repository.AccountRepository;
 import javassist.NotFoundException;
-import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
+import java.util.List;
 
 @Service
 public class AccountService {
@@ -24,9 +28,16 @@ public class AccountService {
         this.userService = userService;
     }
 
+    public Page<Account> getAllPaging(Pageable pageable) {
+        return accountRepository.findAll(pageable);
+    }
 
     public Account getAccountByName(String accountName) {
         return accountRepository.findAccountByName(accountName);
+    }
+
+    public Account getAccountById(int id) {
+        return accountRepository.findById(id);
     }
 
 
@@ -95,6 +106,39 @@ public class AccountService {
             throw new AuthenticationAccountException("Sai mật khẩu!");
         }
 
+    }
+
+    public void create(Account account) {
+        Account newAccount = new Account();
+        newAccount.setAccountName(account.getAccountName());
+        newAccount.setPassword(account.getPassword());
+        newAccount.setCreatedDate(new Date());
+        newAccount.setRoleNumber(account.getRoleNumber());
+        newAccount.setStatus(account.getStatus());
+        accountRepository.save(newAccount);
+    }
+
+    public void update(Account account) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        Account newAccount = getAccountById(account.getId());
+        newAccount.setAccountName(account.getAccountName());
+        if (!account.getPassword().isEmpty()) { // check if password has been changed
+            String encodedPassword = passwordEncoder.encode(account.getPassword());
+            newAccount.setPassword(encodedPassword);
+        }
+        newAccount.setCreatedDate(new Date());
+        newAccount.setRoleNumber(account.getRoleNumber());
+        newAccount.setStatus(account.getStatus());
+        accountRepository.save(newAccount);
+    }
+
+
+    public void delete(int id) {
+        accountRepository.deleteById(id);
+    }
+
+    public List<Account> getAppropriateAccountForUser() {
+        return accountRepository.findAppropriateAccountForUser();
     }
 
 }

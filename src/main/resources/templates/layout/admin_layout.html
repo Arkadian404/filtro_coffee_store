@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="layout (content)">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="layout (content, head_additional)">
 <head>
     <div th:replace="~{fragment/admin_fragment :: head_html}"></div>
+    <div th:replace="${head_additional}"></div>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -16,6 +17,6 @@
 </div>
 
 <th:block th:replace="~{fragment/admin_fragment :: script}"></th:block>
-
+<script src="/javascript/admin.js"></script>
 </body>
 </html>

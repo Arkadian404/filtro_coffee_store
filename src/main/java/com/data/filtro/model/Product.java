@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -14,6 +15,7 @@ import java.util.List;
 @Entity
 @Table(name = "sanpham")
 @Data
+@ToString(exclude = {"flavor", "category", "cartItemList"})
 @AllArgsConstructor
 @NoArgsConstructor
 public class Product implements Serializable {
@@ -59,15 +61,15 @@ public class Product implements Serializable {
     @JsonManagedReference
     private Category category;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private List<CartItem> cartItemList;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private List<OrderDetail> orderDetails;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private List<InvoiceDetail> invoiceDetails;
 }

@@ -13,6 +13,10 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer> {
 
+
+    @Query("select p from Product p where p.id =:id")
+    Product findById(@Param("id") int id);
+
     @Query("select p from Product p order by p.sold desc limit 6")
     List<Product> findTop6SellingProducts();
 

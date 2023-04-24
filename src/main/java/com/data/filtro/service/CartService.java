@@ -177,9 +177,8 @@ public class CartService {
     }
 
 
-    @Transactional
     public void removeCartByCartId(int cartId) {
-        cartRepository.removeCartByCartId(cartId);
+        cartRepository.deleteById(cartId);
     }
 
     public int checkCartStatusByCartId(int cartId) {

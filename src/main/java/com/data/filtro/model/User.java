@@ -1,13 +1,15 @@
 package com.data.filtro.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.stereotype.Component;
+
 
 import java.io.Serializable;
 import java.util.Date;
@@ -16,7 +18,7 @@ import java.util.List;
 @Entity
 @Table(name = "khachhang")
 @Data
-@EqualsAndHashCode(exclude = {"user", "cart"})
+@EqualsAndHashCode(exclude = {"cart"})
 @AllArgsConstructor
 @NoArgsConstructor
 public class User implements Serializable {
@@ -56,14 +58,18 @@ public class User implements Serializable {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "matk", referencedColumnName = "matk")
+    @JsonManagedReference
     private Account account;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Cart cart;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Invoice> invoices;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Order> orders;
 }

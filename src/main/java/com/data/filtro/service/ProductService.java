@@ -16,6 +16,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -59,11 +60,65 @@ public class ProductService {
             product.setImage(null);
         }
         // Save the product to the database
+        product.setCreatedDate(new Date());
         productRepository.save(product);
     }
 
+
+    public void update(Product product, MultipartFile file) throws Exception {
+
+        Product existingProduct = productRepository.findById(product.getId()).orElseThrow(() -> new Exception("Product not found"));
+
+        // Update the existing product's properties with the new product's properties
+        existingProduct.setProductName(product.getProductName());
+        existingProduct.setQuantity(product.getQuantity());
+        existingProduct.setSold(product.getSold());
+        existingProduct.setPrice(product.getPrice());
+        existingProduct.setFlavor(product.getFlavor());
+        existingProduct.setDescription(product.getDescription());
+        existingProduct.setCategory(product.getCategory());
+        existingProduct.setStatus(product.getStatus());
+        existingProduct.setDiscount(product.getDiscount());
+
+        // Check if file is not empty and not null
+        if (file != null && !file.isEmpty()) {
+            // Get the original filename
+            String originalFilename = file.getOriginalFilename();
+
+            String projectDir = System.getProperty("user.dir");
+            // Define the upload directory
+            String uploadDir = projectDir + "\\src\\main\\upload\\product\\";
+            System.out.println(uploadDir);
+            // Create the upload path if it doesn't exist
+            Path uploadPath = Paths.get(uploadDir);
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+
+            if (file.getSize() > 5000000) { // Maximum file size of 5MB
+                throw new Exception("File size too large. Please upload a file less than 5MB.");
+            }
+            // Create a new file with a unique name in the upload directory
+            File uploadedFile = new File(uploadDir, UUID.randomUUID().toString() + "-" + originalFilename);
+            // Save the uploaded file to disk
+            try (InputStream inputStream = file.getInputStream()) {
+                Files.copy(inputStream, uploadedFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            }
+            // Set the image field of the product to the path of the uploaded file
+            existingProduct.setImage(uploadedFile.getName());
+            System.out.println(uploadedFile);
+        }
+        // Save the product to the database
+        productRepository.save(existingProduct);
+    }
+
+
+    public void deleteById(int id) {
+        productRepository.deleteById(id);
+    }
+
     public Product getProductById(int id) {
-        return productRepository.findById(id).get();
+        return productRepository.findById(id);
     }
 
     @Transactional
