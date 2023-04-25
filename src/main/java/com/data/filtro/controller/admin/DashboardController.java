@@ -12,23 +12,8 @@ public class DashboardController {
     public String show() {
 
 
-        return "admin/a";
+        return "admin/dashboard";
     }
 
-
-    @GetMapping("/b")
-    public String showB() {
-
-
-        return "admin/b";
-    }
-
-
-    @GetMapping("/c")
-    public String showC() {
-
-
-        return "admin/c";
-    }
 
 }

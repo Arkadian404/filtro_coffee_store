@@ -1,7 +1,8 @@
 package com.data.filtro.controller.admin;
 
-import com.data.filtro.model.Account;
-import com.data.filtro.service.AccountService;
+import com.data.filtro.model.Category;
+import com.data.filtro.model.Flavor;
+import com.data.filtro.service.FlavorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,16 +15,16 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/admin/account")
-public class AccountCRUDController {
+@RequestMapping("/admin/flavor")
+public class FlavorCRUDController {
 
     @Autowired
-    AccountService accountService;
+    FlavorService flavorService;
 
-    public Pageable sortAccount(int currentPage, int pageSize, int sortType) {
+    public Pageable sortFlavor(int currentPage, int pageSize, int sortType) {
         Pageable pageable;
         switch (sortType) {
-            case 5, 10, 25, 50 -> pageable = PageRequest.of(currentPage - 1, pageSize, Sort.by("accountName"));
+            case 5, 10, 25, 50 -> pageable = PageRequest.of(currentPage - 1, pageSize, Sort.by("id"));
             default -> {
                 pageSize = 5;
                 pageable = PageRequest.of(currentPage - 1, pageSize);
@@ -32,40 +33,38 @@ public class AccountCRUDController {
         return pageable;
     }
 
-    @GetMapping
+    @GetMapping()
     public String show(@RequestParam(defaultValue = "5") int sortType, @RequestParam("page") Optional<Integer> page, Model model) {
         int currentPage = page.orElse(1);
         int pageSize = sortType;
-        Page<Account> accountPage;
+        Page<Flavor> flavorPage;
         Pageable pageable;
-        pageable = sortAccount(currentPage, pageSize, sortType);
-        accountPage = accountService.getAllPaging(pageable);
-        model.addAttribute("accounts", accountPage.getContent());
-        model.addAttribute("totalPages", accountPage.getTotalPages());
+        pageable = sortFlavor(currentPage, pageSize, sortType);
+        flavorPage = flavorService.getAllPaging(pageable);
+        model.addAttribute("flavors", flavorPage.getContent());
+        model.addAttribute("totalPages", flavorPage.getTotalPages());
         model.addAttribute("currentPage", currentPage);
-        model.addAttribute("totalElements", accountPage.getTotalElements());
+        model.addAttribute("totalElements", flavorPage.getTotalElements());
         model.addAttribute("sortType", sortType);
-        return "admin/account";
+        return "admin/flavor";
     }
 
-
     @PostMapping("/create")
-    public String create(@ModelAttribute Account account) {
-        accountService.create(account);
-        return "redirect:/admin/account";
+    public String create(@ModelAttribute Flavor flavor) {
+        flavorService.create(flavor);
+        return "redirect:/admin/flavor";
     }
 
     @PostMapping("/update")
-    public String update(@ModelAttribute Account account) {
-        accountService.update(account);
-        return "redirect:/admin/account";
+    public String update(@ModelAttribute Flavor flavor) {
+        flavorService.update(flavor);
+        return "redirect:/admin/flavor";
     }
 
     @PostMapping("/delete")
     public String delete(@RequestParam int id) {
-        accountService.delete(id);
-        return "redirect:/admin/account";
+        flavorService.delete(id);
+        return "redirect:/admin/flavor";
     }
-
 
 }

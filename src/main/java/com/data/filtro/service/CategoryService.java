@@ -2,7 +2,10 @@ package com.data.filtro.service;
 
 import com.data.filtro.model.Category;
 import com.data.filtro.repository.CategoryRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,7 +22,27 @@ public class CategoryService {
     }
 
     public Category getCategoryById(int id) {
-        return categoryRepository.findById(id).get();
+        return categoryRepository.findById(id);
+    }
+
+    public Page<Category> getAllPaging(Pageable pageable) {
+        return categoryRepository.findAll(pageable);
+    }
+
+    public void create(Category category) {
+        categoryRepository.save(category);
+    }
+
+    public void update(Category category) {
+        Category newCategory = getCategoryById(category.getId());
+        newCategory.setCategoryName(category.getCategoryName());
+        newCategory.setStatus(category.getStatus());
+        categoryRepository.save(newCategory);
+    }
+
+    @Transactional
+    public void delete(int id) {
+        categoryRepository.deleteById(id);
     }
 
     public List<Category> get5Categories() {

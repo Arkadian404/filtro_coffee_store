@@ -2,8 +2,6 @@ package com.data.filtro.controller.admin;
 
 import com.data.filtro.model.Account;
 import com.data.filtro.model.User;
-import com.data.filtro.repository.AccountRepository;
-import com.data.filtro.repository.UserRepository;
 import com.data.filtro.service.AccountService;
 import com.data.filtro.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +61,7 @@ public class UserCRUDController {
         model.addAttribute("sortType", sortType);
         model.addAttribute("totalElements", userPage.getTotalElements());
         model.addAttribute("usableAccounts", usableAccounts);
-        return "admin/b";
+        return "admin/user";
     }
 
 

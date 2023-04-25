@@ -26,6 +26,12 @@ public class Flavor implements Serializable {
     @Column(name = "tenhuongvi")
     private String flavorName;
 
+    @Column(name = "mota")
+    private String description;
+
+    @Column(name = "tinhtrang")
+    private Integer status;
+
     @OneToMany(mappedBy = "flavor", cascade = CascadeType.ALL)
     @JsonBackReference
     private List<Product> products;
