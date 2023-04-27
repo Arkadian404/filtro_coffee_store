@@ -1,5 +1,6 @@
 package com.data.filtro.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -70,6 +71,6 @@ public class User implements Serializable {
     private List<Invoice> invoices;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    @JsonIgnore
+    @JsonBackReference
     private List<Order> orders;
 }

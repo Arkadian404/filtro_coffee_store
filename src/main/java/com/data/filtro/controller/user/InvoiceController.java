@@ -76,6 +76,7 @@ public class InvoiceController {
             //System.out.println(order.getId());
             invoiceService.makeInvoice(order);
             orderService.updateOrderStatus(orderId);
+            orderService.updateSoldByOrderStatus(order);
         } catch (AuthenticationAccountException ex) {
             model.addAttribute("message", ex.getMessage());
         } catch (Exception ex) {

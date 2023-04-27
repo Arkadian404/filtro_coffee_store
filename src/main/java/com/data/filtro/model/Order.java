@@ -1,10 +1,13 @@
 package com.data.filtro.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -14,7 +17,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Order {
+public class Order implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,8 +25,9 @@ public class Order {
     private Integer id;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "makh", referencedColumnName = "makh")
+    @JsonManagedReference
     private User user;
 
     @Column(name = "ngaydathang")
@@ -52,11 +56,13 @@ public class Order {
     @Column(name = "tinhtrang")
     private Integer status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "phuongthucthanhtoan", referencedColumnName = "id")
+    @JsonManagedReference
     private PaymentMethod paymentMethod;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "orderId")
+    @JsonIgnore
     private List<OrderDetail> orderDetails;
 
 }

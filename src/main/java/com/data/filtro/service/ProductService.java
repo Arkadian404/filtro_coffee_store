@@ -27,6 +27,12 @@ public class ProductService {
     @Autowired
     private CategoryService categoryService;
 
+
+    public void save(Product product) {
+        productRepository.save(product);
+    }
+
+
     public void addProduct(Product product, MultipartFile file) throws Exception {
 
         // Check if file is not empty and not null

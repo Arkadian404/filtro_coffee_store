@@ -80,6 +80,12 @@ public class OrderController {
     }
 
 
+    @PostMapping("/cancel")
+    public String cancel(@RequestParam int id) {
+        orderService.updateCancelOrder(id);
+        return "redirect:/user/billing";
+    }
+
     @ModelAttribute("sum")
     public int sumOfProducts(HttpSession session) {
         User user = (User) session.getAttribute("user");

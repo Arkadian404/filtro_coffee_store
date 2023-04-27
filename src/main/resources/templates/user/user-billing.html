@@ -4,6 +4,7 @@
 <head>
     <th:block th:fragment="head_additional">
         <link rel="stylesheet" th:href="@{/css/user-billing.css}" href="/css/user-billing.css">
+        <script src="/javascript/modalBilling.js"></script>
     </th:block>
 </head>
 <body>
@@ -54,10 +55,20 @@
                                       class="badge bg-light text-dark">Hàng đang được giao</span>
                                 <span th:if="${item.getStatus() == 4}"
                                       class="badge bg-success text-dark">Hàng đã được giao</span>
+                                <span th:if="${item.getStatus() == 5}"
+                                      class="badge bg-light text-dark">Đang xử lý hoàn trả</span>
+                                <span th:if="${item.getStatus() == 6}"
+                                      class="badge bg-success text-dark">Đã hoàn trả đơn hàng</span>
                             </td>
-                            <td><a
+                            <td class="action-td"><a
                                     th:href="@{/invoice/{orderId}(orderId=${item.getId()})}"
                                     class="btn btn-outline-primary btn-sm">Xem hóa đơn</a>
+                                <th:block th:if="${item.getStatus() lt 5}">
+                                    <a
+                                            href="#deleteBillingModal" data-toggle="modal"
+                                            class="delete btn btn-outline-danger btn-sm">Hủy bỏ đơn hàng</a>
+                                    <input type="hidden" name="id" id="id" th:value="${item.getId()}">
+                                </th:block>
                             </td>
                         </tr>
                         </tbody>
@@ -69,6 +80,28 @@
                     <h2 class="font-bold">BẠN CHƯA CÓ ĐƠN HÀNG NÀO CẢ!</h2>
                 </div>
             </th:block>
+        </div>
+    </div>
+
+    <div id="deleteBillingModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form method="post" th:action="@{/order/cancel}">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Delete Employee</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to delete these Records?</p>
+                        <p class="text-warning"><small>This action cannot be undone.</small></p>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                        <input type="submit" class="btn btn-danger" value="Delete">
+                        <input type="hidden" name="id" id="deleteOrderId">
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </th:block>

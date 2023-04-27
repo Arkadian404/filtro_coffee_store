@@ -35,7 +35,7 @@ public class UserService {
     private AccountRepository accountRepository;
 
     public User getUserById(int id) {
-        return userRepository.findById(id).get();
+        return userRepository.findUserById(id);
     }
 
     public List<User> getAll() {
@@ -169,7 +169,7 @@ public class UserService {
     }
 
     public User getByUserId(int id) {
-        return userRepository.findById(id).get();
+        return userRepository.findUserById(id);
     }
 
 

@@ -3,11 +3,13 @@ package com.data.filtro.service;
 import com.data.filtro.model.*;
 import com.data.filtro.repository.OrderDetailRepository;
 import com.data.filtro.repository.OrderRepository;
+import jakarta.transaction.Transactional;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 @Service
@@ -18,6 +20,9 @@ public class OrderService {
 
     @Autowired
     OrderDetailRepository orderDetailRepository;
+
+    @Autowired
+    ProductService productService;
 
 
     public Order placeOrder(User user, String phone, String email, String address, String city, int zip, PaymentMethod paymentMethod, List<CartItem> cartItemList) {
@@ -78,8 +83,32 @@ public class OrderService {
         return orderRepository.findOrderByUserId(id);
     }
 
+    public List<Order> getAll() {
+        return orderRepository.findAll();
+    }
+
     public Order getCurrentOrderByCartId(int id) {
-        return orderRepository.finCurrentdOrderByCartId(id);
+        return orderRepository.finCurrentOrderByCartId(id);
+    }
+
+    public Page<Order> getAllPaging(Pageable pageable) {
+        return orderRepository.findAll(pageable);
+    }
+
+    public void update(Order order) {
+        System.out.println(order.getId());
+        Order newOrder = orderRepository.findById(order.getId()).get();
+        System.out.println(newOrder.getId());
+//        newOrder.setPhoneNumber(order.getPhoneNumber());
+//        newOrder.setAddress(order.getAddress());
+//        newOrder.setCity(order.getCity());
+//        newOrder.setZip(order.getZip());
+        orderRepository.save(newOrder);
+    }
+
+    @Transactional
+    public void delete(int id) {
+        orderRepository.cancelOrder(id);
     }
 
     public Order getOrderById(int id) {
@@ -92,7 +121,12 @@ public class OrderService {
     }
 
     public List<Order> getAllVerifiedOrders() {
-        return orderRepository.findAllVerfiedOrders();
+        return orderRepository.findAllVerifiedOrders();
+    }
+
+    @Transactional
+    public void updateCancelOrder(int id) {
+        orderRepository.updateCancelOrder(id);
     }
 
     public void updateOrderStatus(int orderId) {
@@ -151,6 +185,33 @@ public class OrderService {
                     ex.printStackTrace();
                 }
             }
+        }
+    }
+
+
+    public void updateSoldByOrderStatus(Order order) {
+        Order updatedOrder = getOrderById(order.getId());
+        if (updatedOrder == null) {
+            return;
+        }
+        int status = updatedOrder.getStatus();
+        if (status == 4) {
+            updateSold(order.getOrderDetails(), true);
+        } else if (status == 6) {
+            updateSold(order.getOrderDetails(), false);
+        }
+    }
+
+    private void updateSold(List<OrderDetail> orderDetails, boolean isIncrease) {
+        for (OrderDetail detail : orderDetails) {
+            Product product = detail.getProduct();
+            int quantity = detail.getQuantity();
+            if (isIncrease) {
+                product.setSold(product.getSold() + quantity);
+            } else {
+                product.setSold(product.getSold() - quantity);
+            }
+            productService.save(product);
         }
     }
 
