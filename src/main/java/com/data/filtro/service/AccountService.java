@@ -89,6 +89,20 @@ public class AccountService {
         }
     }
 
+    public Account authenticateAdmin(String accountName, String password) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        Account tempAccount = getAccountByName(accountName.trim());
+        if (tempAccount != null) {
+            if (passwordEncoder.matches(password, tempAccount.getPassword())) {
+                return accountRepository.authenticate(accountName, tempAccount.getPassword());
+            } else {
+                throw new AuthenticationAccountException("Sai mật khẩu!");
+            }
+        } else {
+            throw new AuthenticationAccountException("Sai tên đăng nhập!");
+        }
+    }
+
     public void changePassword(Account account, String currentPassword, String newPassword, String repeatPassword) throws NotFoundException {
         if (account == null) {
             throw new NotFoundException("Không tìm thấy tài khoản thích hơp!");
@@ -109,9 +123,10 @@ public class AccountService {
     }
 
     public void create(Account account) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         Account newAccount = new Account();
         newAccount.setAccountName(account.getAccountName());
-        newAccount.setPassword(account.getPassword());
+        newAccount.setPassword(passwordEncoder.encode(account.getPassword()));
         newAccount.setCreatedDate(new Date());
         newAccount.setRoleNumber(account.getRoleNumber());
         newAccount.setStatus(account.getStatus());
@@ -139,6 +154,10 @@ public class AccountService {
 
     public List<Account> getAppropriateAccountForUser() {
         return accountRepository.findAppropriateAccountForUser();
+    }
+
+    public List<Account> getEligibleAccountForStaff() {
+        return accountRepository.findEligibleAccountForStaff();
     }
 
 }

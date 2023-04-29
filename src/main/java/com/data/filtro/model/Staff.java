@@ -1,10 +1,13 @@
 package com.data.filtro.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
@@ -12,7 +15,7 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Staff {
+public class Staff implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,18 +25,19 @@ public class Staff {
     @Column(name = "hoten")
     private String name;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "ngaysinh")
     private Date dob;
 
     @Column(name = "gioitinh")
     private String sex;
 
-    @OneToOne
-    @JoinColumn(name = "maluong", referencedColumnName = "maluong")
-    private Salary salary;
+    @Column(name = "sdt")
+    private String phoneNumber;
 
     @OneToOne
     @JoinColumn(name = "matk", referencedColumnName = "matk")
+    @JsonManagedReference
     private Account account;
 
     @Column(name = "tinhtrang")

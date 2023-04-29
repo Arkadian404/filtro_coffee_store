@@ -17,8 +17,11 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
     Account findAccountByName(@Param("accountName") String accountName);
 
 
-    @Query("select a from Account a  where a.accountName = :accountName and a.password=:password")
+    @Query("select a from Account a  where a.accountName = :accountName and a.password=:password and a.roleNumber=3")
     Account authenticate(@Param("accountName") String acountName, @Param("password") String password);
+
+    @Query("select a from Account a  where a.accountName = :accountName and a.password=:password and a.roleNumber=1")
+    Account authenticateAdmin(@Param("accountName") String acountName, @Param("password") String password);
 
 
     @Query("select a from Account  a where a.passwordResetToken = :token")
@@ -30,6 +33,9 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
 
     @Query("select a from Account a left join fetch User u on a.id = u.account.id where a.roleNumber = 3 and u.account.id is null")
     List<Account> findAppropriateAccountForUser();
+
+    @Query("select a from Account a left join fetch User u on a.id = u.account.id where a.roleNumber != 3")
+    List<Account> findEligibleAccountForStaff();
 
     Page<Account> findAll(Pageable pageable);
 

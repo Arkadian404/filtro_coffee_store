@@ -48,6 +48,7 @@ public class Account {
 
     @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
     @JsonIgnore
+    @JsonBackReference
     private Staff staff;
 
 }
