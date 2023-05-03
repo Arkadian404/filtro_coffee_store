@@ -63,7 +63,7 @@
                             <td class="action-td"><a
                                     th:href="@{/invoice/{orderId}(orderId=${item.getId()})}"
                                     class="btn btn-outline-primary btn-sm">Xem hóa đơn</a>
-                                <th:block th:if="${item.getStatus() lt 5}">
+                                <th:block th:if="${item.getStatus() gt 2}">
                                     <a
                                             href="#deleteBillingModal" data-toggle="modal"
                                             class="delete btn btn-outline-danger btn-sm">Hủy bỏ đơn hàng</a>

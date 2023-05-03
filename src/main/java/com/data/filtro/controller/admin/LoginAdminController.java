@@ -35,7 +35,8 @@ public class LoginAdminController {
 
         try {
             Account account = accountService.authenticateAdmin(accountName, password);
-            session.setAttribute("account", account);
+            session.setAttribute("admin", account);
+            System.out.println(account.getAccountName());
             return "redirect:/admin";
         } catch (AuthenticationAccountException exception) {
             exception.printStackTrace();

@@ -33,12 +33,29 @@ public class CategoryService {
         categoryRepository.save(category);
     }
 
+    public Category createCategory(Category category) {
+        Category cate = categoryRepository.save(category);
+        return cate;
+    }
+
     public void update(Category category) {
         Category newCategory = getCategoryById(category.getId());
         newCategory.setCategoryName(category.getCategoryName());
         newCategory.setStatus(category.getStatus());
         categoryRepository.save(newCategory);
     }
+
+    public Category updateCategory(int id, Category category) {
+        System.out.println(category.getId() != null ? category.getId() : "null");
+        Category newCategory = getCategoryById(id);
+        if (newCategory != null) {
+            newCategory.setCategoryName(category.getCategoryName());
+            newCategory.setStatus(category.getStatus());
+            categoryRepository.save(newCategory);
+        }
+        return newCategory;
+    }
+
 
     @Transactional
     public void delete(int id) {

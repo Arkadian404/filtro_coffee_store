@@ -21,7 +21,7 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
     Account authenticate(@Param("accountName") String acountName, @Param("password") String password);
 
     @Query("select a from Account a  where a.accountName = :accountName and a.password=:password and a.roleNumber=1")
-    Account authenticateAdmin(@Param("accountName") String acountName, @Param("password") String password);
+    Account authenticateAdmin(@Param("accountName") String accountName, @Param("password") String password);
 
 
     @Query("select a from Account  a where a.passwordResetToken = :token")

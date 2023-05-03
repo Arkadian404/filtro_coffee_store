@@ -2,6 +2,7 @@ package com.data.filtro.controller.admin;
 
 import com.data.filtro.model.Account;
 import com.data.filtro.service.AccountService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -33,7 +34,11 @@ public class AccountCRUDController {
     }
 
     @GetMapping
-    public String show(@RequestParam(defaultValue = "5") int sortType, @RequestParam("page") Optional<Integer> page, Model model) {
+    public String show(@RequestParam(defaultValue = "5") int sortType, @RequestParam("page") Optional<Integer> page, Model model, HttpSession session) {
+        Account admin = (Account) session.getAttribute("admin");
+        if (admin == null) {
+            return "redirect:/admin/login";
+        }
         int currentPage = page.orElse(1);
         int pageSize = sortType;
         Page<Account> accountPage;

@@ -5,11 +5,9 @@ import com.data.filtro.model.ErrorResponse;
 import com.data.filtro.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -40,5 +38,44 @@ public class CategoryAPIController {
             return new ResponseEntity<>(err, HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(categories, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/create", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> create(@RequestBody Category category) {
+        if (category != null) {
+            Category cate = categoryService.createCategory(category);
+            return new ResponseEntity<>(cate, HttpStatus.OK);
+        } else {
+            String message = "Can't be null";
+            ErrorResponse err = new ErrorResponse(message, HttpStatus.INTERNAL_SERVER_ERROR.value());
+            return new ResponseEntity<>(err, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> update(@PathVariable int id, @RequestBody Category category) {
+        Category newCategory = categoryService.getCategoryById(id);
+        if (newCategory != null) {
+            newCategory = categoryService.updateCategory(id, category);
+            return new ResponseEntity<>(newCategory, HttpStatus.OK);
+        } else {
+            String message = "Can't be null";
+            ErrorResponse err = new ErrorResponse(message, HttpStatus.INTERNAL_SERVER_ERROR.value());
+            return new ResponseEntity<>(err, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> delete(@PathVariable int id) {
+        Category cate = categoryService.getCategoryById(id);
+        if (cate != null) {
+            categoryService.delete(id);
+            return new ResponseEntity<>(cate, HttpStatus.OK);
+        } else {
+            String message = "Can't be null";
+            ErrorResponse err = new ErrorResponse(message, HttpStatus.INTERNAL_SERVER_ERROR.value());
+            return new ResponseEntity<>(err, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

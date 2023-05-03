@@ -58,7 +58,7 @@ public class Product implements Serializable {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "madanhmuc", referencedColumnName = "madanhmuc")
-    @JsonManagedReference
+    //@JsonManagedReference
     private Category category;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

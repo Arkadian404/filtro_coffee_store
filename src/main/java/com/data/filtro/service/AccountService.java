@@ -94,7 +94,7 @@ public class AccountService {
         Account tempAccount = getAccountByName(accountName.trim());
         if (tempAccount != null) {
             if (passwordEncoder.matches(password, tempAccount.getPassword())) {
-                return accountRepository.authenticate(accountName, tempAccount.getPassword());
+                return accountRepository.authenticateAdmin(accountName, tempAccount.getPassword());
             } else {
                 throw new AuthenticationAccountException("Sai mật khẩu!");
             }
