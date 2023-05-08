@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/admin_layout :: layout (~{::content}, ~{::head_additional})}">
+<head>
+    <th:block th:fragment="head_additional">
+        <link rel="stylesheet" href="/css/crud.css">
+    </th:block>
+</head>
+<body>
+<th:block th:fragment="content">
+
+
+    <form id="revenue-form" method="get" th:action="@{/admin/statistic}">
+        <label for="month">Month:</label>
+        <select name="month" id="month">
+            <option value="01">January</option>
+            <option value="02">February</option>
+            <option value="03">March</option>
+            <option value="04">April</option>
+            <option value="05">May</option>
+            <option value="06">June</option>
+            <option value="07">July</option>
+            <option value="08">August</option>
+            <option value="09">September</option>
+            <option value="10">October</option>
+            <option value="11">November</option>
+            <option value="12">December</option>
+        </select>
+
+        <label for="year">Year:</label>
+        <select name="year" id="year">
+            <option value="2022">2022</option>
+            <option value="2023">2023</option>
+            <!-- Add more years here if needed -->
+        </select>
+
+        <button type="submit">Show Revenue</button>
+    </form>
+
+    <th:block th:if="${bestSellingProducts.isEmpty() or bestSellingProducts==null}">
+        <h1>Không có dữ liệu!</h1>
+    </th:block>
+    <th:block th:unless="${bestSellingProducts.isEmpty() or bestSellingProducts==null}">
+        <table>
+
+            <thead>
+            <tr>
+                <th>Product Id</th>
+                <th>Product Name</th>
+                <th>Quantity</th>
+                <th>Total</th>
+            </tr>
+            </thead>
+            <tbody>
+
+
+            <tr th:each="product : ${bestSellingProducts}">
+                <td th:text="${product.productId}"></td>
+                <td th:text="${product.productName}"></td>
+                <td th:text="${product.quantity}"></td>
+                <td th:text="${#numbers.formatDecimal(product.total, 0, 'COMMA', 0, 'COMMA')+'đ'}"></td>
+            </tr>
+
+
+            </tbody>
+            <tfoot>
+            <tr>
+                <td>Total</td>
+                <td th:text="${#numbers.formatDecimal(revenue, 0, 'COMMA', 0, 'COMMA')+'đ'}">NULL</td>
+            </tr>
+            </tfoot>
+        </table>
+    </th:block>
+
+
+    <table>
+
+        <thead>
+        <tr>
+            <th>Category Id</th>
+            <th>Category Name</th>
+            <th>Quantity</th>
+            <th>Total</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="category : ${bestSellingCategories}">
+            <td th:text="${category.id}"></td>
+            <td th:text="${category.categoryName}"></td>
+            <td th:text="${category.quantity}"></td>
+            <td th:text="${#numbers.formatDecimal(category.total, 0, 'COMMA', 0, 'COMMA')+'đ'}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+
+    <table>
+
+        <thead>
+        <tr>
+            <th>Flavor Id</th>
+            <th>Flavor Name</th>
+            <th>Quantity</th>
+            <th>Total</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="flavor : ${bestSellingFlavors}">
+            <td th:text="${flavor.id}"></td>
+            <td th:text="${flavor.flavorName}"></td>
+            <td th:text="${flavor.quantity}"></td>
+            <td th:text="${#numbers.formatDecimal(flavor.total, 0, 'COMMA', 0, 'COMMA')+'đ'}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <p th:text="${revenue}"></p>
+
+</th:block>
+</body>
+</html>

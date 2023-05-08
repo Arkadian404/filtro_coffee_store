@@ -15,7 +15,7 @@ public class AccountAPIController {
     @Autowired
     AccountService accountService;
 
-    @GetMapping("/authenticate")
+    @PostMapping("/authenticate")
     public ResponseEntity<Account> authenticate(@RequestParam String accountName, @RequestParam String password) {
         Account account = accountService.authenticateUser(accountName, password);
         if (account == null) {

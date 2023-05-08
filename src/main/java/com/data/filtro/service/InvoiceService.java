@@ -58,4 +58,9 @@ public class InvoiceService {
         orderRepository.save(order);
     }
 
+
+    public Integer getRevenuePerMonthAndYear(int month, int year) {
+        return invoiceRepository.findRevenuePerMonthAndYear(month, year);
+    }
+
 }

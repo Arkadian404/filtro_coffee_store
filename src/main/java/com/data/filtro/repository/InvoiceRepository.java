@@ -17,4 +17,7 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Integer> {
     @Query("select i from Invoice i where i.user.cart.id =:cartId")
     Invoice findInvoiceByCartId(@Param("cartId") int cartId);
 
+    @Query(value = "select sum(i.total) from Invoice i where month(i.purchasedDate) =:month and year(i.purchasedDate) =:year")
+    Integer findRevenuePerMonthAndYear(@Param("month") int month, @Param("year") int year);
+
 }

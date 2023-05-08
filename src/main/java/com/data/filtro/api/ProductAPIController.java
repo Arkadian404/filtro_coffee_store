@@ -27,7 +27,7 @@ public class ProductAPIController {
     @GetMapping("/getProductList")
     public ResponseEntity<List<Product>> getProductList() {
 
-        List<Product> productList = productService.getAll();
+        List<Product> productList = productService.getAllProduct();
         productList.forEach(s -> log.info(s.getProductName()));
         if (productList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

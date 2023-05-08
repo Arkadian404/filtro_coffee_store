@@ -136,6 +136,15 @@ public class ProductService {
         return productList;
     }
 
+    public List<Product> getAllProduct() {
+        List<Product> productList = productRepository.findAll();
+        for (Product product : productList) {
+            String imgName = product.getImage();
+            product.setImage("http://10.0.2.2:3030/upload/product/" + imgName);
+        }
+        return productList;
+    }
+
     @Transactional
     public List<Product> getTopSellingProducts() {
         List<Product> productList = productRepository.findTop6SellingProducts();
