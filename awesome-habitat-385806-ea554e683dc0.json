@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "awesome-habitat-385806",
+  "private_key_id": "ea554e683dc01a606c92a028e8b065ed6ef57f8b",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDXs6gnez29THqh\nuEn4syubbLwzdRTGVAk2mYITSlkDcUITv5FSBsDtUkKR1Yu4YTuByOPD9MLrNw/F\nbxg1LdYik7DxClG2n6id2a9bhPflo80pUGYHJpWAt+10Ndo+KLtZ29m/EV7ADf97\nkga23+vNKjTn42cIEM2c0QeTyi8pNktrUv+ayD1ZsSEtZxraKp4VNy9qBSZI55Ic\nZqTfBKTtC2StDwicwpfm1r+IJyZyo6jZOFI/HYUSCVgvEhguscjpTj04RknUQOuJ\n9YT5skv2OFdQL3IxrcqgzZn1oieAQnfLPAjnAynsZadg92py6IkQNtbba0aYB6E0\n+1pPsFgpAgMBAAECggEAFp5d+G/lsDs8E8e/p/7fyH9NN+cj2801nx5XQ78U2PXQ\nLEJ3El8nbWtmFCVMrrOxegFPEv4QT3p5YqZs5yysivkqQYhnu6r/0zefugzWMuQr\nkBTAcikDXdlLotc/0KtURA64BV9krGZ7XyGXpycRcrTlkdhodjHO4c4QiZiWu+8m\njZyeTvjHOiB1NzWZyD4IIqJDZxSI13FIXmR5MuniPpyOLrwFfyyFahMy5zOyjnVO\nHLw/Lj/vliB6c9PcbFqTOrnqdqfflY3tZq4AgL7LZLFm10A9+bsFJa9grhq4zUPe\nGby60O2e3SW274qqlb6EvyDkjJxpSl6BdjvLsWPqJQKBgQDt3gvlF6hshAssdTLB\nokLx4ORc3UpZENm/Hcc3gr6KxYv4noP0RG3Tl7beatoIFoid2tFEdhsn3FEnN/vV\nSIyLvbupEXRLV0CU2tn9bAz9A/fXV+vKrmIR/Aqdd/mpAQGjafTM/Y8GFNGiHWmG\nblC5pnyBF4L1m+MF0Z2au4PlDQKBgQDoJQ0301nYh84LTmPJzo5W4i3P3TkDB34K\nlepTpudWn2E4D9bntfPC4XF6o9I1LgDHNq0DzU6ysvvYjnlGcG54yfgGhQjpglsT\nNWurNlFUXegLpaNMP5BXt6zRR7GuGGoxXVOeOxLULfrGa7d1WQdI8vc0zpwAYaHh\nRZyJwMvwjQKBgQDCUvicu+sYW/dU5poEnq7aM8PcKdynTqDVBVrO+rz3WdOz1Kww\nTgb7KaJ3qgtdOCt76luz9ljRA6g4xf+yioZnUyWQRXYgZrOX6ALWigNCYI+FGYrE\nFhqAXsu9QVpwuyW/frxDC5JggXmRWz3uWQkR4fUs8SxHwoaBJnH/CtoBsQJ/XWaK\n6useOwBo5iOkAo4YttxJklhvl8hr7dZjcUS1zyRQ+T1mOdP7P211OuKusLbRmVVm\nRyFTiJJ6waaRJMYXrIGWSQk9jLXl7tSPfVNdZZRiyEzcZtEsQh6kaY9u7ZzlHPdv\nrToXWUcmnq64IX6wb6lRzO1T1tNxTjGzybjIVQKBgQCdxaUdhcwEHkV4boaYNIbr\nC9f7fjzfda34yDx1B1XAmLvB0LGyUD+gzqaSooRp6/KtyM431F1kdgxxv+SpYAMa\nV+3PXXAf5QsIxVkke5s748myXxEDI7llrr0jkpiSgmY7bHSxTLfL9K+BwY5hvIV5\n4MK7xMnrl7LlZpJkndlhaw==\n-----END PRIVATE KEY-----\n",
+  "client_email": "zafu-433@awesome-habitat-385806.iam.gserviceaccount.com",
+  "client_id": "105103086662784238447",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/zafu-433%40awesome-habitat-385806.iam.gserviceaccount.com"
+}

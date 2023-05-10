@@ -168,6 +168,24 @@ public class UserService {
 
     }
 
+
+    public User updateUser(int id, User user) {
+        User newUser = getByUserId(id);
+        if (newUser != null) {
+            newUser.setName(user.getName());
+            newUser.setEmail(user.getEmail());
+            newUser.setDob(user.getDob());
+            newUser.setCity(user.getCity());
+            newUser.setPhoneNumber(user.getPhoneNumber());
+            newUser.setZip(user.getZip());
+            newUser.setAddress(user.getAddress());
+            newUser.setSex(user.getSex());
+            userRepository.save(newUser);
+        }
+        return newUser;
+    }
+
+
     public User getByUserId(int id) {
         return userRepository.findUserById(id);
     }

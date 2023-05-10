@@ -6,10 +6,7 @@ import com.data.filtro.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -50,4 +47,19 @@ public class UserAPIController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
     }
+
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> updateUser(@PathVariable int id, @RequestBody User user) {
+        User newUser = userService.getByUserId(id);
+        if (newUser != null) {
+            newUser = userService.updateUser(id, user);
+            return new ResponseEntity<>(newUser, HttpStatus.OK);
+        } else {
+            String message = "Can't be null!";
+            ErrorResponse err = new ErrorResponse(message, HttpStatus.INTERNAL_SERVER_ERROR.value());
+            return new ResponseEntity<>(err, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

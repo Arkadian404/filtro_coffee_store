@@ -71,6 +71,7 @@ public class User implements Serializable {
     private List<Invoice> invoices;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    @JsonBackReference
+    //@JsonBackReference
+    @JsonIgnore
     private List<Order> orders;
 }
