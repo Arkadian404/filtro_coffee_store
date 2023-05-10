@@ -5,6 +5,8 @@ import com.data.filtro.model.Product;
 import com.data.filtro.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,5 +46,34 @@ public class ProductAPIController {
             return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(product, HttpStatus.OK);
+    }
+
+
+    @GetMapping("/getbycate/{id}")
+    public ResponseEntity<?> getProductListbycate(@PathVariable int id) {
+
+        Pageable pageable = Pageable.unpaged();
+        Page<Product> productList = productService.getProductByCategory(id, pageable);
+        productList.forEach(s -> log.info(s.getProductName()));
+        if (productList.isEmpty() || productList == null) {
+            String message = "Không có danh sách cần tìm!";
+            ErrorResponse err = new ErrorResponse(message, HttpStatus.NOT_FOUND.value());
+            return new ResponseEntity<>(err, HttpStatus.NOT_FOUND);
+        } else
+            return new ResponseEntity<>(productList.getContent(), HttpStatus.OK);
+    }
+
+    @GetMapping("/getbyflavor/{id}")
+    public ResponseEntity<?> getProductListbyflavor(@PathVariable int id) {
+
+        Pageable pageable = Pageable.unpaged();
+        Page<Product> productList = productService.getProductsByFlavorId(id, pageable);
+        productList.forEach(s -> log.info(s.getProductName()));
+        if (productList.isEmpty() || productList == null) {
+            String message = "Không có danh sách cần tìm!";
+            ErrorResponse err = new ErrorResponse(message, HttpStatus.NOT_FOUND.value());
+            return new ResponseEntity<>(err, HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(productList.getContent(), HttpStatus.OK);
     }
 }
