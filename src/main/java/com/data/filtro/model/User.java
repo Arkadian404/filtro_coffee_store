@@ -74,4 +74,8 @@ public class User implements Serializable {
     //@JsonBackReference
     @JsonIgnore
     private List<Order> orders;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Feedback> feedbacks;
 }

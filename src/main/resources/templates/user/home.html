@@ -79,11 +79,15 @@
                                     <h5 class="card-title mb-3" th:text="${product.productName}">House Blend Coffee</h5>
                                 </a>
                                 <p th:text="${product.description}">Coffee Beans</p>
+                                <form th:action="@{/cart/add}">
+                                    <input type="hidden" th:value="${product.id}" name="productId">
+                                    <input type="hidden" th:value=1 name="quantity">
                                 <div class="mt-auto d-flex flex-column align-items-stretch">
-                                <h6 class="display-4" th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'COMMA') + 'đ'}">15.99$</h6>
-                                <a href="#" class="btn btn-block btn-primary btn-lg active rounded-pill btn-hover"
+                                    <h6 class="display-4" th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'COMMA') + 'đ'}">15.99$</h6>
+                                    <a href="#" class="btn btn-block btn-primary btn-lg active rounded-pill btn-hover"
                                    role="button" aria-pressed="true">Thêm vào giỏ hàng</a>
                                 </div>
+                                </form>
                             </div>
                         </div>
                     </div>

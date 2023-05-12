@@ -1,5 +1,6 @@
 package com.data.filtro.api;
 
+import com.data.filtro.model.CartItem;
 import com.data.filtro.model.ErrorResponse;
 import com.data.filtro.model.User;
 import com.data.filtro.model.Cart;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/cart")
@@ -32,6 +35,8 @@ public class CartAPIController {
             return new ResponseEntity<>(err, HttpStatus.NOT_FOUND);
         } else {
             Cart cart = cartService.getCartByUserId(user.getId());
+            List<CartItem> list = cart.getCartItemList();
+            list.forEach(st -> System.out.println(st.getId()));
             if (cart == null) {
                 cart = cartService.createCart(user);
             }

@@ -15,7 +15,7 @@ import javax.sound.sampled.Port;
 import java.util.List;
 
 @ControllerAdvice
-@RequestMapping({"/", "/product", "/category", "/search"})
+@RequestMapping({"/", "/product", "/category", "/search", "/cart"})
 public class GlobalController {
 
     @Autowired
