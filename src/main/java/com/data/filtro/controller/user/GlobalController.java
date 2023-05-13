@@ -55,7 +55,8 @@ public class GlobalController {
         User user = (User) session.getAttribute("user");
         GuestCart guestCart = (GuestCart) session.getAttribute("guestCart");
         if (user != null) {
-            Cart cart = cartService.getCurrentCartByUserId(user.getId());
+            Cart cart = cartService.getCartByUserId(user.getId());
+            //Cart cart = (Cart) session.getAttribute("cart");
             if (cart != null) {
                 List<CartItem> cartItemList = cart.getCartItemList();
                 return cartItemList;

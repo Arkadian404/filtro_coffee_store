@@ -81,6 +81,7 @@ public class CartController {
                 List<CartItem> cartItemList = cart.getCartItemList();
                 model.addAttribute("cartItemList", cartItemList);
                 model.addAttribute("cart", cart);
+                session.getAttribute("cart");
                 cartItemList.stream().forEach(cartItem -> System.out.println(cartItem.getQuantity()));
             }
         } else if (guestCart != null) {

@@ -10,7 +10,7 @@
         <div class="row">
             <div class="col-12">
                 <th:block
-                        th:if="${(#lists.isEmpty(cartItemList) or cartItemList == null) and (cart == null or guestCart ==null)}">
+                        th:if="${(#lists.isEmpty(cartItemList) or cartItemList == null) and (session.cart == null or session.guestCart ==null)}">
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col">

@@ -20,12 +20,12 @@ public class Feedback implements Serializable {
     @Column(name = "id")
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "masp", referencedColumnName = "masp")
     @JsonManagedReference
     private Product product;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "makh", referencedColumnName = "makh")
     @JsonManagedReference
     private User user;

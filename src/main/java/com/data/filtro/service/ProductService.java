@@ -140,7 +140,7 @@ public class ProductService {
         List<Product> productList = productRepository.findAll();
         for (Product product : productList) {
             String imgName = product.getImage();
-            product.setImage("http://10.0.2.2:3030/upload/product/" + imgName);
+            product.setImage("https://awesome-habitat-385806.as.r.appspot.com/upload/product/" + imgName);
         }
         return productList;
     }

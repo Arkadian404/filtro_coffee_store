@@ -26,4 +26,8 @@ public interface CartRepository extends JpaRepository<Cart, Integer> {
 
     @Query("select c.status from Cart c where c.id =:cartId")
     int checkCartStatusByCartId(@Param("cartId") int cartId);
+
+    @Modifying
+    @Query("delete from Cart c where c.id =:cartId")
+    void deleteByCartId(@Param("cartId") int cartId);
 }

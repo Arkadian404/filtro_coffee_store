@@ -6,15 +6,12 @@ import com.data.filtro.repository.CartRepository;
 import com.data.filtro.repository.GuestCartRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @Service
 @Slf4j
@@ -177,8 +174,9 @@ public class CartService {
     }
 
 
+    @Transactional
     public void removeCartByCartId(int cartId) {
-        cartRepository.deleteById(cartId);
+        cartRepository.deleteByCartId(cartId);
     }
 
     public int checkCartStatusByCartId(int cartId) {

@@ -116,7 +116,8 @@
                 <div class="col-6 col-md-3 mb-4 d-flex align-items-stretch">
                     <div class="card">
                         <a th:href="@{/product/{id}(id=${relatedProduct.id})}">
-                            <img th:src="${relatedProduct.image}" class="w-100 img-resize" alt="Product image">
+                            <img th:src="@{'/upload/product/'+${relatedProduct.image}}" class="w-100 img-resize"
+                                 alt="Product image">
                         </a>
                         <div class="brown-color card-body d-flex flex-column">
                             <a class="white-hov text-center text-reset"
