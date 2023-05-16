@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table>
+    <thead>
+    <tr>
+        <th>Order ID</th>
+        <th>Customer Name</th>
+        <th>Order Date</th>
+        <th>Address</th>
+        <th>Status</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Iterate over the list of eligible orders -->
+    <th:block th:each="order : ${eligibleOrders}">
+        <tr>
+            <td th:text="${order.id}">Order ID</td>
+            <td th:text="${order.user.name}">Customer Name</td>
+            <td th:text="${order.orderDate}">Order Date</td>
+            <td th:text="${order.address}">Address</td>
+            <td th:text="${order.status}">Status</td>
+            <td>
+                <!-- Button to update order status to "Shipping" -->
+                <form th:if="${order.status == 3}" th:action="@{/shipper/shipping}" method="POST">
+                    <input type="hidden" name="orderId" th:value="${order.id}"/>
+                    <button type="submit">Mark as Shipping</button>
+                </form>
+                <!-- Button to update order status to "Delivered" -->
+                <form th:if="${order.status == 4}" th:action="@{/shipper/delivered}" method="POST">
+                    <input type="hidden" name="orderId" th:value="${order.id}"/>
+                    <input type="hidden" name="status" value="Delivered"/>
+                    <button type="submit">Mark as Delivered</button>
+                </form>
+            </td>
+        </tr>
+    </th:block>
+    </tbody>
+</table>
+
+<div>
+    <h2>Shipping Orders</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Customer Name</th>
+            <th>Order Date</th>
+            <th>Address</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <th:block th:each="order : ${shippingOrders}">
+            <tr>
+                <td th:text="${order.id}">Order ID</td>
+                <td th:text="${order.user.name}">Customer Name</td>
+                <td th:text="${order.orderDate}">Order Date</td>
+                <td th:text="${order.address}">Address</td>
+                <td th:text="${order.status}">Status</td>
+                <td>
+                    <span>Shipping!!</span>
+                </td>
+            </tr>
+        </th:block>
+
+        </tbody>
+    </table>
+</div>
+
+<div>
+    <h2>Delivered Orders</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Customer Name</th>
+            <th>Order Date</th>
+            <th>Address</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <th:block th:each="order : ${shippingOrders}">
+            <tr>
+                <td th:text="${order.id}">Order ID</td>
+                <td th:text="${order.user.name}">Customer Name</td>
+                <td th:text="${order.orderDate}">Order Date</td>
+                <td th:text="${order.address}">Address</td>
+                <td th:text="${order.status}">Status</td>
+                <td>
+                    <form th:action="@{/shipper/delivered}" method="POST">
+                        <input type="hidden" name="orderId" th:value="${order.id}"/>
+                        <input type="hidden" name="status" value="Delivered"/>
+                        <button type="submit">Mark as Delivered</button>
+                    </form>
+                </td>
+            </tr>
+        </th:block>
+
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

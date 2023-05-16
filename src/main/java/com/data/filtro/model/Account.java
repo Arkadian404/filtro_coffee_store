@@ -2,23 +2,24 @@ package com.data.filtro.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "taikhoan")
 @Data
 @EqualsAndHashCode(exclude = "user")
-@Component
 @AllArgsConstructor
 @NoArgsConstructor
-public class Account {
+public class Account implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "matk")
@@ -33,8 +34,10 @@ public class Account {
     @Column(name = "ngaytao")
     private Date createdDate;
 
-    @Column(name = "mavaitro")
-    private Integer roleNumber;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "mavaitro", referencedColumnName = "mavaitro")
+    @JsonManagedReference
+    private Role role;
 
     @Column(name = "tinhtrang")
     private Integer status;
@@ -50,5 +53,9 @@ public class Account {
     @JsonIgnore
     @JsonBackReference
     private Staff staff;
+
+    @OneToMany(mappedBy = "account")
+    private List<Shipper> shippers;
+
 
 }
