@@ -39,7 +39,7 @@
                         <td th:text="${account.accountName}">Thomas Hardy</td>
                         <td th:text="${account.createdDate}">thomashardy@mail.com</td>
                         <td th:text="${account.status}">89 Chiaroscuro Rd, Portland, USA</td>
-                        <td th:text="${account.roleNumber}">(171) 555-2222</td>
+                        <td th:text="${account.getRole.name}">(171) 555-2222</td>
                         <td>
                             <a href="#editAccountModal" class="edit" data-toggle="modal"><i
                                     class="material-icons"
@@ -100,10 +100,10 @@
                             <input type="text" name="password" class="form-control" required>
                         </div>
                         <label for="addRole">Role:</label>
-                        <select id="addRole" name="roleNumber">
-                            <option value="1">Role 1</option>
-                            <option value="2">Role 2</option>
-                            <option value="3">Role 3</option>
+                        <select id="addRole" name="role">
+                            <th:block th:each="role : ${roles}">
+                                <option th:value="${role.id}" th:text="${role.name}">Role 1</option>
+                            </th:block>
                         </select>
                         <label for="addStatus">Status:</label>
                         <select id="addStatus" name="status">
@@ -138,10 +138,11 @@
                             <input type="text" name="password" id="password" class="form-control">
                         </div>
                         <label for="editRole">Role:</label>
-                        <select id="editRole" name="roleNumber">
-                            <option value="1">Role 1</option>
-                            <option value="2">Role 2</option>
-                            <option value="3">Role 3</option>
+                        <select id="editRole" name="role">
+                            <th:block th:each="role : ${roles}">
+                                <option th:value="${role.id}" th:text="${role.name}">Role 1</option>
+                            </th:block>
+
                         </select>
                         <label for="editStatus">Status:</label>
                         <select id="editStatus" name="status">

@@ -14,7 +14,7 @@ $(document).ready(function () {
         $("#editAccountModal #accountName").val(account.accountName);
         $("#editAccountModal #password").val(account.password);
         $("#editAccountModal #editStatus").val(account.status);
-        $("#editAccountModal #editRole").val(account.roleNumber);
+        $("#editAccountModal #editRole").val(account.role.id);
       },
     });
   });

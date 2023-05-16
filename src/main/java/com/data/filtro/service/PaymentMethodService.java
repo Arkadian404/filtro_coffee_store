@@ -16,4 +16,8 @@ public class PaymentMethodService {
     public List<PaymentMethod> getAllPaymentMethods() {
         return paymentMethodRepository.findAll();
     }
+
+    public PaymentMethod getPaymentMethodById(int id) {
+        return paymentMethodRepository.findPaymentMethodById(id);
+    }
 }

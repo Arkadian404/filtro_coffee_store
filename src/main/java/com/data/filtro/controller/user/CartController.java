@@ -3,12 +3,15 @@ package com.data.filtro.controller.user;
 import com.data.filtro.model.*;
 import com.data.filtro.repository.CartRepository;
 import com.data.filtro.service.*;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -98,9 +101,15 @@ public class CartController {
     }
 
     @PostMapping("/add")
-    public String addCart(@RequestParam("productId") int productId, @RequestParam("quantity") int quantity, HttpSession session, Model model) {
+    public String addCart(@RequestParam("productId") int productId, @RequestParam("quantity") int quantity, HttpSession session, HttpServletRequest request) throws URISyntaxException {
         User user = (User) session.getAttribute("user");
         GuestCart guestCart = (GuestCart) session.getAttribute("guestCart");
+        String referer = request.getHeader("Referer");
+        System.out.println(referer);
+        URI uri = new URI(referer);
+        System.out.println(uri);
+        String path = uri.getPath();
+        System.out.println(path);
         Cart cart = null;
         if (user != null) {
             //cart = cartService.getCartByUserId(user.getId());
@@ -120,12 +129,18 @@ public class CartController {
             }
             cartService.addProductToGuestCart(guestCart, productId, quantity);
         }
-        return "redirect:/product/" + productId;
+        if (path.equals("/")) {
+            return "redirect:/";
+        } else if (path.startsWith("/category")) {
+            return "redirect:" + path;
+        } else
+            return "redirect:/product/" + productId;
+
     }
 
 
     @PostMapping("/remove/{productId}")
-    public String removeCartItem(@PathVariable("productId") int productId, HttpSession session, Model model) {
+    public String removeCartItem(@PathVariable("productId") int productId, HttpSession session) {
         User user = (User) session.getAttribute("user");
         GuestCart guestCart = (GuestCart) session.getAttribute("guestCart");
         if (user != null) {

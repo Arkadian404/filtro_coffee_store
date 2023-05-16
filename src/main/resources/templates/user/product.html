@@ -38,10 +38,10 @@
 
             <!-- Add to cart -->
             <div class="col-12 col-lg-6 add_to_cart_block">
-                <div class="card bg-light mb-3">
-                    <div class="card-body">
+                <div class="card bg-light">
+                    <div class="card-body d-flex flex-column align-items-center">
                         <h3 class="text-center" th:text="${product.productName}">Product name</h3>
-                        <div class="text-center mb-3">
+                        <div class="text-center">
                             <th:block
                                     th:if="${product.discount != 0 and product.quantity >=0 and product.status !=0}">
                                 <span class="price"
@@ -65,8 +65,11 @@
                             <input type="hidden" name="productId" th:value="${product.id}">
                             <div class="form-group d-flex justify-content-between align-items-center">
                                 <label for="quantity">Số lượng :</label>
-                                <input type="number" id="quantity" name="quantity" class="form-control w-50" value="1"
+                                <input type="number" id="quantity" name="quantity" class="form-control w-50"
+                                       value="1"
                                        min="1">
+                            </div>
+                            <div class="col d-flex justify-content-center align-items-center">
                                 <button th:if="${product.status ==0 or product.quantity == 0}" type="submit"
                                         class="btn btn-success text-uppercase" disabled>
                                     <i class="fa fa-shopping-cart"></i> Thêm vào giỏ
@@ -77,12 +80,12 @@
                                 </button>
                             </div>
                         </form>
-                        <hr>
+                        <hr class="mt-auto">
                         <h6>Loại: <a th:href="@{/category/flavors/{id}(id=${product.flavor.id})}"
                                      th:text="${product.flavor.flavorName}">Flavor name</a></h6>
                         <p>Mô tả: <span th:text="${product.description}">Product description</span></p>
-                        <hr>
-                        <div class="product_rassurance">
+                        <hr class="mt-auto">
+                        <div class="product_rassurance mt-auto">
                             <ul class="list-inline">
                                 <li class="list-inline-item"><i class="fa fa-truck fa-2x"></i><br>Fast delivery</li>
                                 <li class="list-inline-item"><i class="fa fa-credit-card fa-2x"></i><br>Secure payment
@@ -95,7 +98,7 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row mb-5">
             <th:block th:with="previousProductId=${currentProductId - 1}, nextProductId=${currentProductId + 1}">
                 <div class="col-12 d-flex justify-content-between">
                     <a th:if="${previousProductId != null and previousProductId >=1}"
@@ -107,6 +110,116 @@
                 </div>
             </th:block>
         </div>
+
+        <div class="row justify-content-center mb-4">
+            <div class="col">
+                <div class="user-comments">
+                    <h3>Bình luận</h3>
+                    <th:block th:if="${session.user!=null}">
+                        <span>Tên người dùng: <span class="font-weight-bold"
+                                                    th:text="${session.user !=null ? session.user.name: 'NULL'}"> </span></span>
+                        <form th:action="@{/product/{id}/feedback(id=${product.id})}" method="POST"
+                              th:object="${feedback}">
+                            <input type="hidden" name="product" th:value="${product.id}">
+                            <input type="hidden" name="user" th:value="${session.user.id}">
+                            <div class="form-group">
+                                <label for="comment-content">Comment:</label>
+                                <textarea name="content" class="form-control" id="comment-content" rows="3"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </th:block>
+                    <th:block th:unless="${session.user!=null}">
+                        <h4 class="text-center">Vui lòng đăng nhập để bình luận!</h4>
+                    </th:block>
+
+                    <hr>
+
+                    <!--                    <div class="comments-list mt-auto" style="height: 300px;overflow-y: auto">-->
+                    <!--                        <div class="comment">-->
+                    <!--                            <strong>John Doe</strong>-->
+                    <!--                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vel lacus vitae magna-->
+                    <!--                                consequat-->
+                    <!--                                eleifend ac non tortor.</p>-->
+                    <!--                        </div>-->
+                    <!--                        <div class="comment">-->
+                    <!--                            <strong>Jane Doe</strong>-->
+                    <!--                            <p>Integer vestibulum sapien sit amet justo feugiat efficitur. Nulla tempus mauris vel-->
+                    <!--                                dapibus-->
+                    <!--                                dictum.</p>-->
+                    <!--                        </div>-->
+                    <!--                        <div class="comment">-->
+                    <!--                            <strong>Jane Doe</strong>-->
+                    <!--                            <p>Integer vestibulum sapien sit amet justo feugiat efficitur. Nulla tempus mauris vel-->
+                    <!--                                dapibus-->
+                    <!--                                dictum.</p>-->
+                    <!--                        </div>-->
+                    <!--                        <div class="comment">-->
+                    <!--                            <strong>Jane Doe</strong>-->
+                    <!--                            <p>Integer vestibulum sapien sit amet justo feugiat efficitur. Nulla tempus mauris vel-->
+                    <!--                                dapibus-->
+                    <!--                                dictum.</p>-->
+                    <!--                        </div>-->
+                    <!--                        <div class="comment">-->
+                    <!--                            <strong>Jane Doe</strong>-->
+                    <!--                            <p>Integer vestibulum sapien sit amet justo feugiat efficitur. Nulla tempus mauris vel-->
+                    <!--                                dapibus-->
+                    <!--                                dictum.</p>-->
+                    <!--                        </div>-->
+                    <!--                        <div class="comment">-->
+                    <!--                            <strong>Jane Doe</strong>-->
+                    <!--                            <p>Integer vestibulum sapien sit amet justo feugiat efficitur. Nulla tempus mauris vel-->
+                    <!--                                dapibus-->
+                    <!--                                dictum.</p>-->
+                    <!--                        </div>-->
+                    <!--                        &lt;!&ndash; More comments here &ndash;&gt;-->
+                    <!--                    </div>-->
+
+                    <div
+                            th:if="${!#lists.isEmpty(feedbackList) and feedbackList!=null and feedbackList.size() != 0}">
+                        <div class="row d-flex justify-content-center">
+                            <div class="col">
+
+                                <div class="comments-list mt-auto" style="height: 450px;overflow-y: auto">
+
+                                    <div class="card shadow-0 border" style="background-color: #f0f2f5;">
+                                        <div class="card-body p-4">
+                                            <div class="card mb-4"
+                                                 th:if="${!feedbackList.isEmpty() or feedbackList!=null}"
+                                                 th:each="fb : ${feedbackList}">
+                                                <div class="card-body">
+                                                    <p th:text="${fb.content}">Type your note, and hit enter to add
+                                                        it</p>
+
+                                                    <div class="d-flex justify-content-between">
+                                                        <div class="d-flex flex-row align-items-center">
+                                                            <i class="fa-solid fa-user mr-3"></i>
+                                                            <p class="mb-0 ms-2" th:text="${fb.user.name}">Johny</p>
+                                                        </div>
+                                                        <div class="d-flex flex-row align-items-center">
+                                                            <i class="fa-solid fa-calendar-days mr-3"></i>
+                                                            <p class="text-muted mb-0"
+                                                               th:text="${#dates.format(fb.date, 'yyyy-MM-dd')}">
+                                                                4-12-2014</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <th:block th:if="${feedbackList.isEmpty() or feedbackList == null}">
+                        <h3 class="font-weight-bold text-center">Chưa có bình luận!</h3>
+                    </th:block>
+
+                </div>
+            </div>
+        </div>
+
+
         <div class="row mt-5">
             <h2>Sản phẩm liên quan</h2>
         </div>

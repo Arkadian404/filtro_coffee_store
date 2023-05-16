@@ -79,7 +79,7 @@ public class AccountService {
         Account tempAccount = getAccountByName(accountName.trim());
         if (tempAccount != null) {
             if (passwordEncoder.matches(password, tempAccount.getPassword())) {
-                Account authenticateAccount = accountRepository.authenticate(accountName, tempAccount.getPassword());
+                Account authenticateAccount = accountRepository.authenticateUser(accountName, tempAccount.getPassword());
                 return authenticateAccount;
             } else {
                 throw new AuthenticationAccountException("Sai mật khẩu!");
@@ -102,6 +102,21 @@ public class AccountService {
             throw new AuthenticationAccountException("Sai tên đăng nhập!");
         }
     }
+
+    public Account authenticateShipper(String accountName, String password) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        Account tempAccount = getAccountByName(accountName.trim());
+        if (tempAccount != null) {
+            if (passwordEncoder.matches(password, tempAccount.getPassword())) {
+                return accountRepository.authenticateShipper(accountName, tempAccount.getPassword());
+            } else {
+                throw new AuthenticationAccountException("Sai mật khẩu!");
+            }
+        } else {
+            throw new AuthenticationAccountException("Sai tên đăng nhập!");
+        }
+    }
+
 
     public void changePassword(Account account, String currentPassword, String newPassword, String repeatPassword) throws NotFoundException {
         if (account == null) {
@@ -128,7 +143,7 @@ public class AccountService {
         newAccount.setAccountName(account.getAccountName());
         newAccount.setPassword(passwordEncoder.encode(account.getPassword()));
         newAccount.setCreatedDate(new Date());
-        newAccount.setRoleNumber(account.getRoleNumber());
+        newAccount.setRole(account.getRole());
         newAccount.setStatus(account.getStatus());
         accountRepository.save(newAccount);
     }
@@ -142,7 +157,7 @@ public class AccountService {
             newAccount.setPassword(encodedPassword);
         }
         newAccount.setCreatedDate(new Date());
-        newAccount.setRoleNumber(account.getRoleNumber());
+        newAccount.setRole(account.getRole());
         newAccount.setStatus(account.getStatus());
         accountRepository.save(newAccount);
     }

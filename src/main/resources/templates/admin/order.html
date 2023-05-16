@@ -54,10 +54,11 @@
                         <td th:text="${#numbers.formatDecimal(order.total, 0, 'COMMA', 0, 'COMMA')+'đ'}"></td>
                         <td th:if="${order.status == 1}">Đang chờ người dùng xác nhận</td>
                         <td th:if="${order.status == 2}">Người dùng đã xác nhận</td>
-                        <td th:if="${order.status == 3}">Đang vận chuyển hàng</td>
-                        <td th:if="${order.status == 4}">Đã nhận hàng</td>
-                        <td th:if="${order.status == 5}">Đang chờ hủy bỏ đơn hàng</td>
-                        <td th:if="${order.status == 6}">Đơn hàng đã hủy bỏ</td>
+                        <td th:if="${order.status == 3}">Đang chờ vận chuyển</td>
+                        <td th:if="${order.status == 4}">Đang vận chuyển hàng</td>
+                        <td th:if="${order.status == 5}">Đã nhận hàng</td>
+                        <td th:if="${order.status == 6}">Đang chờ hủy bỏ đơn hàng</td>
+                        <td th:if="${order.status == 7}">Đơn hàng đã hủy bỏ</td>
                         <td>
                             <a href="#editOrderModal" class="edit" data-toggle="modal"><i
                                     class="material-icons"
@@ -178,10 +179,11 @@
                         <select id="status" name="status">
                             <option value="1">Đang chờ xác thực</option>
                             <option value="2">Đã xác thực</option>
-                            <option value="3">Đang giao hàng</option>
-                            <option value="4">Đã giao hàng</option>
-                            <option value="5">Đang chờ hoàn trả</option>
-                            <option value="6">Đã hoàn trả</option>
+                            <option value="3">Chấp nhận đơn hàng</option>
+                            <option value="4">Đang giao hàng</option>
+                            <option value="5">Đã giao hàng</option>
+                            <option value="6">Đang chờ hoàn trả</option>
+                            <option value="7">Đã hoàn trả</option>
                         </select>
                     </div>
                     <div class="modal-footer">

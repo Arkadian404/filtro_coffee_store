@@ -1,5 +1,6 @@
 package com.data.filtro.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -61,8 +62,13 @@ public class Order implements Serializable {
     @JsonManagedReference
     private PaymentMethod paymentMethod;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "orderId")
-    @JsonIgnore
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "orderId")
+    //@JsonIgnore
+    @JsonManagedReference
     private List<OrderDetail> orderDetails;
+
+
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+    private Shipper shipper;
 
 }

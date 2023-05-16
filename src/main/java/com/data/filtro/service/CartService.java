@@ -46,6 +46,11 @@ public class CartService {
         return cartRepository.findCurrentOrderCartByUserId(id);
     }
 
+
+    public Cart getCartById(int id) {
+        return cartRepository.findCartById(id);
+    }
+
     public Cart createCart(User user) {
         System.out.println("create cart for: " + user.getName());
         Cart cart = new Cart();

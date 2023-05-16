@@ -4,7 +4,6 @@ import com.data.filtro.model.*;
 import com.data.filtro.repository.OrderDetailRepository;
 import com.data.filtro.repository.OrderRepository;
 import jakarta.transaction.Transactional;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -99,10 +98,11 @@ public class OrderService {
         System.out.println(order.getId());
         Order newOrder = orderRepository.findById(order.getId()).get();
         System.out.println(newOrder.getId());
-//        newOrder.setPhoneNumber(order.getPhoneNumber());
-//        newOrder.setAddress(order.getAddress());
-//        newOrder.setCity(order.getCity());
-//        newOrder.setZip(order.getZip());
+        newOrder.setPhoneNumber(order.getPhoneNumber());
+        newOrder.setAddress(order.getAddress());
+        newOrder.setCity(order.getCity());
+        newOrder.setZip(order.getZip());
+        newOrder.setStatus(order.getStatus());
         orderRepository.save(newOrder);
     }
 
@@ -129,65 +129,89 @@ public class OrderService {
         orderRepository.updateCancelOrder(id);
     }
 
-    public void updateOrderStatus(int orderId) {
-        Order order = getOrderById(orderId);
-        if (order != null) {
-
-            int status = order.getStatus();
-            if (status == 2) {
+//    public void updateOrderStatus(int orderId) {
+//        Order order = getOrderById(orderId);
+//        if (order != null) {
+//
+//            int status = order.getStatus();
+//            if (status == 2) {
+////                try {
+////                    Timer timer = new Timer();
+////                    timer.schedule(new TimerTask() {
+////                        @Override
+////                        public void run() {
+////                            order.setStatus(3);
+////                            orderRepository.save(order);
+////                            System.out.println("Order status updated to shipped");
+////                            System.out.println("Current time: " + System.currentTimeMillis());
+////                            timer.schedule(new TimerTask() {
+////                                @Override
+////                                public void run() {
+////                                    order.setStatus(4);
+////                                    orderRepository.save(order);
+////                                    System.out.println("Order status updated to delivered");
+////                                }
+////                            }, 300000L);
+////                        }
+////                    }, 60000L);
+////
+////                } catch (Exception ex) {
+////                    ex.printStackTrace();
+////                }
 //                try {
 //                    Timer timer = new Timer();
-//                    timer.schedule(new TimerTask() {
+//                    TimerTask shippedTask = new TimerTask() {
 //                        @Override
 //                        public void run() {
 //                            order.setStatus(3);
 //                            orderRepository.save(order);
 //                            System.out.println("Order status updated to shipped");
 //                            System.out.println("Current time: " + System.currentTimeMillis());
-//                            timer.schedule(new TimerTask() {
+//                            TimerTask deliveredTask = new TimerTask() {
 //                                @Override
 //                                public void run() {
 //                                    order.setStatus(4);
 //                                    orderRepository.save(order);
 //                                    System.out.println("Order status updated to delivered");
 //                                }
-//                            }, 300000L);
+//                            };
+//                            timer.schedule(deliveredTask, 300000L);
+//                            this.cancel();
 //                        }
-//                    }, 60000L);
+//                    };
+//                    timer.schedule(shippedTask, 60000L);
 //
 //                } catch (Exception ex) {
 //                    ex.printStackTrace();
 //                }
-                try {
-                    Timer timer = new Timer();
-                    TimerTask shippedTask = new TimerTask() {
-                        @Override
-                        public void run() {
-                            order.setStatus(3);
-                            orderRepository.save(order);
-                            System.out.println("Order status updated to shipped");
-                            System.out.println("Current time: " + System.currentTimeMillis());
-                            TimerTask deliveredTask = new TimerTask() {
-                                @Override
-                                public void run() {
-                                    order.setStatus(4);
-                                    orderRepository.save(order);
-                                    System.out.println("Order status updated to delivered");
-                                }
-                            };
-                            timer.schedule(deliveredTask, 300000L);
-                            this.cancel();
-                        }
-                    };
-                    timer.schedule(shippedTask, 60000L);
+//            }
+//        }
+//    }
 
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
+    public void updateOrderShippingStatus(int orderId) {
+        Order order = getOrderById(orderId);
+        if (order != null) {
+            int status = order.getStatus();
+            if (status == 3) {
+                order.setStatus(4);
+                System.out.println("Update order to 4!!!");
+                orderRepository.save(order);
             }
         }
     }
 
+
+    public void updateOrderDeliveredStatus(int orderId) {
+        Order order = getOrderById(orderId);
+        if (order != null) {
+            int status = order.getStatus();
+            if (status == 4) {
+                order.setStatus(5);
+                System.out.println("Update order to 5!!!");
+                orderRepository.save(order);
+            }
+        }
+    }
 
     public void updateSoldByOrderStatus(Order order) {
         Order updatedOrder = getOrderById(order.getId());
@@ -195,9 +219,9 @@ public class OrderService {
             return;
         }
         int status = updatedOrder.getStatus();
-        if (status == 4) {
+        if (status == 5) {
             updateSold(order.getOrderDetails(), true);
-        } else if (status == 6) {
+        } else if (status == 7) {
             updateSold(order.getOrderDetails(), false);
         }
     }
@@ -214,5 +238,33 @@ public class OrderService {
             productService.save(product);
         }
     }
+
+
+    public List<Order> getOrderByStatusOrder(int status, int userId) {
+        return orderRepository.findOrderByStatusOrder(status, userId);
+    }
+
+    public List<Order> getEligibleOrderForShipper() {
+        return orderRepository.findEligibleOrderForShipper();
+    }
+
+
+    public List<Order> getShippingOrderByShipperId(int id) {
+        return orderRepository.findShippingOrderByShipperId(id);
+    }
+
+    public List<Order> getDeliveredOrderByShipperId(int id) {
+        return orderRepository.findDeliveredOrderByShipperId(id);
+    }
+
+
+    public List<Order> getDeliveredOrderByUserId(int id) {
+        return orderRepository.findDeliveredOrderByUserId(id);
+    }
+
+    public List<Order> getShippingOrderByUserId(int id) {
+        return orderRepository.findShippingOrderByUserId(id);
+    }
+
 
 }

@@ -1,6 +1,7 @@
 package com.data.filtro.repository;
 
 import com.data.filtro.model.Order;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -38,4 +39,26 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
     @Modifying
     @Query("update Order o set o.status=6 where o.id =:id")
     void cancelOrder(@Param("id") int id);
+
+    @Query("select o from Order o where o.status =:status and o.user.id =:userId")
+    List<Order> findOrderByStatusOrder(@Param("status") int status, @Param("userId") int userId);
+
+    @Query("select o from Order o where o.status = 3")
+    List<Order> findEligibleOrderForShipper();
+
+    @Query("select o from Order o where o.shipper.id=:id")
+    List<Order> findOrderByShipperId(@Param("id") int id);
+
+    @Query("select o from Order o where o.status = 4 and o.shipper.account.id =:id")
+    List<Order> findShippingOrderByShipperId(@Param("id") int id);
+
+
+    @Query("select o from Order o where o.status = 5 and o.shipper.account.id =:id")
+    List<Order> findDeliveredOrderByShipperId(@Param("id") int id);
+
+    @Query("select o from Order o where o.status = 4 and o.user =:id")
+    List<Order> findShippingOrderByUserId(@Param("id") int id);
+
+    @Query("select o from Order o where o.status = 5 and o.user.id =:id")
+    List<Order> findDeliveredOrderByUserId(@Param("id") int id);
 }

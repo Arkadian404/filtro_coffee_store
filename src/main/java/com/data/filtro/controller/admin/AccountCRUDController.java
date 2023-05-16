@@ -1,8 +1,11 @@
 package com.data.filtro.controller.admin;
 
 import com.data.filtro.model.Account;
+import com.data.filtro.model.Role;
 import com.data.filtro.service.AccountService;
+import com.data.filtro.service.RoleService;
 import jakarta.servlet.http.HttpSession;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -20,6 +24,9 @@ public class AccountCRUDController {
 
     @Autowired
     AccountService accountService;
+
+    @Autowired
+    RoleService roleService;
 
     public Pageable sortAccount(int currentPage, int pageSize, int sortType) {
         Pageable pageable;
@@ -36,6 +43,7 @@ public class AccountCRUDController {
     @GetMapping
     public String show(@RequestParam(defaultValue = "5") int sortType, @RequestParam("page") Optional<Integer> page, Model model, HttpSession session) {
         Account admin = (Account) session.getAttribute("admin");
+        List<Role> roles = roleService.getAll();
         if (admin == null) {
             return "redirect:/admin/login";
         }
@@ -50,6 +58,7 @@ public class AccountCRUDController {
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("totalElements", accountPage.getTotalElements());
         model.addAttribute("sortType", sortType);
+        model.addAttribute("roles", roles);
         return "admin/account";
     }
 

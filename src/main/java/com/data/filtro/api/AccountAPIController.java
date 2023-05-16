@@ -44,7 +44,8 @@ public class AccountAPIController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestParam String userName, @RequestParam String accountName, @RequestParam String email, @RequestParam String password, @RequestParam String repeatPassword) {
+    public ResponseEntity<?> register(@RequestParam String userName, @RequestParam String accountName,
+                                      @RequestParam String email, @RequestParam String password, @RequestParam String repeatPassword) {
         try {
             userService.registerUser(userName, accountName, email, password, repeatPassword);
             String message = "Tao tai khoan thanh cong!";

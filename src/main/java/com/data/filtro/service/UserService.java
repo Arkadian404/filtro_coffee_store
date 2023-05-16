@@ -3,8 +3,10 @@ package com.data.filtro.service;
 import com.data.filtro.exception.AccountNameExistException;
 import com.data.filtro.exception.PasswordDoNotMatchException;
 import com.data.filtro.model.Account;
+import com.data.filtro.model.Role;
 import com.data.filtro.model.User;
 import com.data.filtro.repository.AccountRepository;
+import com.data.filtro.repository.RoleRepository;
 import com.data.filtro.repository.UserRepository;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,9 @@ public class UserService {
 
     @Autowired
     private AccountRepository accountRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
 
     public User getUserById(int id) {
         return userRepository.findUserById(id);
@@ -70,6 +75,7 @@ public class UserService {
         }
 
         User user = new User();
+        Role role = roleRepository.findById(3);
         user.setName(userName);
         user.setEmail(email);
         userRepository.save(user);
@@ -79,7 +85,7 @@ public class UserService {
         String hashPassword = passwordEncoder.encode(password);
         account.setPassword(hashPassword);
         account.setCreatedDate(new Date());
-        account.setRoleNumber(3);
+        account.setRole(role);
         account.setStatus(1);
         user.setAccount(account);
         accountRepository.save(account);
