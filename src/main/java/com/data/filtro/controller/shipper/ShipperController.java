@@ -29,6 +29,9 @@ public class ShipperController {
     @GetMapping
     public String show(HttpSession session, Model model) {
         Account shipper = (Account) session.getAttribute("shipper");
+        if (shipper == null) {
+            return "redirect:/shipper/login";
+        }
         List<Order> eligibleOrders = orderService.getEligibleOrderForShipper();
         List<Order> shippingOrders = orderService.getShippingOrderByShipperId(shipper.getId());
         List<Order> deliveredOrders = orderService.getDeliveredOrderByShipperId(shipper.getId());

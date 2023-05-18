@@ -76,7 +76,7 @@
                                     <a class="nav-link" th:href="@{/cart}">
                                         <i class="small fa fa-shopping-cart"></i><span class="small">GIỎ HÀNG</span>
                                         <th:block
-                                                th:if="${(#lists.isEmpty(cartItemList) or cartItemList == null) and session.user == null}">
+                                                th:if="${(#lists.isEmpty(cartItemList) and cartItemList == null) and session.user == null}">
                                             <span class="small badge badge-light"
                                             >0 sản phẩm</span>
                                         </th:block>
@@ -91,7 +91,7 @@
                                                                                                                                   th:text="${cartItemList.size()} + ' sản phẩm'">4 sản phẩm</span>
                                         </th:block>
                                         <th:block
-                                                th:if="${(#lists.isEmpty(cartItemList) or cartItemList ==null) and session.user!=null}">
+                                                th:if="${(#lists.isEmpty(cartItemList) and cartItemList ==null) and session.user!=null}">
                                                                                                                             <span class="small badge badge-light"
                                                                                                                             >0 sản phẩm</span>
                                         </th:block>
