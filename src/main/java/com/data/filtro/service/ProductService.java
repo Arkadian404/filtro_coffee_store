@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -39,6 +40,7 @@ public class ProductService {
         if (file != null && !file.isEmpty()) {
             // Get the original filename
             String originalFilename = file.getOriginalFilename();
+            String sanitizedFilename = StringUtils.cleanPath(originalFilename);
 
             String projectDir = System.getProperty("user.dir");
             // Define the upload directory
@@ -54,7 +56,7 @@ public class ProductService {
                 throw new Exception("File size too large. Please upload a file less than 5MB.");
             }
             // Create a new file with a unique name in the upload directory
-            File uploadedFile = new File(uploadDir, UUID.randomUUID().toString() + "-" + originalFilename);
+            File uploadedFile = new File(uploadDir, UUID.randomUUID().toString() + "-" + sanitizedFilename);
             // Save the uploaded file to disk
             try (InputStream inputStream = file.getInputStream()) {
                 Files.copy(inputStream, uploadedFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
@@ -90,6 +92,7 @@ public class ProductService {
         if (file != null && !file.isEmpty()) {
             // Get the original filename
             String originalFilename = file.getOriginalFilename();
+            String sanitizedFilename = StringUtils.cleanPath(originalFilename);
 
             String projectDir = System.getProperty("user.dir");
             // Define the upload directory
@@ -105,7 +108,7 @@ public class ProductService {
                 throw new Exception("File size too large. Please upload a file less than 5MB.");
             }
             // Create a new file with a unique name in the upload directory
-            File uploadedFile = new File(uploadDir, UUID.randomUUID().toString() + "-" + originalFilename);
+            File uploadedFile = new File(uploadDir, UUID.randomUUID().toString() + "-" + sanitizedFilename);
             // Save the uploaded file to disk
             try (InputStream inputStream = file.getInputStream()) {
                 Files.copy(inputStream, uploadedFile.toPath(), StandardCopyOption.REPLACE_EXISTING);

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -109,7 +110,7 @@ public class CartController {
         URI uri = new URI(referer);
         System.out.println(uri);
         String path = uri.getPath();
-        System.out.println(path);
+        UriComponentsBuilder builder = UriComponentsBuilder.fromPath("/");
         Cart cart = null;
         if (user != null) {
             //cart = cartService.getCartByUserId(user.getId());
@@ -121,7 +122,11 @@ public class CartController {
             cartService.addProductToCart(cart, productId, quantity);
         } else if (guestCart != null) {
             cartService.addProductToGuestCart(guestCart, productId, quantity);
-            return "redirect:/product/" + productId;
+            String redirectUrl = UriComponentsBuilder.fromPath("/product/{productId}")
+                    .buildAndExpand(productId)
+                    .encode()
+                    .toString();
+            return "redirect:" + redirectUrl;
         } else {
             if (guestCart == null) {
                 guestCart = cartService.createGuestCart();
@@ -129,12 +134,20 @@ public class CartController {
             }
             cartService.addProductToGuestCart(guestCart, productId, quantity);
         }
+
         if (path.equals("/")) {
-            return "redirect:/";
+            return "redirect:" + builder.build().encode().toUriString();
         } else if (path.startsWith("/category")) {
-            return "redirect:" + path;
-        } else
-            return "redirect:/product/" + productId;
+            // "redirect:" + path;
+            return "redirect:" + builder.path(path).build().encode().toUriString();
+        } else {
+            //return "redirect:/product/" + productId;
+            String redirectUrl = UriComponentsBuilder.fromPath("/product/{productId}")
+                    .buildAndExpand(productId)
+                    .encode()
+                    .toString();
+            return "redirect:" + redirectUrl;
+        }
 
     }
 
