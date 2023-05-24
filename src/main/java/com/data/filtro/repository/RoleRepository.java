@@ -1,7 +1,6 @@
 package com.data.filtro.repository;
 
 import com.data.filtro.model.Role;
-import jnr.ffi.annotations.In;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

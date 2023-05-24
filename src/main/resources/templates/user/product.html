@@ -14,7 +14,8 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a th:href="@{/}">Trang chủ</a></li>
                 <li class="breadcrumb-item"><a th:href="@{/category/{id}(id='all')}">Tất cả sản phẩm</a></li>
-                <li class="breadcrumb-item active" aria-current="page" th:text="${product.productName}">Chi tiết sản
+                <li class="breadcrumb-item active" aria-current="page" th:if="${product != null}"
+                    th:text="${product.productName}">Chi tiết sản
                     phẩm
                 </li>
             </ol>
