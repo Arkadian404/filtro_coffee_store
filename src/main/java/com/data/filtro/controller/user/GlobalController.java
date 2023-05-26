@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.sound.sampled.Port;
+import java.security.SecureRandom;
+import java.util.Base64;
 import java.util.List;
 
 @ControllerAdvice
-@RequestMapping({"/", "/product", "/category", "/search", "/cart"})
+@RequestMapping({"/", "/product", "/category", "/search", "/cart", "/register", "/login"})
 public class GlobalController {
 
     @Autowired
@@ -66,6 +68,23 @@ public class GlobalController {
             return cartItemList;
         }
         return null;
+    }
+
+    @ModelAttribute("csrfToken")
+    public String getCsrfToken(HttpSession session) {
+        String csrfToken = (String) session.getAttribute("csrfToken");
+        if (csrfToken == null || session.isNew() || csrfToken.isEmpty()) {
+            csrfToken = generateCsrfToken();
+            session.setAttribute("csrfToken", csrfToken);
+            System.out.println(csrfToken);
+        }
+        return csrfToken;
+    }
+
+    private String generateCsrfToken() {
+        byte[] tokenBytes = new byte[32]; // 256 bits
+        new SecureRandom().nextBytes(tokenBytes);
+        return Base64.getUrlEncoder().withoutPadding().encodeToString(tokenBytes);
     }
 
 }

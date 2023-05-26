@@ -79,6 +79,7 @@
                                         class="btn btn-success text-uppercase">
                                     <i class="fa fa-shopping-cart"></i> Thêm vào giỏ
                                 </button>
+                                <input type="hidden" name="csrfToken" th:value="${session.csrfToken}">
                             </div>
                         </form>
                         <hr class="mt-auto">

@@ -4,6 +4,7 @@ import com.data.filtro.model.Category;
 import com.data.filtro.model.Product;
 import com.data.filtro.service.CategoryService;
 import com.data.filtro.service.ProductService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

@@ -40,9 +40,14 @@ public class LoginController {
     @PostMapping
     public String login(@RequestParam("accountName") String accountName,
                         @RequestParam("password") String password,
+                        @RequestParam("csrfToken") String csrfToken,
                         HttpSession session,
                         Model model) {
-
+        String storedCsrfToken = (String) session.getAttribute("csrfToken");
+        if (storedCsrfToken == null || !storedCsrfToken.equals(csrfToken)) {
+            model.addAttribute("errorMessage", "Invalid CsrfToken");
+            return "login";
+        }
         try {
             Account account = accountService.authenticateUser(accountName, password);
             User user = userService.getUserById(account.getUser().getId());
@@ -55,6 +60,7 @@ public class LoginController {
                 cart = cartService.convertGuestCartToCart(guestCart, user);
                 session.removeAttribute("guestCart");
             }
+            session.removeAttribute("csrfToken");
             return "redirect:/";
         } catch (AuthenticationAccountException exception) {
             exception.printStackTrace();

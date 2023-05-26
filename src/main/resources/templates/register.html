@@ -16,7 +16,12 @@
                     <div id="errorMessage" th:if="${errorMessage}" class="alert alert-danger" role="alert"
                          th:text="${errorMessage}">
                     </div>
-
+                    <th:block th:if="${errorMessages!=null}"
+                              th:each="err : ${errorMessages}">
+                        <div id="errorMessages" th:if="${err}" class="alert alert-danger" role="alert"
+                             th:text="${err}">
+                        </div>
+                    </th:block>
                     <div class="text-center mb-3">
                         <h2>ĐĂNG KÝ</h2>
                     </div>
@@ -67,9 +72,9 @@
                         </div>
                     </div>
                     <hr>
+                    <input type="hidden" name="csrfToken" th:value="${session.csrfToken}">
                 </form>
             </div>
-
         </div>
 
     </div>

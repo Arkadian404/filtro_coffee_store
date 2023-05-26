@@ -2,6 +2,7 @@ package com.data.filtro.service;
 
 import com.data.filtro.exception.AccountNameExistException;
 import com.data.filtro.exception.PasswordDoNotMatchException;
+import com.data.filtro.exception.PasswordRuleException;
 import com.data.filtro.model.Account;
 import com.data.filtro.model.Role;
 import com.data.filtro.model.User;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -66,12 +68,17 @@ public class UserService {
 
     public void registerUser(String userName, String accountName, String email, String password, String repeatPassword) {
 
+        List<String> errorMessages = validatePasswordStrength(password);
         if (accountService.checkAccountName(accountName)) {
             throw new AccountNameExistException("Tên tài khoản đã được đặt");
         }
 
         if (!password.equals(repeatPassword)) {
             throw new PasswordDoNotMatchException("Không đúng mật khẩu !");
+        }
+
+        if (!errorMessages.isEmpty()) {
+            throw new PasswordRuleException(errorMessages);
         }
 
         User user = new User();
@@ -90,6 +97,25 @@ public class UserService {
         user.setAccount(account);
         accountRepository.save(account);
         userRepository.save(user);
+    }
+
+
+    private List<String> validatePasswordStrength(String password) {
+        List<String> errorMessages = new ArrayList<>();
+        if (password.length() < 8 || password.length() > 16) {
+            errorMessages.add("Mật khẩu phải ít nhất 8 kí tự và tối đa 16 kí tự");
+        } else {
+            if (!password.matches(".*[A-Z].*")) {
+                errorMessages.add("Mật khẩu phải có ít nhất 1 kí tự in hoa");
+            }
+            if (!password.matches(".*\\d.*")) {
+                errorMessages.add("Mật khẩu phải có ít nhất 1 chữ số");
+            }
+            if (!password.matches(".*[@$%^&*?!].*")) {
+                errorMessages.add("Mật khẩu phải có ít nhất 1 kí tự đặc biệt");
+            }
+        }
+        return errorMessages;
     }
 
     public User getUserByEmail(String email) {
