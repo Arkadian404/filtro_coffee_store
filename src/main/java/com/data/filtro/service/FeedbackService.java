@@ -1,6 +1,8 @@
 package com.data.filtro.service;
 
 import com.data.filtro.model.Feedback;
+import com.data.filtro.model.Product;
+import com.data.filtro.model.User;
 import com.data.filtro.repository.FeedbackRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,10 +25,10 @@ public class FeedbackService {
     }
 
 
-    public void createFeedback(Feedback feedback) {
+    public void createFeedback(User user, Product product, Feedback feedback) {
         Feedback newFeedback = new Feedback();
-        newFeedback.setProduct(feedback.getProduct());
-        newFeedback.setUser(feedback.getUser());
+        newFeedback.setProduct(product);
+        newFeedback.setUser(user);
         newFeedback.setContent(feedback.getContent());
         newFeedback.setDate(new Date());
         feedbackRepository.save(newFeedback);

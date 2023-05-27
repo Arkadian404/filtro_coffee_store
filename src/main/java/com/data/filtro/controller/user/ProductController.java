@@ -50,7 +50,9 @@ public class ProductController {
 
     @PostMapping("/{id}/feedback")
     public String feedback(@ModelAttribute Feedback feedback, @PathVariable Integer id, HttpSession session) {
-        feedbackService.createFeedback(feedback);
+        User user = (User) session.getAttribute("user");
+        Product product = productService.getProductById(id);
+        feedbackService.createFeedback(user, product, feedback);
         return "redirect:/product/" + id;
     }
 }

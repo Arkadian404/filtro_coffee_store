@@ -122,8 +122,6 @@
                                                     th:text="${session.user !=null ? session.user.name: 'NULL'}"> </span></span>
                         <form th:action="@{/product/{id}/feedback(id=${product.id})}" method="POST"
                               th:object="${feedback}">
-                            <input type="hidden" name="product" th:value="${product.id}">
-                            <input type="hidden" name="user" th:value="${session.user.id}">
                             <div class="form-group">
                                 <label for="comment-content">Comment:</label>
                                 <textarea name="content" class="form-control" id="comment-content" rows="3"></textarea>
