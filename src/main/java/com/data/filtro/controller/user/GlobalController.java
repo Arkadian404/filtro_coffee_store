@@ -76,7 +76,7 @@ public class GlobalController {
         if (csrfToken == null || session.isNew() || csrfToken.isEmpty()) {
             csrfToken = generateCsrfToken();
             session.setAttribute("csrfToken", csrfToken);
-            System.out.println(csrfToken);
+            System.out.println("CSRF TOKEN: " + csrfToken);
         }
         return csrfToken;
     }
