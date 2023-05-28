@@ -70,21 +70,21 @@ public class GlobalController {
         return null;
     }
 
-    @ModelAttribute("csrfToken")
-    public String getCsrfToken(HttpSession session) {
-        String csrfToken = (String) session.getAttribute("csrfToken");
-        if (csrfToken == null || session.isNew() || csrfToken.isEmpty()) {
-            csrfToken = generateCsrfToken();
-            session.setAttribute("csrfToken", csrfToken);
-            System.out.println("CSRF TOKEN: " + csrfToken);
-        }
-        return csrfToken;
-    }
-
-    private String generateCsrfToken() {
-        byte[] tokenBytes = new byte[32]; // 256 bits
-        new SecureRandom().nextBytes(tokenBytes);
-        return Base64.getUrlEncoder().withoutPadding().encodeToString(tokenBytes);
-    }
+//    @ModelAttribute("csrfToken")
+//    public String getCsrfToken(HttpSession session) {
+//        String csrfToken = (String) session.getAttribute("csrfToken");
+//        if (csrfToken == null || session.isNew() || csrfToken.isEmpty()) {
+//            csrfToken = generateCsrfToken();
+//            session.setAttribute("csrfToken", csrfToken);
+//            System.out.println("CSRF TOKEN: " + csrfToken);
+//        }
+//        return csrfToken;
+//    }
+//
+//    private String generateCsrfToken() {
+//        byte[] tokenBytes = new byte[32]; // 256 bits
+//        new SecureRandom().nextBytes(tokenBytes);
+//        return Base64.getUrlEncoder().withoutPadding().encodeToString(tokenBytes);
+//    }
 
 }

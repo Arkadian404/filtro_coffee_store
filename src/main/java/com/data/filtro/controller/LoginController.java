@@ -18,9 +18,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.UUID;
+
+import static com.data.filtro.service.InputService.containsAllowedCharacters;
+
 @Controller
 @RequestMapping("/login")
 public class LoginController {
+    private String csrfToken;
     private final AccountService accountService;
 
     private final CartService cartService;
@@ -37,14 +42,18 @@ public class LoginController {
     }
 
     @GetMapping
-    public String show() {
+    public String show(Model model) {
+        String _csrfToken = generateRandomString();
+        csrfToken = _csrfToken;
+        System.out.println("csrfToken:" + _csrfToken);
+        model.addAttribute("_csrfToken", _csrfToken);
         return "login";
     }
 
     @PostMapping
     public String login(@RequestParam("accountName") String accountName,
                         @RequestParam("password") String password,
-                        @RequestParam("csrfToken") String csrfToken,
+                        @RequestParam("_csrfParameterName") String csrfTokenForm,
                         @RequestParam(value = "g-recaptcha-response", required = false) String recaptchaResponse,
                         HttpSession session,
                         Model model) {
@@ -61,11 +70,28 @@ public class LoginController {
             }
         }
 
-        String storedCsrfToken = (String) session.getAttribute("csrfToken");
-        if (storedCsrfToken == null || !storedCsrfToken.equals(csrfToken)) {
-            model.addAttribute("message", "Invalid CsrfToken");
+
+        if (!containsAllowedCharacters(accountName) || !containsAllowedCharacters(password)) {
+            String message = "Tên tài khoản, mật khẩu chỉ được chứa các ký tự thường và dấu (), @";
+            model.addAttribute("errorMessage", message);
+//            throw new InputNotInvalidException("Tên tài khoản, mật khẩu chỉ được chứa các ký tự thường và dấu (), @");
             return "login";
         }
+
+
+//        String storedCsrfToken = (String) session.getAttribute("csrfToken");
+//        if (storedCsrfToken == null || !storedCsrfToken.equals(csrfToken)) {
+//            model.addAttribute("message", "Invalid CsrfToken");
+//            return "login";
+//        }
+
+        System.out.println("Sau khi nhan nut dang ky thi csrf token la: " + csrfToken);
+        if (!csrfTokenForm.equals(csrfToken)) {
+            String message = "Mã token không đúng";
+            model.addAttribute("errorMessage", message);
+            return "login";
+        }
+
 
         try {
             Account account = accountService.authenticateUser(accountName, password);
@@ -79,7 +105,7 @@ public class LoginController {
                 cart = cartService.convertGuestCartToCart(guestCart, user);
                 session.removeAttribute("guestCart");
             }
-            session.removeAttribute("csrfToken");
+            //session.removeAttribute("csrfToken");
             return "redirect:/";
         } catch (AuthenticationAccountException exception) {
             exception.printStackTrace();
@@ -94,4 +120,10 @@ public class LoginController {
 //        System.out.println("session lay duoc la: " + account.getAccountName());
         return "session";
     }
+
+
+    public String generateRandomString() {
+        return UUID.randomUUID().toString();
+    }
+
 }

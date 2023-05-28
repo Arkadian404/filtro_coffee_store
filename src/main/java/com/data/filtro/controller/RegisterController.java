@@ -17,16 +17,26 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+
+import static com.data.filtro.service.InputService.containsAllowedCharacters;
+import static com.data.filtro.service.InputService.isStringLengthLessThan50;
 
 @Controller
 @RequestMapping("/register")
 public class RegisterController {
 
+
+    private String csrfToken;
+
     @Autowired
     UserService userService;
 
-    @GetMapping
-    public String showRegister() {
+    public String showRegister(Model model) {
+        String _csrfToken = generateRandomString();
+        csrfToken = _csrfToken;
+        System.out.println("csrfToken:" + _csrfToken);
+        model.addAttribute("_csrfToken", _csrfToken);
         return "register";
     }
 
@@ -36,19 +46,36 @@ public class RegisterController {
                                @RequestParam("email") String email,
                                @RequestParam("password") String password,
                                @RequestParam("repeatPassword") String repeatPassword,
-                               @RequestParam("csrfToken") String csrfToken,
+                               @RequestParam("_csrfParameterName") String csrfTokenForm,
                                HttpSession session,
                                Model model) {
 
-        String storedCsrfToken = (String) session.getAttribute("csrfToken");
-        if (storedCsrfToken == null || !storedCsrfToken.equals(csrfToken)) {
-            model.addAttribute("errorMessage", "Invalid CsrfToken");
+//        String storedCsrfToken = (String) session.getAttribute("csrfToken");
+//        if (storedCsrfToken == null || !storedCsrfToken.equals(csrfToken)) {
+//            model.addAttribute("errorMessage", "Invalid CsrfToken");
+//            return "register";
+//        }
+
+
+        if (!containsAllowedCharacters(userName) || !containsAllowedCharacters(accountName)
+                || !containsAllowedCharacters(email) || !isStringLengthLessThan50(userName)
+                || !isStringLengthLessThan50(accountName) || !isStringLengthLessThan50(password)) {
+            String message = "Tên người dùng, tên tài khoản, email chỉ được chứa các ký tự thường và dấu (), @ và " +
+                    "độ dài dưới 50 ký tự";
+            model.addAttribute("errorMessage", message);
+            return "register";
+        }
+        System.out.println("Sau khi nhan nut dang ky thi csrf token la: " + csrfToken);
+        if (!csrfTokenForm.equals(csrfToken)) {
+            String message = "Mã token không đúng";
+            model.addAttribute("errorMessage", message);
             return "register";
         }
 
+
         try {
             userService.registerUser(userName, accountName, email, password, repeatPassword);
-            session.removeAttribute("csrfToken");
+            //session.removeAttribute("csrfToken");
         } catch (AccountNameExistException ex) {
             model.addAttribute("errorMessage", ex.getMessage());
             return "register";
@@ -66,5 +93,9 @@ public class RegisterController {
         return "register";
     }
 
+
+    public String generateRandomString() {
+        return UUID.randomUUID().toString();
+    }
 
 }

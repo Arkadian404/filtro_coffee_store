@@ -1,5 +1,6 @@
 package com.data.filtro.config;
 
+import com.data.filtro.Util.StrictTransportSecurityFilter;
 import com.data.filtro.Util.XFrameOptions;
 import jakarta.servlet.SessionCookieConfig;
 import jakarta.servlet.SessionTrackingMode;
@@ -20,6 +21,15 @@ public class SecurityConfig {
         registrationBean.setFilter(new XFrameOptions());
         registrationBean.addUrlPatterns("/*");
         registrationBean.setOrder(1);
+        return registrationBean;
+    }
+
+
+    @Bean
+    public FilterRegistrationBean<StrictTransportSecurityFilter> strictTransportSecurityFilter() {
+        FilterRegistrationBean<StrictTransportSecurityFilter> registrationBean = new FilterRegistrationBean<>();
+        registrationBean.setFilter(new StrictTransportSecurityFilter());
+        registrationBean.addUrlPatterns("/*");
         return registrationBean;
     }
 
