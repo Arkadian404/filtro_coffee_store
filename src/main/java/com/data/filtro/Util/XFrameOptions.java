@@ -12,10 +12,11 @@ public class XFrameOptions implements Filter {
         response.setHeader("X-Frame-Options", "SAME-ORIGIN");
         response.setHeader("Content-Security-Policy", "script-src 'self' https://code.jquery.com " +
                 "https://kit.fontawesome.com " +
-                "https://unpkg.com " +
+                "https://unpkg.com " + "https://www.google.com/recaptcha/ " + "https://www.gstatic.com/recaptcha/ " +
                 "https://cdn.jsdelivr.net ; " +
-                "frame-src 'self';"
-                + "style-src 'self' https://code.jquery.com https://kit.fontawesome.com https://unpkg.com https://cdn.jsdelivr.net;");
+                "frame-src 'self' https://www.google.com/ ;"
+                + "style-src 'self' https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css 'unsafe-inline' " +
+                "https://fonts.googleapis.com/ 'unsafe-inline';");
         response.setHeader("X-Content-Type-Options", "nosniff");
         response.setHeader("Expect-CT", "max-age=86400");
 //        String newContentDisposition = "attachment; filename=f.txt";

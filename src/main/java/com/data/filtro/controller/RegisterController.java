@@ -32,6 +32,7 @@ public class RegisterController {
     @Autowired
     UserService userService;
 
+    @GetMapping
     public String showRegister(Model model) {
         String _csrfToken = generateRandomString();
         csrfToken = _csrfToken;
