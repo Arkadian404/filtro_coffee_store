@@ -15,7 +15,7 @@ public class XFrameOptions implements Filter {
                 "https://unpkg.com " +
                 "https://cdn.jsdelivr.net ; " +
                 "frame-src 'self';"
-                + "style-src 'self'; https://code.jquery.com https://kit.fontawesome.com https://unpkg.com https://cdn.jsdelivr.net;");
+                + "style-src 'self' https://code.jquery.com https://kit.fontawesome.com https://unpkg.com https://cdn.jsdelivr.net;");
         response.setHeader("X-Content-Type-Options", "nosniff");
         response.setHeader("Expect-CT", "max-age=86400");
 //        String newContentDisposition = "attachment; filename=f.txt";
