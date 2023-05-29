@@ -40,8 +40,13 @@ public class ProductService {
         if (file != null && !file.isEmpty()) {
             // Get the original filename
             String originalFilename = file.getOriginalFilename();
-            String sanitizedFilename = StringUtils.cleanPath(originalFilename);
-
+            String sanitizedFilename = sanitizeFilename(originalFilename);
+//            String sanitizedFilename = StringUtils.cleanPath(originalFilename);
+            System.out.println(originalFilename);
+            System.out.println(sanitizedFilename);
+            if (!isValidFilename(sanitizedFilename)) {
+                throw new Exception("Invalid file name");
+            }
             String projectDir = System.getProperty("user.dir");
             // Define the upload directory
             String uploadDir = projectDir + "\\src\\main\\upload\\product\\";
@@ -92,8 +97,13 @@ public class ProductService {
         if (file != null && !file.isEmpty()) {
             // Get the original filename
             String originalFilename = file.getOriginalFilename();
-            String sanitizedFilename = StringUtils.cleanPath(originalFilename);
-
+//            String sanitizedFilename = StringUtils.cleanPath(originalFilename);
+            String sanitizedFilename = sanitizeFilename(originalFilename);
+            System.out.println(originalFilename);
+            System.out.println(sanitizedFilename);
+            if (!isValidFilename(sanitizedFilename)) {
+                throw new Exception("Invalid file name");
+            }
             String projectDir = System.getProperty("user.dir");
             // Define the upload directory
             String uploadDir = projectDir + "\\src\\main\\upload\\product\\";
@@ -119,6 +129,23 @@ public class ProductService {
         }
         // Save the product to the database
         productRepository.save(existingProduct);
+    }
+
+
+    private String sanitizeFilename(String filename) {
+        // Replace disallowed characters with underscores
+        String sanitizedFilename = filename.replaceAll("[\\\\/:*?%\"<>|]", "_");
+        // Remove null bytes
+        sanitizedFilename = sanitizedFilename.replaceAll("\\x00", "");
+        return sanitizedFilename;
+    }
+
+    private boolean isValidFilename(String filename) {
+        // Check for disallowed characters on Windows
+        if (filename.matches(".*[\\\\/:*%?\"<>|\\x00].*")) {
+            return false;
+        }
+        return true;
     }
 
 
