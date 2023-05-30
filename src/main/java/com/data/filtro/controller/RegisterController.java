@@ -19,8 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static com.data.filtro.service.InputService.containsAllowedCharacters;
-import static com.data.filtro.service.InputService.isStringLengthLessThan50;
+import static com.data.filtro.service.InputService.*;
 
 @Controller
 @RequestMapping("/register")
@@ -58,14 +57,17 @@ public class RegisterController {
 //        }
 
 
-        if (!containsAllowedCharacters(userName) || !containsAllowedCharacters(accountName)
+        if (!containsUTF8(userName) || !containsAllowedCharacters(accountName)
                 || !containsAllowedCharacters(email) || !isStringLengthLessThan50(userName)
                 || !isStringLengthLessThan50(accountName) || !isStringLengthLessThan50(password)) {
             String message = "Tên người dùng, tên tài khoản, email chỉ được chứa các ký tự thường và dấu (), @ và " +
                     "độ dài dưới 50 ký tự";
+            System.out.println(message);
             model.addAttribute("errorMessage", message);
+            model.addAttribute("_csrfToken", csrfToken);
             return "register";
         }
+
         System.out.println("Sau khi nhan nut dang ky thi csrf token la: " + csrfToken);
         if (!csrfTokenForm.equals(csrfToken)) {
             String message = "Mã token không đúng";
