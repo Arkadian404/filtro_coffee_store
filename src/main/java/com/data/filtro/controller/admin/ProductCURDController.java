@@ -81,7 +81,7 @@ public class ProductCURDController {
 
     @PostMapping("/update")
     public String update(@ModelAttribute("product") Product product, @RequestParam("file") MultipartFile file) throws Exception {
-        productService.addProduct(product, file);
+        productService.update(product, file);
         return "redirect:/admin/product";
     }
 

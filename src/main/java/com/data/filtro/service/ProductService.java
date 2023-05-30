@@ -33,38 +33,72 @@ public class ProductService {
     }
 
 
+//    public void addProduct(Product product, MultipartFile file) throws Exception {
+//
+//        // Check if file is not empty and not null
+//        if (file != null && !file.isEmpty()) {
+//            // Get the original filename
+//            String originalFilename = file.getOriginalFilename();
+//
+//            String projectDir = System.getProperty("user.dir");
+//            // Define the upload directory
+//            String uploadDir = projectDir + "\\src\\main\\upload\\product\\";
+//            System.out.println(uploadDir);
+//            // Create the upload path if it doesn't exist
+//            Path uploadPath = Paths.get(uploadDir);
+//            if (!Files.exists(uploadPath)) {
+//                Files.createDirectories(uploadPath);
+//            }
+//
+//            if (file.getSize() > 5000000) { // Maximum file size of 5MB
+//                throw new Exception("File size too large. Please upload a file less than 5MB.");
+//            }
+//            // Create a new file with a unique name in the upload directory
+//            File uploadedFile = new File(uploadDir, UUID.randomUUID().toString() + "-" + originalFilename);
+//            // Save the uploaded file to disk
+//            try (InputStream inputStream = file.getInputStream()) {
+//                Files.copy(inputStream, uploadedFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+//            }
+//            // Set the image field of the product to the path of the uploaded file
+//            product.setImage(uploadedFile.getName());
+//            System.out.println(uploadedFile);
+//        } else {
+//            product.setImage(null);
+//        }
+//        // Save the product to the database
+//        product.setCreatedDate(new Date());
+//        productRepository.save(product);
+//    }
+
+
     public void addProduct(Product product, MultipartFile file) throws Exception {
 
         // Check if file is not empty and not null
-        if (file != null && !file.isEmpty()) {
-            // Get the original filename
-            String originalFilename = file.getOriginalFilename();
-
-            String projectDir = System.getProperty("user.dir");
-            // Define the upload directory
-            String uploadDir = projectDir + "\\src\\main\\upload\\product\\";
-            System.out.println(uploadDir);
-            // Create the upload path if it doesn't exist
-            Path uploadPath = Paths.get(uploadDir);
-            if (!Files.exists(uploadPath)) {
-                Files.createDirectories(uploadPath);
-            }
-
-            if (file.getSize() > 5000000) { // Maximum file size of 5MB
-                throw new Exception("File size too large. Please upload a file less than 5MB.");
-            }
-            // Create a new file with a unique name in the upload directory
-            File uploadedFile = new File(uploadDir, UUID.randomUUID().toString() + "-" + originalFilename);
-            // Save the uploaded file to disk
-            try (InputStream inputStream = file.getInputStream()) {
-                Files.copy(inputStream, uploadedFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-            }
-            // Set the image field of the product to the path of the uploaded file
-            product.setImage(uploadedFile.getName());
-            System.out.println(uploadedFile);
-        } else {
-            product.setImage(null);
+        // Get the original filename
+        String originalFilename = file.getOriginalFilename();
+        System.out.println(originalFilename);
+        String projectDir = System.getProperty("user.dir");
+        // Define the upload directory
+        String uploadDir = projectDir + "\\src\\main\\upload\\product\\";
+        System.out.println(uploadDir);
+        // Create the upload path if it doesn't exist
+        Path uploadPath = Paths.get(uploadDir);
+        if (!Files.exists(uploadPath)) {
+            Files.createDirectories(uploadPath);
         }
+
+        if (file.getSize() > 5000000) { // Maximum file size of 5MB
+            throw new Exception("File size too large. Please upload a file less than 5MB.");
+        }
+        // Create a new file with a unique name in the upload directory
+        File uploadedFile = new File(uploadDir, originalFilename);
+        // Save the uploaded file to disk
+        try (InputStream inputStream = file.getInputStream()) {
+            Files.copy(inputStream, uploadedFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        }
+        // Set the image field of the product to the path of the uploaded file
+        product.setImage(uploadedFile.getName());
+        System.out.println(uploadedFile);
         // Save the product to the database
         product.setCreatedDate(new Date());
         productRepository.save(product);
