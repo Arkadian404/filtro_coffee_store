@@ -127,11 +127,12 @@
                                  th:text="${errorMessage}">
                             </div>
 
-                            
+
                             <div class="form-group">
                                 <label for="comment-content">Comment:</label>
                                 <textarea name="content" class="form-control" id="comment-content" rows="3"></textarea>
                             </div>
+                            <input type="hidden" name="_csrfParameterName" th:value="${_csrfToken}">
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </form>
                     </th:block>

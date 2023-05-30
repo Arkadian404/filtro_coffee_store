@@ -2,7 +2,8 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       th:replace="~{layout/user_layout :: layout (~{::content}, ~{::head_additional})}">
 <head>
-    <th:block th:fragment="head_additional"></th:block>
+    <th:block th:fragment="head_additional">
+    </th:block>
 </head>
 <body>
 <th:block th:fragment="content">
@@ -48,9 +49,14 @@
                     </div>
 
                     <!-- Password input -->
+
                     <div class="form-outline mb-4">
-                        <label class="form-label" for="registerPassword">Mật khẩu</label>
-                        <input name="password" type="password" id="registerPassword" class="form-control" required/>
+                        <label class="form-label" for="password">Mật khẩu</label>
+                        <div class="position-relative">
+                            <input name="password" type="password" id="password" class="form-control" required/>
+                            <i class="far fa-eye" id="togglePassword"
+                               style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;"></i>
+                        </div>
                     </div>
 
                     <!-- Repeat Password input -->
@@ -79,7 +85,7 @@
         </div>
 
     </div>
-
+    <script src="/javascript/utils.js" th:src="@{/javascript/utils.js}"></script>
 </th:block>
 </body>
 </html>

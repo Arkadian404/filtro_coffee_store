@@ -14,10 +14,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/product")
 public class ProductController {
+
+    private String csrfToken;
 
     @Autowired
     ProductService productService;
@@ -32,11 +35,19 @@ public class ProductController {
 
     @GetMapping
     public String product() {
+
         return "user/product";
     }
 
     @GetMapping("/{id}")
     public String product(@PathVariable Integer id, HttpSession session, Model model) {
+
+        String _csrfToken = generateRandomString();
+        csrfToken = _csrfToken;
+        System.out.println("csrfToken:" + _csrfToken);
+        model.addAttribute("_csrfToken", _csrfToken);
+
+
         int currentProductId = id;
         long maxProductId = productService.countAll();
         List<Feedback> feedbackList = feedbackService.getAllFeedBackByProductId(id);
@@ -62,7 +73,7 @@ public class ProductController {
 
 
     @PostMapping("/{id}/feedback")
-    public String feedback(@ModelAttribute Feedback feedback, @PathVariable Integer id, HttpSession session, Model model) {
+    public String feedback(@ModelAttribute Feedback feedback, @PathVariable Integer id, @RequestParam("_csrfParameterName") String csrfTokenForm, HttpSession session, Model model) {
         if (!inputService.isValidComment(feedback.getContent())) {
             String message = "Bình luận chỉ được chứa các ký tự thường và dấu chấm, dấu phẩy, (), @, ! và " +
                     "độ dài dưới 50 ký tự";
@@ -71,9 +82,21 @@ public class ProductController {
             return "redirect:/product/" + id;
         }
 
+        System.out.println("Sau khi nhan nut binh luanthi csrf token la: " + csrfToken);
+        if (!csrfTokenForm.equals(csrfToken)) {
+            String message = "Mã token không đúng";
+            model.addAttribute("errorMessage", message);
+            return "redirect:/product/" + id;
+        }
+
+
         User user = (User) session.getAttribute("user");
         Product product = productService.getProductById(id);
         feedbackService.createFeedback(user, product, feedback);
         return "redirect:/product/" + id;
+    }
+
+    public String generateRandomString() {
+        return UUID.randomUUID().toString();
     }
 }
