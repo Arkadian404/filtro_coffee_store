@@ -9,7 +9,7 @@ public class XFrameOptions implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
-        response.setHeader("X-Frame-Options", "SAME-ORIGIN");
+        response.setHeader("X-Frame-Options", "SAMEORIGIN");
         response.setHeader("Content-Security-Policy", "script-src 'self' https://code.jquery.com " +
                 "https://kit.fontawesome.com " +
                 "https://unpkg.com " + "https://www.google.com/recaptcha/ " + "https://www.gstatic.com/recaptcha/ " +
