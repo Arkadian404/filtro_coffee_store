@@ -82,12 +82,15 @@ public class RegisterController {
             //session.removeAttribute("csrfToken");
         } catch (AccountNameExistException ex) {
             model.addAttribute("errorMessage", ex.getMessage());
+            model.addAttribute("_csrfToken", csrfToken);
             return "register";
         } catch (PasswordRuleException ex) {
             model.addAttribute("errorMessages", ex.getErrorMessages());
+            model.addAttribute("_csrfToken", csrfToken);
             return "register";
         } catch (PasswordDoNotMatchException ex) {
             model.addAttribute("errorMessage", ex.getMessage());
+            model.addAttribute("_csrfToken", csrfToken);
             return "register";
         } catch (Exception ex) {
             ex.printStackTrace();
