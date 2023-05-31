@@ -72,6 +72,7 @@ public class RegisterController {
         if (!csrfTokenForm.equals(csrfToken)) {
             String message = "Mã token không đúng";
             model.addAttribute("errorMessage", message);
+            model.addAttribute("_csrfToken", csrfToken);
             return "register";
         }
 
