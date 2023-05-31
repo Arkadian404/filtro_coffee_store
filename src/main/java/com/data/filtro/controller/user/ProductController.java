@@ -35,7 +35,6 @@ public class ProductController {
 
     @GetMapping
     public String product() {
-
         return "user/product";
     }
 
@@ -86,6 +85,7 @@ public class ProductController {
         if (!csrfTokenForm.equals(csrfToken)) {
             String message = "Mã token không đúng";
             model.addAttribute("errorMessage", message);
+            model.addAttribute("_csrfToken", csrfToken);
             return "redirect:/product/" + id;
         }
 

@@ -62,10 +62,12 @@ public class LoginController {
         if (recaptchaResponse == null || recaptchaResponse.isEmpty()) {
             model.addAttribute("message", "Please complete the reCAPTCHA verification.");
             System.out.println(model.getAttribute("errorMessage"));
+            model.addAttribute("_csrfToken", csrfToken);
             return "login";
         } else if (!isCaptchaValid) {
             if (!isCaptchaValid) {
                 model.addAttribute("message", "InvalidCaptcha");
+                model.addAttribute("_csrfToken", csrfToken);
                 return "login";
             }
         }
@@ -75,6 +77,7 @@ public class LoginController {
             String message = "Tên tài khoản, mật khẩu chỉ được chứa các ký tự thường và dấu (), @";
             model.addAttribute("errorMessage", message);
 //            throw new InputNotInvalidException("Tên tài khoản, mật khẩu chỉ được chứa các ký tự thường và dấu (), @");
+            model.addAttribute("_csrfToken", csrfToken);
             return "login";
         }
 
@@ -89,6 +92,7 @@ public class LoginController {
         if (!csrfTokenForm.equals(csrfToken)) {
             String message = "Mã token không đúng";
             model.addAttribute("errorMessage", message);
+            model.addAttribute("_csrfToken", csrfToken);
             return "login";
         }
 
