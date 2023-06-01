@@ -34,6 +34,25 @@ public class GlobalController {
     @Autowired
     CartService cartService;
 
+    @ModelAttribute("cartItemList")
+    public List<CartItem> cartItemList(HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        GuestCart guestCart = (GuestCart) session.getAttribute("guestCart");
+        if (user != null) {
+            Cart cart = cartService.getCartByUserId(user.getId());
+            //Cart cart = (Cart) session.getAttribute("cart");
+            if (cart != null) {
+                List<CartItem> cartItemList = cart.getCartItemList();
+                return cartItemList;
+            }
+        } else if (guestCart != null) {
+            List<CartItem> cartItemList = guestCart.getCartItemList();
+            return cartItemList;
+        }
+        return null;
+    }
+
+
     @ModelAttribute("categories")
     public List<Category> getCategories() {
         List<Category> categories = categoryService.get5Categories();
@@ -52,23 +71,6 @@ public class GlobalController {
         return flavors;
     }
 
-    @ModelAttribute("cartItemList")
-    public List<CartItem> cartItemList(HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        GuestCart guestCart = (GuestCart) session.getAttribute("guestCart");
-        if (user != null) {
-            Cart cart = cartService.getCartByUserId(user.getId());
-            //Cart cart = (Cart) session.getAttribute("cart");
-            if (cart != null) {
-                List<CartItem> cartItemList = cart.getCartItemList();
-                return cartItemList;
-            }
-        } else if (guestCart != null) {
-            List<CartItem> cartItemList = guestCart.getCartItemList();
-            return cartItemList;
-        }
-        return null;
-    }
 
 //    @ModelAttribute("csrfToken")
 //    public String getCsrfToken(HttpSession session) {

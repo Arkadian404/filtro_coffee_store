@@ -103,13 +103,13 @@ public class CartController {
     }
 
     @PostMapping("/add")
-    public String addCart(@RequestParam("productId") int productId, @RequestParam("quantity") int quantity, @RequestParam String csrfToken, HttpSession session, HttpServletRequest request) throws URISyntaxException {
+    public String addCart(@RequestParam("productId") int productId, @RequestParam("quantity") int quantity, HttpSession session, HttpServletRequest request) throws URISyntaxException {
         User user = (User) session.getAttribute("user");
         GuestCart guestCart = (GuestCart) session.getAttribute("guestCart");
-        String storedCsrfToken = (String) session.getAttribute("csrfToken");
-        if (storedCsrfToken == null || !storedCsrfToken.equals(csrfToken)) {
-            return null;
-        }
+//        String storedCsrfToken = (String) session.getAttribute("csrfToken");
+//        if (storedCsrfToken == null || !storedCsrfToken.equals(csrfToken)) {
+//            return null;
+//        }
         String referer = request.getHeader("Referer");
         System.out.println(referer);
         URI uri = new URI(referer);
@@ -141,15 +141,15 @@ public class CartController {
         }
 
         if (path.equals("/")) {
-            session.removeAttribute("csrfToken");
+            //session.removeAttribute("csrfToken");
             return "redirect:" + builder.build().encode().toUriString();
         } else if (path.startsWith("/category")) {
 //            // "redirect:" + path;
-            session.removeAttribute("csrfToken");
+            //session.removeAttribute("csrfToken");
             return "redirect:" + builder.path(path).build().encode().toUriString();
         } else {
             //return "redirect:/product/" + productId;
-            session.removeAttribute("csrfToken");
+            //session.removeAttribute("csrfToken");
             String redirectUrl = UriComponentsBuilder.fromPath("/product/{productId}")
                     .buildAndExpand(productId)
                     .encode()
