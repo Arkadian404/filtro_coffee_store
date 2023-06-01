@@ -113,9 +113,10 @@ public class LoginController {
             return "redirect:/";
         } catch (AuthenticationAccountException exception) {
             exception.printStackTrace();
+            model.addAttribute("_csrfToken", csrfToken);
             model.addAttribute("message", exception.getMessage());
+            return "login";
         }
-        return "login";
     }
 
     @GetMapping("/session")
