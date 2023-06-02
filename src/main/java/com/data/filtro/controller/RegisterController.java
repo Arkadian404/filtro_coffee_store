@@ -80,16 +80,12 @@ public class RegisterController {
         try {
             userService.registerUser(userName, accountName, email, password, repeatPassword);
             //session.removeAttribute("csrfToken");
-        } catch (AccountNameExistException ex) {
+        } catch (AccountNameExistException | PasswordDoNotMatchException ex) {
             model.addAttribute("errorMessage", ex.getMessage());
             model.addAttribute("_csrfToken", csrfToken);
             return "register";
         } catch (PasswordRuleException ex) {
             model.addAttribute("errorMessages", ex.getErrorMessages());
-            model.addAttribute("_csrfToken", csrfToken);
-            return "register";
-        } catch (PasswordDoNotMatchException ex) {
-            model.addAttribute("errorMessage", ex.getMessage());
             model.addAttribute("_csrfToken", csrfToken);
             return "register";
         } catch (Exception ex) {
