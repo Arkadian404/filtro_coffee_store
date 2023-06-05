@@ -2,7 +2,8 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       th:replace="~{layout/user_layout :: layout (~{::content}, ~{::head_additional})}">
 <head>
-    <th:block th:fragment="head_additional"></th:block>
+    <th:block th:fragment="head_additional">
+    </th:block>
 </head>
 <body>
 <th:block th:fragment="content">
@@ -16,7 +17,12 @@
                     <div id="errorMessage" th:if="${errorMessage}" class="alert alert-danger" role="alert"
                          th:text="${errorMessage}">
                     </div>
-
+                    <th:block th:if="${errorMessages!=null}"
+                              th:each="err : ${errorMessages}">
+                        <div id="errorMessages" th:if="${err}" class="alert alert-danger" role="alert"
+                             th:text="${err}">
+                        </div>
+                    </th:block>
                     <div class="text-center mb-3">
                         <h2>ĐĂNG KÝ</h2>
                     </div>
@@ -43,9 +49,14 @@
                     </div>
 
                     <!-- Password input -->
+
                     <div class="form-outline mb-4">
-                        <label class="form-label" for="registerPassword">Mật khẩu</label>
-                        <input name="password" type="password" id="registerPassword" class="form-control" required/>
+                        <label class="form-label" for="password">Mật khẩu</label>
+                        <div class="position-relative">
+                            <input name="password" type="password" id="password" class="form-control" required/>
+                            <i class="far fa-eye" id="togglePassword"
+                               style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;"></i>
+                        </div>
                     </div>
 
                     <!-- Repeat Password input -->
@@ -67,13 +78,14 @@
                         </div>
                     </div>
                     <hr>
+                    <!--                    <input type="hidden" name="csrfToken" th:value="${session.csrfToken}">-->
+                    <input type="hidden" name="_csrfParameterName" th:value="${_csrfToken}">
                 </form>
             </div>
-
         </div>
 
     </div>
-
+    <script src="/javascript/utils.js" th:src="@{/javascript/utils.js}"></script>
 </th:block>
 </body>
 </html>

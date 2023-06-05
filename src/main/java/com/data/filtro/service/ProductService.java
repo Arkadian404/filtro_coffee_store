@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -33,72 +34,44 @@ public class ProductService {
     }
 
 
-//    public void addProduct(Product product, MultipartFile file) throws Exception {
-//
-//        // Check if file is not empty and not null
-//        if (file != null && !file.isEmpty()) {
-//            // Get the original filename
-//            String originalFilename = file.getOriginalFilename();
-//
-//            String projectDir = System.getProperty("user.dir");
-//            // Define the upload directory
-//            String uploadDir = projectDir + "\\src\\main\\upload\\product\\";
-//            System.out.println(uploadDir);
-//            // Create the upload path if it doesn't exist
-//            Path uploadPath = Paths.get(uploadDir);
-//            if (!Files.exists(uploadPath)) {
-//                Files.createDirectories(uploadPath);
-//            }
-//
-//            if (file.getSize() > 5000000) { // Maximum file size of 5MB
-//                throw new Exception("File size too large. Please upload a file less than 5MB.");
-//            }
-//            // Create a new file with a unique name in the upload directory
-//            File uploadedFile = new File(uploadDir, UUID.randomUUID().toString() + "-" + originalFilename);
-//            // Save the uploaded file to disk
-//            try (InputStream inputStream = file.getInputStream()) {
-//                Files.copy(inputStream, uploadedFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-//            }
-//            // Set the image field of the product to the path of the uploaded file
-//            product.setImage(uploadedFile.getName());
-//            System.out.println(uploadedFile);
-//        } else {
-//            product.setImage(null);
-//        }
-//        // Save the product to the database
-//        product.setCreatedDate(new Date());
-//        productRepository.save(product);
-//    }
-
-
     public void addProduct(Product product, MultipartFile file) throws Exception {
 
         // Check if file is not empty and not null
-        // Get the original filename
-        String originalFilename = file.getOriginalFilename();
-        System.out.println(originalFilename);
-        String projectDir = System.getProperty("user.dir");
-        // Define the upload directory
-        String uploadDir = projectDir + "\\src\\main\\upload\\product\\";
-        System.out.println(uploadDir);
-        // Create the upload path if it doesn't exist
-        Path uploadPath = Paths.get(uploadDir);
-        if (!Files.exists(uploadPath)) {
-            Files.createDirectories(uploadPath);
-        }
+        if (file != null && !file.isEmpty()) {
+            // Get the original filename
+            String originalFilename = file.getOriginalFilename();
+            String sanitizedFilename = sanitizeFilename(originalFilename);
+//            String sanitizedFilename = StringUtils.cleanPath(originalFilename);
+            System.out.println(originalFilename);
+            System.out.println(sanitizedFilename);
+            if (!isValidFilename(sanitizedFilename)) {
+                throw new Exception("Invalid file name");
+            }
+            String projectDir = System.getProperty("user.dir");
+            // Define the upload directory
+            String uploadDir = projectDir + "\\src\\main\\upload\\product\\";
+            System.out.println(uploadDir);
+            // Create the upload path if it doesn't exist
+            Path uploadPath = Paths.get(uploadDir);
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
 
-        if (file.getSize() > 5000000) { // Maximum file size of 5MB
-            throw new Exception("File size too large. Please upload a file less than 5MB.");
+            if (file.getSize() > 5000000) { // Maximum file size of 5MB
+                throw new Exception("File size too large. Please upload a file less than 5MB.");
+            }
+            // Create a new file with a unique name in the upload directory
+            File uploadedFile = new File(uploadDir, UUID.randomUUID().toString() + "-" + sanitizedFilename);
+            // Save the uploaded file to disk
+            try (InputStream inputStream = file.getInputStream()) {
+                Files.copy(inputStream, uploadedFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            }
+            // Set the image field of the product to the path of the uploaded file
+            product.setImage(uploadedFile.getName());
+            System.out.println(uploadedFile);
+        } else {
+            product.setImage(null);
         }
-        // Create a new file with a unique name in the upload directory
-        File uploadedFile = new File(uploadDir, originalFilename);
-        // Save the uploaded file to disk
-        try (InputStream inputStream = file.getInputStream()) {
-            Files.copy(inputStream, uploadedFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-        }
-        // Set the image field of the product to the path of the uploaded file
-        product.setImage(uploadedFile.getName());
-        System.out.println(uploadedFile);
         // Save the product to the database
         product.setCreatedDate(new Date());
         productRepository.save(product);
@@ -124,7 +97,13 @@ public class ProductService {
         if (file != null && !file.isEmpty()) {
             // Get the original filename
             String originalFilename = file.getOriginalFilename();
-
+//            String sanitizedFilename = StringUtils.cleanPath(originalFilename);
+            String sanitizedFilename = sanitizeFilename(originalFilename);
+            System.out.println(originalFilename);
+            System.out.println(sanitizedFilename);
+            if (!isValidFilename(sanitizedFilename)) {
+                throw new Exception("Invalid file name");
+            }
             String projectDir = System.getProperty("user.dir");
             // Define the upload directory
             String uploadDir = projectDir + "\\src\\main\\upload\\product\\";
@@ -139,7 +118,7 @@ public class ProductService {
                 throw new Exception("File size too large. Please upload a file less than 5MB.");
             }
             // Create a new file with a unique name in the upload directory
-            File uploadedFile = new File(uploadDir, UUID.randomUUID().toString() + "-" + originalFilename);
+            File uploadedFile = new File(uploadDir, UUID.randomUUID().toString() + "-" + sanitizedFilename);
             // Save the uploaded file to disk
             try (InputStream inputStream = file.getInputStream()) {
                 Files.copy(inputStream, uploadedFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
@@ -150,6 +129,23 @@ public class ProductService {
         }
         // Save the product to the database
         productRepository.save(existingProduct);
+    }
+
+
+    private String sanitizeFilename(String filename) {
+        // Replace disallowed characters with underscores
+        String sanitizedFilename = filename.replaceAll("[\\\\/:*?%\"<>|]", "_");
+        // Remove null bytes
+        sanitizedFilename = sanitizedFilename.replaceAll("\\x00", "");
+        return sanitizedFilename;
+    }
+
+    private boolean isValidFilename(String filename) {
+        // Check for disallowed characters on Windows
+        if (filename.matches(".*[\\\\/:*%?\"<>|\\x00].*")) {
+            return false;
+        }
+        return true;
     }
 
 

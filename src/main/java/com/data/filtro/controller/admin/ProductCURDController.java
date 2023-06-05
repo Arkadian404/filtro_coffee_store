@@ -74,15 +74,25 @@ public class ProductCURDController {
 
     @PostMapping("/create")
     public String create(@ModelAttribute("product") Product product, @RequestParam("file") MultipartFile file) throws Exception {
-        productService.addProduct(product, file);
-        return "redirect:/admin/product";
+        try {
+            productService.addProduct(product, file);
+            return "redirect:/admin/product";
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
     }
 
 
     @PostMapping("/update")
     public String update(@ModelAttribute("product") Product product, @RequestParam("file") MultipartFile file) throws Exception {
-        productService.update(product, file);
-        return "redirect:/admin/product";
+        try {
+            productService.update(product, file);
+            return "redirect:/admin/product";
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
     }
 
     @PostMapping("/delete")

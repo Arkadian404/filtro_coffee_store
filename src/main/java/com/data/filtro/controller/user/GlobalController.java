@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.sound.sampled.Port;
+import java.security.SecureRandom;
+import java.util.Base64;
 import java.util.List;
 
 @ControllerAdvice
-@RequestMapping({"/", "/product", "/category", "/search", "/cart"})
+@RequestMapping({"/", "/product", "/category", "/search", "/cart", "/register", "/login"})
 public class GlobalController {
 
     @Autowired
@@ -31,6 +33,25 @@ public class GlobalController {
 
     @Autowired
     CartService cartService;
+
+    @ModelAttribute("cartItemList")
+    public List<CartItem> cartItemList(HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        GuestCart guestCart = (GuestCart) session.getAttribute("guestCart");
+        if (user != null) {
+            Cart cart = cartService.getCartByUserId(user.getId());
+            //Cart cart = (Cart) session.getAttribute("cart");
+            if (cart != null) {
+                List<CartItem> cartItemList = cart.getCartItemList();
+                return cartItemList;
+            }
+        } else if (guestCart != null) {
+            List<CartItem> cartItemList = guestCart.getCartItemList();
+            return cartItemList;
+        }
+        return null;
+    }
+
 
     @ModelAttribute("categories")
     public List<Category> getCategories() {
@@ -50,22 +71,22 @@ public class GlobalController {
         return flavors;
     }
 
-    @ModelAttribute("cartItemList")
-    public List<CartItem> cartItemList(HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        GuestCart guestCart = (GuestCart) session.getAttribute("guestCart");
-        if (user != null) {
-            Cart cart = cartService.getCartByUserId(user.getId());
-            //Cart cart = (Cart) session.getAttribute("cart");
-            if (cart != null) {
-                List<CartItem> cartItemList = cart.getCartItemList();
-                return cartItemList;
-            }
-        } else if (guestCart != null) {
-            List<CartItem> cartItemList = guestCart.getCartItemList();
-            return cartItemList;
-        }
-        return null;
-    }
+
+//    @ModelAttribute("csrfToken")
+//    public String getCsrfToken(HttpSession session) {
+//        String csrfToken = (String) session.getAttribute("csrfToken");
+//        if (csrfToken == null || session.isNew() || csrfToken.isEmpty()) {
+//            csrfToken = generateCsrfToken();
+//            session.setAttribute("csrfToken", csrfToken);
+//            System.out.println("CSRF TOKEN: " + csrfToken);
+//        }
+//        return csrfToken;
+//    }
+//
+//    private String generateCsrfToken() {
+//        byte[] tokenBytes = new byte[32]; // 256 bits
+//        new SecureRandom().nextBytes(tokenBytes);
+//        return Base64.getUrlEncoder().withoutPadding().encodeToString(tokenBytes);
+//    }
 
 }

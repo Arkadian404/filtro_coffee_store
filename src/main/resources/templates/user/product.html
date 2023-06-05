@@ -14,7 +14,8 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a th:href="@{/}">Trang chủ</a></li>
                 <li class="breadcrumb-item"><a th:href="@{/category/{id}(id='all')}">Tất cả sản phẩm</a></li>
-                <li class="breadcrumb-item active" aria-current="page" th:text="${product.productName}">Chi tiết sản
+                <li class="breadcrumb-item active" aria-current="page" th:if="${product != null}"
+                    th:text="${product.productName}">Chi tiết sản
                     phẩm
                 </li>
             </ol>
@@ -78,6 +79,7 @@
                                         class="btn btn-success text-uppercase">
                                     <i class="fa fa-shopping-cart"></i> Thêm vào giỏ
                                 </button>
+                                <input type="hidden" name="csrfToken" th:value="${session.csrfToken}">
                             </div>
                         </form>
                         <hr class="mt-auto">
@@ -120,12 +122,17 @@
                                                     th:text="${session.user !=null ? session.user.name: 'NULL'}"> </span></span>
                         <form th:action="@{/product/{id}/feedback(id=${product.id})}" method="POST"
                               th:object="${feedback}">
-                            <input type="hidden" name="product" th:value="${product.id}">
-                            <input type="hidden" name="user" th:value="${session.user.id}">
+
+                            <div id="errorMessage" th:if="${errorMessage}" class="alert alert-danger" role="alert"
+                                 th:text="${errorMessage}">
+                            </div>
+
+
                             <div class="form-group">
                                 <label for="comment-content">Comment:</label>
                                 <textarea name="content" class="form-control" id="comment-content" rows="3"></textarea>
                             </div>
+                            <input type="hidden" name="_csrfParameterName" th:value="${_csrfToken}">
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </form>
                     </th:block>

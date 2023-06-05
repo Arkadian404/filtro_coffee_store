@@ -5,10 +5,12 @@ import com.data.filtro.repository.CartRepository;
 import com.data.filtro.service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -104,12 +106,16 @@ public class CartController {
     public String addCart(@RequestParam("productId") int productId, @RequestParam("quantity") int quantity, HttpSession session, HttpServletRequest request) throws URISyntaxException {
         User user = (User) session.getAttribute("user");
         GuestCart guestCart = (GuestCart) session.getAttribute("guestCart");
+//        String storedCsrfToken = (String) session.getAttribute("csrfToken");
+//        if (storedCsrfToken == null || !storedCsrfToken.equals(csrfToken)) {
+//            return null;
+//        }
         String referer = request.getHeader("Referer");
         System.out.println(referer);
         URI uri = new URI(referer);
         System.out.println(uri);
-        String path = uri.getPath();
-        System.out.println(path);
+        String path = StringEscapeUtils.escapeHtml4(uri.getPath());
+        UriComponentsBuilder builder = UriComponentsBuilder.fromPath("/");
         Cart cart = null;
         if (user != null) {
             //cart = cartService.getCartByUserId(user.getId());
@@ -121,7 +127,11 @@ public class CartController {
             cartService.addProductToCart(cart, productId, quantity);
         } else if (guestCart != null) {
             cartService.addProductToGuestCart(guestCart, productId, quantity);
-            return "redirect:/product/" + productId;
+            String redirectUrl = UriComponentsBuilder.fromPath("/product/{productId}")
+                    .buildAndExpand(productId)
+                    .encode()
+                    .toString();
+            return "redirect:" + redirectUrl;
         } else {
             if (guestCart == null) {
                 guestCart = cartService.createGuestCart();
@@ -129,12 +139,23 @@ public class CartController {
             }
             cartService.addProductToGuestCart(guestCart, productId, quantity);
         }
+
         if (path.equals("/")) {
-            return "redirect:/";
+            //session.removeAttribute("csrfToken");
+            return "redirect:" + builder.build().encode().toUriString();
         } else if (path.startsWith("/category")) {
-            return "redirect:" + path;
-        } else
-            return "redirect:/product/" + productId;
+//            // "redirect:" + path;
+            //session.removeAttribute("csrfToken");
+            return "redirect:" + builder.path(path).build().encode().toUriString();
+        } else {
+            //return "redirect:/product/" + productId;
+            //session.removeAttribute("csrfToken");
+            String redirectUrl = UriComponentsBuilder.fromPath("/product/{productId}")
+                    .buildAndExpand(productId)
+                    .encode()
+                    .toString();
+            return "redirect:" + redirectUrl;
+        }
 
     }
 
